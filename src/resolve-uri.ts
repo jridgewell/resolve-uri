@@ -10,7 +10,7 @@ const Url = (typeof URL !== 'undefined' ? URL : require('url').URL) as Url;
 // Matches "..", which must be preceeded by "/" or the start of the string, and
 // must be followed by a "/". We do not eat the following "/", so that the next
 // iteration can match on it.
-const parentRegex = /(^|\/)\.\.(?=\/)/g;
+const parentRegex = /(^|\/)\.\.(?=\/|$)/g;
 
 function isAbsoluteUrl(url: string): boolean {
   try {
@@ -38,6 +38,7 @@ function uniqInStr(str: string): string {
  * relative URL.
  */
 function stripFileName(path: string): string {
+  path = normalizePath(path);
   const index = path.lastIndexOf('/');
   return path.slice(0, index + 1);
 }
@@ -154,7 +155,7 @@ export default function resolve(input: string, base: string | undefined): string
   // with a ".", then we need to ensure that the relative path starts with a
   // ".". We don't know if relative starts with a "..", though, so check before
   // prepending.
-  if (joined.startsWith('.') && !relative.startsWith('.')) {
+  if ((base || input).startsWith('.') && !relative.startsWith('.')) {
     return './' + relative;
   }
 

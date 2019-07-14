@@ -1,3 +1,4 @@
+const { normalize } = require('path')
 buffer = [];
 function describe(name, fn) {
   buffer.push(`
@@ -29,10 +30,13 @@ function getProtocol(url) {
 }
 
 function getPath(base, input) {
-  const origin = getOrigin(base);
-  if (origin) base = base.slice(origin.length);
-  base = base.replace(/(^|\/)[^\/]*$/, '$1');
-  let relative = require('path').normalize(base + input);
+  let b = base;
+  const origin = getOrigin(b);
+  if (origin) b = b.slice(origin.length);
+  b = normalize(b);
+  b = b.replace(/(^|\/)((?!\/|(?<=(^|\/))\.\.(?=(\/|$))).)*$/, '$1');
+  if (b && !b.endsWith('/')) b += '/';
+  let relative = normalize(b + input);
   if (origin) {
     relative = relative.replace(/^(\.{1,2}\/)+/, '/');
     if (!relative.startsWith('/')) relative = '/' + relative;
@@ -222,6 +226,9 @@ describe('with absolute base', () => {
   suite('https://foo.com/file');
   suite('https://foo.com/dir/');
   suite('https://foo.com/dir/file');
+  suite('https://foo.com/..');
+  suite('https://foo.com/../');
+  suite('https://foo.com/dir/..');
 });
 
 describe('with protocol relative base', () => {
@@ -230,6 +237,9 @@ describe('with protocol relative base', () => {
   suite('//foo.com/file');
   suite('//foo.com/dir/');
   suite('//foo.com/dir/file');
+  suite('//foo.com/..');
+  suite('//foo.com/../');
+  suite('//foo.com/dir/..');
 });
 
 describe('with path absolute base', () => {
@@ -238,6 +248,10 @@ describe('with path absolute base', () => {
   suite('/root/');
   suite('/root/file');
   suite('/root/dir/');
+  suite('/..');
+  suite('/../');
+  suite('/root/..');
+  suite('/root/../');
 });
 
 describe('with relative base', () => {
@@ -253,6 +267,18 @@ describe('with relative base', () => {
   suite('../dir/');
   suite('../deep/file');
   suite('../deep/dir/');
+  suite('..');
+  suite('../');
+  suite('dir/..');
+  suite('deep/../');
+  suite('./..');
+  suite('./../');
+  suite('./deep/..');
+  suite('./deep/../');
+  suite('../..');
+  suite('../../');
+  suite('../deep/..');
+  suite('../deep/../');
 });
 
 require('clipboardy').writeSync(buffer.join('\n'));
