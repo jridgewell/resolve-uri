@@ -32,13 +32,18 @@ function uniqInStr(str: string): string {
   return uniq;
 }
 
+/**
+ * Removes the filename from the path (everything trailing the last "/"). This
+ * is only safe to call on a path, never call with an absolute or protocol
+ * relative URL.
+ */
 function stripFileName(path: string): string {
   const index = path.lastIndexOf('/');
   return path.slice(0, index + 1);
 }
 
 /**
- * Normalizes a protocol relative URL, but keeps it protocol relative by
+ * Normalizes a protocol-relative URL, but keeps it protocol relative by
  * stripping out the protocl before returning it.
  */
 function normalizeProtocolRelative(input: string, absoluteBase: string): string {
@@ -124,18 +129,25 @@ export default function resolve(input: string, base: string | undefined): string
   // a protocol, because that would have been handled above.
   if (input.startsWith('//')) return normalizeProtocolRelative(input, 'https://foo.com/');
 
+  // We now know that base (if there is one) and input are paths. We've handled
+  // both absolute and protocol-relative variations above.
+
   // Absolute paths don't need any special handling, because they cannot have
   // extra "." or ".."s. That'll all be stripped away. Input takes priority here,
-  // because if input is an absolute path, base's path won't affect it in any way.
+  // because if input is an absolute path, base path won't affect it in any way.
   if (input.startsWith('/')) return '/' + normalizeSimplePath(input);
 
-  // TODO
+  // Since input and base are paths, we need to join them to do any further
+  // processing. Paths are joined at the directory level, so we need to remove
+  // the base's filename before joining. We also know that input does not have a
+  // leading slash, and that the stripped base will have a trailing slash if
+  // there are any directories (or it'll be empty).
   const joined = stripFileName(base) + input;
 
   // If base is an absolute path, then input will be relative to it.
   if (base.startsWith('/')) return '/' + normalizeSimplePath(joined);
 
-  // We now know both input and base are relative paths.
+  // We now know both base (if there is one) and input are relative paths.
   const relative = normalizePath(joined);
 
   // If base started with a leading ".", or there is no base and input started
