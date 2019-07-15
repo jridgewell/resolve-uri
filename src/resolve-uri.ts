@@ -37,7 +37,7 @@ function uniqInStr(str: string): string {
  * is only safe to call on a path, never call with an absolute or protocol
  * relative URL.
  */
-function stripFileName(path: string): string {
+function stripPathFilename(path: string): string {
   path = normalizePath(path);
   const index = path.lastIndexOf('/');
   return path.slice(0, index + 1);
@@ -143,7 +143,7 @@ export default function resolve(input: string, base: string | undefined): string
   // the base's filename before joining. We also know that input does not have a
   // leading slash, and that the stripped base will have a trailing slash if
   // there are any directories (or it'll be empty).
-  const joined = stripFileName(base) + input;
+  const joined = stripPathFilename(base) + input;
 
   // If base is an absolute path, then input will be relative to it.
   if (base.startsWith('/')) return '/' + normalizeSimplePath(joined);
