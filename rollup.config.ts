@@ -5,13 +5,11 @@ import typescript from 'rollup-plugin-typescript';
 
 const pkg = require('./package.json');
 
-const libraryName = 'resolve-uri';
-
 export default {
   external: [],
-  input: `src/${libraryName}.ts`,
+  input: `src/resolve-uri.ts`,
   output: [
-    { file: pkg.main, name: libraryName, format: 'umd', sourcemap: true },
+    { file: pkg.main, name: 'resolveURI', format: 'umd', sourcemap: true },
     { file: pkg.module, format: 'es', sourcemap: true },
   ],
   plugins: [
