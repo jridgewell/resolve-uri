@@ -1,12 +1,19 @@
 {
   "name": "@jridgewell/resolve-uri",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Resolve a URI relative to an optional base URI",
-  "keywords": [ "resolve", "uri", "url", "path" ],
+  "keywords": [
+    "resolve",
+    "uri",
+    "url",
+    "path"
+  ],
   "main": "dist/resolve-uri.umd.js",
   "module": "dist/resolve-uri.mjs",
   "typings": "dist/types/resolve-uri.d.ts",
-  "files": [ "dist" ],
+  "files": [
+    "dist"
+  ],
   "author": "Justin Ridgewell <jridgewell@google.com>",
   "repository": {
     "type": "git",
