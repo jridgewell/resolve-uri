@@ -8,59 +8,50 @@
     "url",
     "path"
   ],
+  "author": "Justin Ridgewell <justin@ridgewell.name>",
+  "license": "MIT",
+  "repository": "https://github.com/jridgewell/resolve-uri",
   "main": "dist/resolve-uri.umd.js",
   "module": "dist/resolve-uri.mjs",
   "typings": "dist/types/resolve-uri.d.ts",
   "files": [
     "dist"
   ],
-  "author": "Justin Ridgewell <jridgewell@google.com>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jridgewell/resolve-uri.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jridgewell/resolve-uri/issues"
-  },
-  "license": "MIT",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=10.0.0"
   },
   "scripts": {
-    "lint:ts": "npm run test:lint:ts -- --fix",
-    "lint:prettier": "npm run test:lint:prettier -- --write",
-    "lint": "run-s -n lint:*",
     "prebuild": "rm -rf dist",
-    "build:ts": "tsc --module commonjs",
-    "build:rollup": "rollup -c rollup.config.ts",
     "build": "run-s -n build:*",
-    "test": "jest --coverage",
+    "build:rollup": "rollup -c rollup.config.js",
+    "build:ts": "tsc --project tsconfig.build.json",
+    "lint": "run-s -n lint:*",
+    "lint:prettier": "npm run test:lint:prettier -- --write",
+    "lint:ts": "npm run test:lint:ts -- --fix",
+    "test": "run-s -n test:lint 'test:only -- --no-cache'",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-    "test:watch": "jest --coverage --watch",
-    "test:lint:ts": "tslint  --project tsconfig.json -t codeFrame '{src,test}/**/*.ts'",
-    "test:lint:prettier": "prettier --check '{src,test}/**/*.ts'",
     "test:lint": "run-s -n test:lint:*",
-    "test:prod": "run-s -n test:lint 'test --no-cache'",
-    "preversion": "run-s test:prod build",
-    "prepublishOnly": "npm run preversion"
+    "test:lint:prettier": "prettier --check '{src,test}/**/*.ts'",
+    "test:lint:ts": "eslint '{src,test}/**/*.ts'",
+    "test:only": "jest --coverage",
+    "test:watch": "jest --coverage --watch",
+    "prepublishOnly": "npm run preversion",
+    "preversion": "run-s test build"
   },
   "devDependencies": {
-    "@types/jest": "24.0.23",
-    "@types/node": "12.12.8",
-    "jest": "24.9.0",
-    "jest-config": "24.9.0",
+    "@rollup/plugin-typescript": "8.1.0",
+    "@types/jest": "26.0.19",
+    "@typescript-eslint/eslint-plugin": "4.10.0",
+    "@typescript-eslint/parser": "4.10.0",
+    "eslint": "7.15.0",
+    "eslint-config-prettier": "7.0.0",
+    "jest": "26.6.3",
+    "jest-config": "26.6.3",
     "npm-run-all": "4.1.5",
-    "prettier": "1.18.2",
-    "rollup": "1.26.2",
-    "rollup-plugin-commonjs": "10.1.0",
-    "rollup-plugin-node-resolve": "5.2.0",
-    "rollup-plugin-sourcemaps": "0.4.2",
-    "rollup-plugin-typescript": "1.0.1",
-    "ts-jest": "24.1.0",
-    "ts-node": "8.4.1",
-    "tslint": "5.20.0",
-    "tslint-config-prettier": "1.18.0",
-    "tslint-config-standard": "8.0.1",
-    "typescript": "3.6.4"
+    "prettier": "2.2.1",
+    "rollup": "2.35.1",
+    "ts-jest": "26.4.4",
+    "tslib": "2.0.3",
+    "typescript": "4.1.3"
   }
 }

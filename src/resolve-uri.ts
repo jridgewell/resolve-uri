@@ -1,12 +1,3 @@
-type WhatWgUrl = import('url').URL;
-interface Url extends WhatWgUrl {
-  new (input: string, base?: string): WhatWgUrl;
-}
-declare var URL: unknown;
-
-/* istanbul ignore next */
-const Url = (typeof URL !== 'undefined' ? URL : require('url').URL) as Url;
-
 // Matches "..", which must be preceeded by "/" or the start of the string, and
 // must be followed by a "/". We do not eat the following "/", so that the next
 // iteration can match on it.
@@ -14,7 +5,7 @@ const parentRegex = /(^|\/)\.\.(?=\/|$)/g;
 
 function isAbsoluteUrl(url: string): boolean {
   try {
-    return !!new Url(url);
+    return !!new URL(url);
   } catch (e) {
     return false;
   }
@@ -48,7 +39,7 @@ function stripPathFilename(path: string): string {
  * stripping out the protocl before returning it.
  */
 function normalizeProtocolRelative(input: string, absoluteBase: string): string {
-  const { href, protocol } = new Url(input, absoluteBase);
+  const { href, protocol } = new URL(input, absoluteBase);
   return href.slice(protocol.length);
 }
 
@@ -57,7 +48,7 @@ function normalizeProtocolRelative(input: string, absoluteBase: string): string 
  * be normalized absolutely).
  */
 function normalizeSimplePath(input: string): string {
-  const { href } = new Url(input, 'https://foo.com/');
+  const { href } = new URL(input, 'https://foo.com/');
   return href.slice('https://foo.com/'.length);
 }
 
@@ -115,11 +106,11 @@ export default function resolve(input: string, base: string | undefined): string
   if (!base) base = '';
 
   // Absolute URLs are very easy to resolve right.
-  if (isAbsoluteUrl(input)) return new Url(input).href;
+  if (isAbsoluteUrl(input)) return new URL(input).href;
 
   if (base) {
     // Absolute URLs are easy...
-    if (isAbsoluteUrl(base)) return new Url(input, base).href;
+    if (isAbsoluteUrl(base)) return new URL(input, base).href;
 
     // If base is protocol relative, we'll resolve with it but keep the result
     // protocol relative.
