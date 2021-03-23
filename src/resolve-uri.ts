@@ -21,8 +21,8 @@ function absoluteUrl(url: string): null | URL {
  */
 function uniqInStr(str: string): string {
   let uniq = String(Math.random()).slice(2);
-  while (str.indexOf(uniq) > -1) {
-    /* istanbul ignore next */
+  let index = 0;
+  while ((index = str.indexOf(uniq, index)) > -1) {
     uniq += uniq;
   }
   return uniq;

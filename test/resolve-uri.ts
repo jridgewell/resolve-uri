@@ -1,6 +1,28 @@
 import resolve from '../src/resolve-uri';
 
 describe('resolve', () => {
+  describe('random string in ".." input', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('finds unique string', () => {
+      jest.spyOn(Math, 'random').mockImplementation(() => 0.123);
+      const base = '';
+      const input = 'z123/a/b/../../abc';
+      const resolved = resolve(input, base);
+      expect(resolved).toBe('z123/abc');
+    });
+
+    test('continues to find unique string', () => {
+      jest.spyOn(Math, 'random').mockImplementation(() => 0.123);
+      const base = '';
+      const input = 'z123z123/a/b/../../abc';
+      const resolved = resolve(input, base);
+      expect(resolved).toBe('z123z123/abc');
+    });
+  });
+
   describe('without base', () => {
     describe(`base = ""`, () => {
       describe('with absolute input', () => {
