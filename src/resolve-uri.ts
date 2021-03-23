@@ -3,11 +3,15 @@
 // iteration can match on it.
 const parentRegex = /(^|\/)\.\.(?=\/|$)/g;
 
-function isAbsoluteUrl(url: string): boolean {
+// Matches the scheme of a URL, which is a strong indicator it is an valid
+// absolute URL.
+const schemeRegex = /^\s*[a-z][a-z0-9+\-.]*:/i;
+
+function absoluteUrl(url: string): null | URL {
   try {
-    return !!new URL(url);
-  } catch (e) {
-    return false;
+    return schemeRegex.test(url) ? new URL(url) : null;
+  } catch {
+    return null;
   }
 }
 
@@ -106,11 +110,12 @@ export default function resolve(input: string, base: string | undefined): string
   if (!base) base = '';
 
   // Absolute URLs are very easy to resolve right.
-  if (isAbsoluteUrl(input)) return new URL(input).href;
+  let url;
+  if ((url = absoluteUrl(input))) return url.href;
 
   if (base) {
     // Absolute URLs are easy...
-    if (isAbsoluteUrl(base)) return new URL(input, base).href;
+    if (absoluteUrl(base)) return new URL(input, base).href;
 
     // If base is protocol relative, we'll resolve with it but keep the result
     // protocol relative.
