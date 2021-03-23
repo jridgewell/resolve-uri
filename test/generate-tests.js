@@ -1,5 +1,7 @@
-const { normalize } = require('path')
-buffer = [];
+const fs = require('fs');
+const { normalize } = require('path');
+
+const buffer = [];
 function describe(name, fn) {
   buffer.push(`
     describe('${name}', () => {`);
@@ -281,4 +283,4 @@ describe('with relative base', () => {
   suite('../deep/../');
 });
 
-require('clipboardy').writeSync(buffer.join('\n'));
+fs.writeFileSync(`${__dirname}/resolve-uri.ts`, buffer.join('\n'));
