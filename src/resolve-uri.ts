@@ -11,6 +11,7 @@ function absoluteUrl(url: string): null | URL {
   try {
     return schemeRegex.test(url) ? new URL(url) : null;
   } catch {
+    /* istanbul ignore next */
     return null;
   }
 }
@@ -83,11 +84,6 @@ function normalizePath(input: string): string {
   // must keep 1.
   const uniqDirectory = `z${uniqInStr(input)}/`;
 
-  // uniqDirectory is just a "z", followed by numbers, followed by a "/". So
-  // generating a runtime regex from it is safe. We'll use this search regex to
-  // strip out our uniq directory names and insert any needed ".."s.
-  const search = new RegExp(`^(?:${uniqDirectory})*`);
-
   // Now we can resolve the total path. If there are excess ".."s, they will
   // eliminate one or more of the unique directories we prefix with.
   const relative = normalizeSimplePath(uniqDirectory.repeat(total) + input);
@@ -95,12 +91,13 @@ function normalizePath(input: string): string {
   // We can now count the number of unique directories that were eliminated. If
   // there were 3, and 1 was eliminated, we know we only need to add 1 "..". If
   // 2 were eliminated, we need to insert 2 ".."s. If all 3 were eliminated,
-  // then we need 3, etc. This replace is guranteed to match (it may match 0 or
-  // more times), and we can count the total match to see how many were eliminated.
-  return relative.replace(search, (all: string) => {
-    const leftover = all.length / uniqDirectory.length;
-    return '../'.repeat(total - leftover);
-  });
+  // then we need 3, etc.
+  let index = 0;
+  while (relative.startsWith(uniqDirectory, index)) {
+    total--;
+    index += uniqDirectory.length;
+  }
+  return '../'.repeat(total) + relative.slice(index);
 }
 
 /**
