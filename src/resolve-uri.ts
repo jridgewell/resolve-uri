@@ -55,12 +55,13 @@ function parseUrl(input: string): Url {
     return url;
   }
   const match = urlRegex.exec(input)!;
+  const host = match[3];
   return {
     scheme: match[1],
     user: match[2] || '',
-    host: match[3],
+    host,
     port: match[4] || '',
-    path: match[5] || '',
+    path: match[5] || (host ? '/' : ''),
     relativePath: false,
   };
 }

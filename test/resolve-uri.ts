@@ -2,6 +2,193 @@ import resolve from '../src/resolve-uri';
 
 describe('resolve', () => {
   describe('without base', () => {
+    describe(`base = undefined`, () => {
+      describe('with absolute input', () => {
+        test('returns input', () => {
+          const base = undefined;
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/main.js.map');
+        });
+
+        test('normalizes input', () => {
+          const base = undefined;
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/foo/main.js.map');
+        });
+
+        test('normalizes pathless input', () => {
+          const base = undefined;
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
+        test('normalizes current directory', () => {
+          const base = undefined;
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/main.js.map');
+        });
+
+        test('normalizes too many parent accessors', () => {
+          const base = undefined;
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/main.js.map');
+        });
+
+        test('normalizes too many parent accessors, late', () => {
+          const base = undefined;
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        test('resolves relative to the base protocol', () => {
+          const base = undefined;
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/main.js.map');
+        });
+
+        test('normalizes input', () => {
+          const base = undefined;
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
+        });
+
+        test('normalizes pathless input', () => {
+          const base = undefined;
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
+        test('normalizes current directory', () => {
+          const base = undefined;
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/main.js.map');
+        });
+
+        test('normalizes too many parent accessors', () => {
+          const base = undefined;
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/main.js.map');
+        });
+
+        test('normalizes too many parent accessors, late', () => {
+          const base = undefined;
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        test('remains absolute path', () => {
+          const base = undefined;
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = undefined;
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
+        });
+
+        test('normalizes input', () => {
+          const base = undefined;
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/foo/main.js.map');
+        });
+
+        test('normalizes current directory', () => {
+          const base = undefined;
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/main.js.map');
+        });
+
+        test('normalizes too many parent accessors', () => {
+          const base = undefined;
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/main.js.map');
+        });
+
+        test('normalizes too many parent accessors, late', () => {
+          const base = undefined;
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        test('resolves relative to current directory', () => {
+          const base = undefined;
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('./bar/main.js.map');
+        });
+
+        test('resolves relative to parent directory', () => {
+          const base = undefined;
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('../bar/main.js.map');
+        });
+
+        test('resolves relative to parent multiple directory', () => {
+          const base = undefined;
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('../../../bar/main.js.map');
+        });
+
+        test('normalizes input', () => {
+          const base = undefined;
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('./foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        test('resolves relative to current directory', () => {
+          const base = undefined;
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('bar/main.js.map');
+        });
+
+        test('resolves relative to parent multiple directory, later', () => {
+          const base = undefined;
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('../../bar/main.js.map');
+        });
+
+        test('normalizes input', () => {
+          const base = undefined;
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('foo/main.js.map');
+        });
+      });
+    });
+
     describe(`base = ""`, () => {
       describe('with absolute input', () => {
         test('returns input', () => {
@@ -16,6 +203,13 @@ describe('resolve', () => {
           const input = 'https://absolute.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
+        });
+
+        test('normalizes pathless input', () => {
+          const base = '';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
         });
 
         test('normalizes current directory', () => {
@@ -55,6 +249,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '';
           const input = '//protocol-relative.com/./main.js.map';
@@ -83,6 +284,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -186,6 +394,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com';
           const input = 'https://absolute.com/./main.js.map';
@@ -223,6 +438,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com';
           const input = '//protocol-relative.com/./main.js.map';
@@ -251,6 +473,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'https://foo.com';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://foo.com/');
         });
 
         test('normalizes input', () => {
@@ -352,6 +581,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/';
           const input = 'https://absolute.com/./main.js.map';
@@ -389,6 +625,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -417,6 +660,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'https://foo.com/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://foo.com/');
         });
 
         test('normalizes input', () => {
@@ -518,6 +768,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/file';
           const input = 'https://absolute.com/./main.js.map';
@@ -555,6 +812,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -583,6 +847,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'https://foo.com/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://foo.com/');
         });
 
         test('normalizes input', () => {
@@ -684,6 +955,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -721,6 +999,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -749,6 +1034,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'https://foo.com/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://foo.com/');
         });
 
         test('normalizes input', () => {
@@ -850,6 +1142,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/dir/file';
           const input = 'https://absolute.com/./main.js.map';
@@ -887,6 +1186,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/dir/file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -915,6 +1221,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://foo.com/');
         });
 
         test('normalizes input', () => {
@@ -1016,6 +1329,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -1053,6 +1373,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -1081,6 +1408,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'https://foo.com/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://foo.com/');
         });
 
         test('normalizes input', () => {
@@ -1182,6 +1516,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/../';
           const input = 'https://absolute.com/./main.js.map';
@@ -1219,6 +1560,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -1247,6 +1595,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'https://foo.com/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://foo.com/');
         });
 
         test('normalizes input', () => {
@@ -1348,6 +1703,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/dir/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -1385,6 +1747,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'https://foo.com/dir/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -1413,6 +1782,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('https://foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://foo.com/');
         });
 
         test('normalizes input', () => {
@@ -1516,6 +1892,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com';
           const input = 'https://absolute.com/./main.js.map';
@@ -1553,6 +1936,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com';
           const input = '//protocol-relative.com/./main.js.map';
@@ -1581,6 +1971,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('//foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '//foo.com';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//foo.com/');
         });
 
         test('normalizes input', () => {
@@ -1682,6 +2079,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/';
           const input = 'https://absolute.com/./main.js.map';
@@ -1719,6 +2123,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -1747,6 +2158,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('//foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '//foo.com/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//foo.com/');
         });
 
         test('normalizes input', () => {
@@ -1848,6 +2266,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/file';
           const input = 'https://absolute.com/./main.js.map';
@@ -1885,6 +2310,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -1913,6 +2345,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('//foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '//foo.com/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//foo.com/');
         });
 
         test('normalizes input', () => {
@@ -2014,6 +2453,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -2051,6 +2497,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -2079,6 +2532,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('//foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '//foo.com/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//foo.com/');
         });
 
         test('normalizes input', () => {
@@ -2180,6 +2640,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/dir/file';
           const input = 'https://absolute.com/./main.js.map';
@@ -2217,6 +2684,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/dir/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/dir/file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -2245,6 +2719,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('//foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '//foo.com/dir/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//foo.com/');
         });
 
         test('normalizes input', () => {
@@ -2346,6 +2827,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -2383,6 +2871,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -2411,6 +2906,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('//foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '//foo.com/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//foo.com/');
         });
 
         test('normalizes input', () => {
@@ -2512,6 +3014,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/../';
           const input = 'https://absolute.com/./main.js.map';
@@ -2549,6 +3058,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -2577,6 +3093,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('//foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '//foo.com/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//foo.com/');
         });
 
         test('normalizes input', () => {
@@ -2678,6 +3201,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/dir/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -2715,6 +3245,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '//foo.com/dir/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '//foo.com/dir/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -2743,6 +3280,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('//foo.com/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '//foo.com/dir/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//foo.com/');
         });
 
         test('normalizes input', () => {
@@ -2846,6 +3390,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/';
           const input = 'https://absolute.com/./main.js.map';
@@ -2883,6 +3434,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -2911,6 +3469,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -3012,6 +3577,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root';
           const input = 'https://absolute.com/./main.js.map';
@@ -3049,6 +3621,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root';
           const input = '//protocol-relative.com/./main.js.map';
@@ -3077,6 +3656,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/root';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -3178,6 +3764,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/';
           const input = 'https://absolute.com/./main.js.map';
@@ -3215,6 +3808,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -3243,6 +3843,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/root/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -3344,6 +3951,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/file';
           const input = 'https://absolute.com/./main.js.map';
@@ -3381,6 +3995,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -3409,6 +4030,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/root/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -3510,6 +4138,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -3547,6 +4182,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -3575,6 +4217,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/root/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -3676,6 +4325,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -3713,6 +4369,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -3741,6 +4404,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -3842,6 +4512,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/../';
           const input = 'https://absolute.com/./main.js.map';
@@ -3879,6 +4556,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -3907,6 +4591,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -4008,6 +4699,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -4045,6 +4743,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -4073,6 +4778,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/root/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -4174,6 +4886,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/../';
           const input = 'https://absolute.com/./main.js.map';
@@ -4211,6 +4930,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '/root/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '/root/../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -4239,6 +4965,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '/root/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -4342,6 +5075,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'file';
           const input = 'https://absolute.com/./main.js.map';
@@ -4379,6 +5119,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -4407,6 +5154,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -4508,6 +5262,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -4545,6 +5306,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -4573,6 +5341,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -4674,6 +5449,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'dir/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'dir/file';
           const input = 'https://absolute.com/./main.js.map';
@@ -4711,6 +5493,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'dir/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'dir/file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -4739,6 +5528,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'dir/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -4840,6 +5636,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'deep/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'deep/dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -4877,6 +5680,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'deep/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'deep/dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -4905,6 +5715,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'deep/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -5006,6 +5823,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './file';
           const input = 'https://absolute.com/./main.js.map';
@@ -5043,6 +5867,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -5071,6 +5902,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = './file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -5172,6 +6010,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -5209,6 +6054,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -5237,6 +6089,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = './dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -5338,6 +6197,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './deep/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './deep/file';
           const input = 'https://absolute.com/./main.js.map';
@@ -5375,6 +6241,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './deep/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './deep/file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -5403,6 +6276,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = './deep/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -5504,6 +6384,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './deep/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './deep/dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -5541,6 +6428,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './deep/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './deep/dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -5569,6 +6463,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = './deep/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -5670,6 +6571,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../file';
           const input = 'https://absolute.com/./main.js.map';
@@ -5707,6 +6615,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -5735,6 +6650,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -5836,6 +6758,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -5873,6 +6802,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -5901,6 +6837,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -6002,6 +6945,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../deep/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../deep/file';
           const input = 'https://absolute.com/./main.js.map';
@@ -6039,6 +6989,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../deep/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../deep/file';
           const input = '//protocol-relative.com/./main.js.map';
@@ -6067,6 +7024,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../deep/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -6168,6 +7132,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../deep/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../deep/dir/';
           const input = 'https://absolute.com/./main.js.map';
@@ -6205,6 +7176,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../deep/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../deep/dir/';
           const input = '//protocol-relative.com/./main.js.map';
@@ -6233,6 +7211,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../deep/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -6334,6 +7319,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '..';
           const input = 'https://absolute.com/./main.js.map';
@@ -6371,6 +7363,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -6399,6 +7398,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -6500,6 +7506,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../';
           const input = 'https://absolute.com/./main.js.map';
@@ -6537,6 +7550,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -6565,6 +7585,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -6666,6 +7693,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'dir/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'dir/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -6703,6 +7737,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'dir/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'dir/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -6731,6 +7772,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'dir/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -6832,6 +7880,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'deep/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'deep/../';
           const input = 'https://absolute.com/./main.js.map';
@@ -6869,6 +7924,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = 'deep/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = 'deep/../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -6897,6 +7959,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = 'deep/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -6998,6 +8067,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './..';
           const input = 'https://absolute.com/./main.js.map';
@@ -7035,6 +8111,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -7063,6 +8146,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = './..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -7164,6 +8254,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './../';
           const input = 'https://absolute.com/./main.js.map';
@@ -7201,6 +8298,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -7229,6 +8333,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = './../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -7330,6 +8441,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './deep/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './deep/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -7367,6 +8485,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './deep/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './deep/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -7395,6 +8520,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = './deep/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -7496,6 +8628,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './deep/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './deep/../';
           const input = 'https://absolute.com/./main.js.map';
@@ -7533,6 +8672,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = './deep/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = './deep/../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -7561,6 +8707,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = './deep/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -7662,6 +8815,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../..';
           const input = 'https://absolute.com/./main.js.map';
@@ -7699,6 +8859,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -7727,6 +8894,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -7828,6 +9002,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../../';
           const input = 'https://absolute.com/./main.js.map';
@@ -7865,6 +9046,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -7893,6 +9081,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -7994,6 +9189,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../deep/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../deep/..';
           const input = 'https://absolute.com/./main.js.map';
@@ -8031,6 +9233,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../deep/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../deep/..';
           const input = '//protocol-relative.com/./main.js.map';
@@ -8059,6 +9268,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../deep/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
@@ -8160,6 +9376,13 @@ describe('resolve', () => {
           expect(resolved).toBe('https://absolute.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../deep/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('https://absolute.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../deep/../';
           const input = 'https://absolute.com/./main.js.map';
@@ -8197,6 +9420,13 @@ describe('resolve', () => {
           expect(resolved).toBe('//protocol-relative.com/foo/main.js.map');
         });
 
+        test('normalizes pathless input', () => {
+          const base = '../deep/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('//protocol-relative.com/');
+        });
+
         test('normalizes current directory', () => {
           const base = '../deep/../';
           const input = '//protocol-relative.com/./main.js.map';
@@ -8225,6 +9455,13 @@ describe('resolve', () => {
           const input = '/assets/main.js.map';
           const resolved = resolve(input, base);
           expect(resolved).toBe('/assets/main.js.map');
+        });
+
+        test('trims to root', () => {
+          const base = '../deep/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          expect(resolved).toBe('/');
         });
 
         test('normalizes input', () => {
