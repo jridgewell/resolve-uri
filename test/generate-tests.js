@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { normalize } = require('path');
+const prettier = require('prettier');
 
 const buffer = [
   `import resolve from '../src/resolve-uri';`,
@@ -51,6 +52,17 @@ function getPath(base, input) {
     return './' + relative;
   }
   return relative;
+}
+
+function normalizeBase(base) {
+  if (base.startsWith('https://')) return new URL(base).href;
+  if (base.startsWith('//')) {
+    return new URL('https:' + base).href.slice('https:'.length);
+  }
+  let b = normalize(base);
+  if (b === './') return '.';
+  if (b.endsWith('../')) b = b.slice(0, -1);
+  return b.startsWith('.') || !base.startsWith('.') ? b : `./${b}`;
 }
 
 function suite(base) {
@@ -215,10 +227,7 @@ function suite(base) {
             const base = ${init};
             const input = './foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(
-    base,
-    './foo/./bar/../main.js.map',
-  )}');
+            t.is(resolved, '${getOrigin(base)}${getPath(base, './foo/./bar/../main.js.map')}');
           });
         });
 
@@ -234,10 +243,7 @@ function suite(base) {
             const base = ${init};
             const input = 'foo/../../../bar/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(
-    base,
-    'foo/../../../bar/main.js.map',
-  )}');
+            t.is(resolved, '${getOrigin(base)}${getPath(base, 'foo/../../../bar/main.js.map')}');
           });
 
           test('normalizes input', (t) => {
@@ -245,6 +251,15 @@ function suite(base) {
             const input = 'foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
             t.is(resolved, '${getOrigin(base)}${getPath(base, 'foo/./bar/../main.js.map')}');
+          });
+        });
+
+        describe('empty input', () => {
+          test('normalizes base', (t) => {
+            const base = ${init};
+            const input = '';
+            const resolved = resolve(input, base);
+            t.is(resolved, '${normalizeBase(base || '.', '')}');
           });
         });
       });
@@ -319,4 +334,9 @@ describe('resolve', () => {
   });
 });
 
-fs.writeFileSync(`${__dirname}/resolve-uri.ts`, buffer.join('\n'));
+fs.writeFileSync(
+  `${__dirname}/resolve-uri.test.ts`,
+  prettier.format(buffer.join('\n'), {
+    parser: 'babel',
+  }),
+);

@@ -188,6 +188,15 @@ describe('resolve', () => {
           t.is(resolved, 'foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = undefined;
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '.');
+        });
+      });
     });
 
     describe(`base = ""`, () => {
@@ -373,6 +382,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, 'foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '.');
         });
       });
     });
@@ -564,6 +582,15 @@ describe('resolve', () => {
           t.is(resolved, 'https://foo.com/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'https://foo.com';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'https://foo.com/');
+        });
+      });
     });
 
     describe(`base = "https://foo.com/"`, () => {
@@ -749,6 +776,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, 'https://foo.com/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'https://foo.com/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'https://foo.com/');
         });
       });
     });
@@ -938,6 +974,15 @@ describe('resolve', () => {
           t.is(resolved, 'https://foo.com/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'https://foo.com/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'https://foo.com/file');
+        });
+      });
     });
 
     describe(`base = "https://foo.com/dir/"`, () => {
@@ -1123,6 +1168,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, 'https://foo.com/dir/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'https://foo.com/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'https://foo.com/dir/');
         });
       });
     });
@@ -1312,6 +1366,15 @@ describe('resolve', () => {
           t.is(resolved, 'https://foo.com/dir/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'https://foo.com/dir/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'https://foo.com/dir/file');
+        });
+      });
     });
 
     describe(`base = "https://foo.com/.."`, () => {
@@ -1497,6 +1560,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, 'https://foo.com/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'https://foo.com/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'https://foo.com/');
         });
       });
     });
@@ -1686,6 +1758,15 @@ describe('resolve', () => {
           t.is(resolved, 'https://foo.com/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'https://foo.com/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'https://foo.com/');
+        });
+      });
     });
 
     describe(`base = "https://foo.com/dir/.."`, () => {
@@ -1871,6 +1952,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, 'https://foo.com/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'https://foo.com/dir/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'https://foo.com/');
         });
       });
     });
@@ -2062,6 +2152,15 @@ describe('resolve', () => {
           t.is(resolved, '//foo.com/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '//foo.com';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '//foo.com/');
+        });
+      });
     });
 
     describe(`base = "//foo.com/"`, () => {
@@ -2247,6 +2346,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '//foo.com/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '//foo.com/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '//foo.com/');
         });
       });
     });
@@ -2436,6 +2544,15 @@ describe('resolve', () => {
           t.is(resolved, '//foo.com/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '//foo.com/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '//foo.com/file');
+        });
+      });
     });
 
     describe(`base = "//foo.com/dir/"`, () => {
@@ -2621,6 +2738,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '//foo.com/dir/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '//foo.com/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '//foo.com/dir/');
         });
       });
     });
@@ -2810,6 +2936,15 @@ describe('resolve', () => {
           t.is(resolved, '//foo.com/dir/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '//foo.com/dir/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '//foo.com/dir/file');
+        });
+      });
     });
 
     describe(`base = "//foo.com/.."`, () => {
@@ -2995,6 +3130,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '//foo.com/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '//foo.com/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '//foo.com/');
         });
       });
     });
@@ -3184,6 +3328,15 @@ describe('resolve', () => {
           t.is(resolved, '//foo.com/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '//foo.com/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '//foo.com/');
+        });
+      });
     });
 
     describe(`base = "//foo.com/dir/.."`, () => {
@@ -3369,6 +3522,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '//foo.com/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '//foo.com/dir/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '//foo.com/');
         });
       });
     });
@@ -3560,6 +3722,15 @@ describe('resolve', () => {
           t.is(resolved, '/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/');
+        });
+      });
     });
 
     describe(`base = "/root"`, () => {
@@ -3745,6 +3916,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/root';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/root');
         });
       });
     });
@@ -3934,6 +4114,15 @@ describe('resolve', () => {
           t.is(resolved, '/root/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/root/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/root/');
+        });
+      });
     });
 
     describe(`base = "/root/file"`, () => {
@@ -4119,6 +4308,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '/root/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/root/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/root/file');
         });
       });
     });
@@ -4308,6 +4506,15 @@ describe('resolve', () => {
           t.is(resolved, '/root/dir/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/root/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/root/dir/');
+        });
+      });
     });
 
     describe(`base = "/.."`, () => {
@@ -4493,6 +4700,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/');
         });
       });
     });
@@ -4682,6 +4898,15 @@ describe('resolve', () => {
           t.is(resolved, '/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/');
+        });
+      });
     });
 
     describe(`base = "/root/.."`, () => {
@@ -4869,6 +5094,15 @@ describe('resolve', () => {
           t.is(resolved, '/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/root/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/');
+        });
+      });
     });
 
     describe(`base = "/root/../"`, () => {
@@ -5054,6 +5288,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '/root/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '/');
         });
       });
     });
@@ -5245,6 +5488,15 @@ describe('resolve', () => {
           t.is(resolved, 'foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'file');
+        });
+      });
     });
 
     describe(`base = "dir/"`, () => {
@@ -5430,6 +5682,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, 'dir/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'dir/');
         });
       });
     });
@@ -5619,6 +5880,15 @@ describe('resolve', () => {
           t.is(resolved, 'dir/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'dir/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'dir/file');
+        });
+      });
     });
 
     describe(`base = "deep/dir/"`, () => {
@@ -5804,6 +6074,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, 'deep/dir/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'deep/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, 'deep/dir/');
         });
       });
     });
@@ -5993,6 +6272,15 @@ describe('resolve', () => {
           t.is(resolved, './foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = './file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, './file');
+        });
+      });
     });
 
     describe(`base = "./dir/"`, () => {
@@ -6178,6 +6466,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, './dir/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = './dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, './dir/');
         });
       });
     });
@@ -6367,6 +6664,15 @@ describe('resolve', () => {
           t.is(resolved, './deep/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = './deep/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, './deep/file');
+        });
+      });
     });
 
     describe(`base = "./deep/dir/"`, () => {
@@ -6552,6 +6858,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, './deep/dir/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = './deep/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, './deep/dir/');
         });
       });
     });
@@ -6741,6 +7056,15 @@ describe('resolve', () => {
           t.is(resolved, '../foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '../file');
+        });
+      });
     });
 
     describe(`base = "../dir/"`, () => {
@@ -6926,6 +7250,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '../dir/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '../dir/');
         });
       });
     });
@@ -7115,6 +7448,15 @@ describe('resolve', () => {
           t.is(resolved, '../deep/foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../deep/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '../deep/file');
+        });
+      });
     });
 
     describe(`base = "../deep/dir/"`, () => {
@@ -7300,6 +7642,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '../deep/dir/foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../deep/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '../deep/dir/');
         });
       });
     });
@@ -7489,6 +7840,15 @@ describe('resolve', () => {
           t.is(resolved, '../foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '..');
+        });
+      });
     });
 
     describe(`base = "../"`, () => {
@@ -7674,6 +8034,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '../foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '..');
         });
       });
     });
@@ -7863,6 +8232,15 @@ describe('resolve', () => {
           t.is(resolved, 'foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'dir/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '.');
+        });
+      });
     });
 
     describe(`base = "deep/../"`, () => {
@@ -8048,6 +8426,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, 'foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = 'deep/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '.');
         });
       });
     });
@@ -8237,6 +8624,15 @@ describe('resolve', () => {
           t.is(resolved, '../foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = './..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '..');
+        });
+      });
     });
 
     describe(`base = "./../"`, () => {
@@ -8422,6 +8818,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '../foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = './../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '..');
         });
       });
     });
@@ -8611,6 +9016,15 @@ describe('resolve', () => {
           t.is(resolved, './foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = './deep/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '.');
+        });
+      });
     });
 
     describe(`base = "./deep/../"`, () => {
@@ -8796,6 +9210,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, './foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = './deep/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '.');
         });
       });
     });
@@ -8985,6 +9408,15 @@ describe('resolve', () => {
           t.is(resolved, '../../foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '../..');
+        });
+      });
     });
 
     describe(`base = "../../"`, () => {
@@ -9170,6 +9602,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '../../foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '../..');
         });
       });
     });
@@ -9359,6 +9800,15 @@ describe('resolve', () => {
           t.is(resolved, '../foo/main.js.map');
         });
       });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../deep/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '..');
+        });
+      });
     });
 
     describe(`base = "../deep/../"`, () => {
@@ -9544,6 +9994,15 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           t.is(resolved, '../foo/main.js.map');
+        });
+      });
+
+      describe('empty input', () => {
+        test('normalizes base', (t) => {
+          const base = '../deep/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          t.is(resolved, '..');
         });
       });
     });

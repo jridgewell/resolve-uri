@@ -34,13 +34,12 @@ function isAbsolutePath(input: string): boolean {
 
 function parseAbsoluteUrl(input: string): Url {
   const match = urlRegex.exec(input)!;
-  const host = match[3];
   return {
     scheme: match[1],
     user: match[2] || '',
-    host,
+    host: match[3],
     port: match[4] || '',
-    path: match[5] || (host ? '/' : ''),
+    path: match[5] || '/',
     relativePath: false,
   };
 }
@@ -80,8 +79,16 @@ function mergePaths(url: Url, base: Url) {
   if (!url.relativePath) return;
 
   normalizePath(base);
-  // Resolution happens relative to the base path's directory, not the file.
-  url.path = stripPathFilename(base.path) + url.path;
+
+  // If the path is just a "/", then it was an empty path to begin with (remember, we're a relative
+  // path).
+  if (url.path === '/') {
+    url.path = base.path;
+  } else {
+    // Resolution happens relative to the base path's directory, not the file.
+    url.path = stripPathFilename(base.path) + url.path;
+  }
+
   // If the base path is absolute, then our path is now absolute too.
   url.relativePath = base.relativePath;
 }
@@ -147,7 +154,9 @@ function normalizePath(url: Url) {
   for (let i = 1; i < pointer; i++) {
     path += '/' + pieces[i];
   }
-  if (addTrailingSlash) path += '/';
+  if (!path || (addTrailingSlash && !path.endsWith('/..'))) {
+    path += '/';
+  }
   url.path = path;
 }
 
@@ -177,6 +186,8 @@ export default function resolve(input: string, base: string | undefined): string
   if (url.relativePath) {
     // The first char is always a "/".
     const path = url.path.slice(1);
+    if (!path) return '.';
+
     // If base started with a leading ".", or there is no base and input started with a ".", then we
     // need to ensure that the relative path starts with a ".". We don't know if relative starts
     // with a "..", though, so check before prepending.

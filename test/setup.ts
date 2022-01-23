@@ -24,6 +24,4 @@ const test = function test<Args extends unknown[]>(
   ava(label, fn as any, ...args);
 };
 
-test.macro = ava.macro;
-
 export { test, describe, describe as context };
