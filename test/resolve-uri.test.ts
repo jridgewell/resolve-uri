@@ -201,7 +201,7 @@ describe('resolve', () => {
           const base = undefined;
           const input = '';
           const resolved = resolve(input, base);
-          t.is(resolved, '.');
+          t.is(resolved, '');
         });
       });
     });
@@ -404,7 +404,7 @@ describe('resolve', () => {
           const base = '';
           const input = '';
           const resolved = resolve(input, base);
-          t.is(resolved, '.');
+          t.is(resolved, '');
         });
       });
     });

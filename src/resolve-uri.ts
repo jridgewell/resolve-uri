@@ -164,6 +164,8 @@ function normalizePath(url: Url) {
  * Attempts to resolve `input` URL/path relative to `base`.
  */
 export default function resolve(input: string, base: string | undefined): string {
+  if (!input && !base) return '';
+
   const url = parseUrl(input);
 
   // If we have a base, and the input isn't already an absolute URL, then we need to merge.

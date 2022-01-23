@@ -278,7 +278,7 @@ function suite(base) {
             const base = ${init};
             const input = '';
             const resolved = resolve(input, base);
-            t.is(resolved, '${normalizeBase(base || '.', '')}');
+            t.is(resolved, '${base ? normalizeBase(base || '.') : ''}');
           });
         });
       });
