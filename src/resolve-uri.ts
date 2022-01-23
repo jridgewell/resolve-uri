@@ -9,7 +9,7 @@ const schemeRegex = /^[\w+.-]+:\/\//;
  * 4. Port, including ":", optional.
  * 5. Path, including "/", optional.
  */
-const urlRegex = /^([\w+.-]+:)\/\/([^@]*@)?([^:/]+)(:\d+)?(\/[^#?]*)?/;
+const urlRegex = /^([\w+.-]+:)\/\/([^@]*@)?([^:/]*)(:\d+)?(\/[^#?]*)?/;
 
 type Url = {
   scheme: string;
@@ -171,7 +171,7 @@ export default function resolve(input: string, base: string | undefined): string
     const baseUrl = parseUrl(base);
     url.scheme = baseUrl.scheme;
     // If there's no host, then we were just a path.
-    if (!url.host) {
+    if (!url.host || baseUrl.scheme === 'file:') {
       // The host, user, and port are joined, you can't copy one without the others.
       url.user = baseUrl.user;
       url.host = baseUrl.host;
@@ -195,7 +195,7 @@ export default function resolve(input: string, base: string | undefined): string
     return !keepRelative || path.startsWith('.') ? path : './' + path;
   }
   // If there's no host (and no scheme/user/port), then we need to output an absolute path.
-  if (!url.host) return url.path;
+  if (!url.scheme && !url.host) return url.path;
   // We're outputting either an absolute URL, or a protocol relative one.
   return `${url.scheme}//${url.user}${url.host}${url.port}${url.path}`;
 }

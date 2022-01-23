@@ -1,6 +1,8 @@
-const fs = require('fs');
+/* eslint-env node */
+const { writeFileSync } = require('fs');
 const { normalize } = require('path');
 const prettier = require('prettier');
+const prettierConfig = require('../prettier.config.js');
 
 const buffer = [
   `import resolve from '../src/resolve-uri';`,
@@ -20,7 +22,9 @@ function describe(name, fn) {
 function getOrigin(url) {
   let index = 0;
   if (!url) return '';
-  if (url.startsWith('https://')) {
+  if (url.startsWith('file://')) {
+    index = 'file://'.length;
+  } else if (url.startsWith('https://')) {
     index = url.indexOf('/', 'https://'.length);
   } else if (url.startsWith('//')) {
     index = url.indexOf('/', '//'.length);
@@ -33,6 +37,7 @@ function getOrigin(url) {
 
 function getProtocol(url) {
   if (!url) return '';
+  if (url.startsWith('file://')) return 'file:';
   if (url.startsWith('https://')) return 'https:';
   return '';
 }
@@ -42,6 +47,7 @@ function getPath(base, input) {
   const origin = getOrigin(b);
   if (origin) b = b.slice(origin.length);
   b = normalize(b || '');
+  if (base?.endsWith('/..')) b += '/';
   b = b.replace(/(^|\/)((?!\/|(?<=(^|\/))\.\.(?=(\/|$))).)*$/, '$1');
   if (b && !b.endsWith('/')) b += '/';
   let relative = normalize(b + input);
@@ -55,6 +61,7 @@ function getPath(base, input) {
 }
 
 function normalizeBase(base) {
+  if (base.startsWith('file://')) return new URL(base).href;
   if (base.startsWith('https://')) return new URL(base).href;
   if (base.startsWith('//')) {
     return new URL('https:' + base).href.slice('https:'.length);
@@ -63,6 +70,11 @@ function normalizeBase(base) {
   if (b === './') return '.';
   if (b.endsWith('../')) b = b.slice(0, -1);
   return b.startsWith('.') || !base.startsWith('.') ? b : `./${b}`;
+}
+
+function maybeDropHost(host, base) {
+  if (base?.startsWith('file://')) return '';
+  return host;
 }
 
 function suite(base) {
@@ -111,6 +123,13 @@ function suite(base) {
             const resolved = resolve(input, base);
             t.is(resolved, 'https://absolute.com/main.js.map');
           });
+
+          test('normalizes file protocol', (t) => {
+            const base = ${init};
+            const input = 'file:///root/main.js.map';
+            const resolved = resolve(input, base);
+            t.is(resolved, 'file:///root/main.js.map');
+          });
         });
 
         describe('with protocol relative input', () => {
@@ -118,42 +137,42 @@ function suite(base) {
             const base = ${init};
             const input = '//protocol-relative.com/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
           });
 
           test('normalizes input', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/foo/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/foo/main.js.map');
           });
 
           test('normalizes pathless input', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/');
+            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/');
           });
 
           test('normalizes current directory', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/./main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
           });
 
           test('normalizes too many parent accessors', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
           });
 
           test('normalizes too many parent accessors, late', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/../../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
           });
         });
 
@@ -281,6 +300,15 @@ describe('resolve', () => {
     suite('https://foo.com/..');
     suite('https://foo.com/../');
     suite('https://foo.com/dir/..');
+
+    suite('file:///foo');
+    suite('file:///foo/');
+    suite('file:///foo/file');
+    suite('file:///foo/dir/');
+    suite('file:///foo/dir/file');
+    suite('file:///foo/..');
+    suite('file:///foo/../');
+    suite('file:///foo/dir/..');
   });
 
   describe('with protocol relative base', () => {
@@ -334,9 +362,10 @@ describe('resolve', () => {
   });
 });
 
-fs.writeFileSync(
+writeFileSync(
   `${__dirname}/resolve-uri.test.ts`,
   prettier.format(buffer.join('\n'), {
+    ...prettierConfig,
     parser: 'babel',
   }),
 );
