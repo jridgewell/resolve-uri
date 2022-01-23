@@ -1,7 +1,10 @@
 const fs = require('fs');
 const { normalize } = require('path');
 
-const buffer = [`import resolve from '../src/resolve-uri';\n`];
+const buffer = [
+  `import resolve from '../src/resolve-uri';`,
+  `import { test, describe } from './setup';\n`,
+];
 function describe(name, fn) {
   buffer.push(`
     describe('${name}', () => {`);
@@ -55,187 +58,193 @@ function suite(base) {
   buffer.push(`
       describe(\`base = ${init}\`, () => {
         describe('with absolute input', () => {
-          test('returns input', () => {
+          test('returns input', (t) => {
             const base = ${init};
             const input = 'https://absolute.com/main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('https://absolute.com/main.js.map');
+            t.is(resolved, 'https://absolute.com/main.js.map');
           });
 
-          test('normalizes input', () => {
+          test('normalizes input', (t) => {
             const base = ${init};
             const input = 'https://absolute.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('https://absolute.com/foo/main.js.map');
+            t.is(resolved, 'https://absolute.com/foo/main.js.map');
           });
 
-          test('normalizes pathless input', () => {
+          test('normalizes pathless input', (t) => {
             const base = ${init};
             const input = 'https://absolute.com';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('https://absolute.com/');
+            t.is(resolved, 'https://absolute.com/');
           });
 
-          test('normalizes current directory', () => {
+          test('normalizes current directory', (t) => {
             const base = ${init};
             const input = 'https://absolute.com/./main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('https://absolute.com/main.js.map');
+            t.is(resolved, 'https://absolute.com/main.js.map');
           });
 
-          test('normalizes too many parent accessors', () => {
+          test('normalizes too many parent accessors', (t) => {
             const base = ${init};
             const input = 'https://absolute.com/../../../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('https://absolute.com/main.js.map');
+            t.is(resolved, 'https://absolute.com/main.js.map');
           });
 
-          test('normalizes too many parent accessors, late', () => {
+          test('normalizes too many parent accessors, late', (t) => {
             const base = ${init};
             const input = 'https://absolute.com/foo/../../../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('https://absolute.com/main.js.map');
+            t.is(resolved, 'https://absolute.com/main.js.map');
           });
         });
 
         describe('with protocol relative input', () => {
-          test('resolves relative to the base protocol', () => {
+          test('resolves relative to the base protocol', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getProtocol(base)}//protocol-relative.com/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
-          test('normalizes input', () => {
+          test('normalizes input', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getProtocol(base)}//protocol-relative.com/foo/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/foo/main.js.map');
           });
 
-          test('normalizes pathless input', () => {
+          test('normalizes pathless input', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getProtocol(base)}//protocol-relative.com/');
+            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/');
           });
 
-          test('normalizes current directory', () => {
+          test('normalizes current directory', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/./main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getProtocol(base)}//protocol-relative.com/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
-          test('normalizes too many parent accessors', () => {
+          test('normalizes too many parent accessors', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getProtocol(base)}//protocol-relative.com/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
-          test('normalizes too many parent accessors, late', () => {
+          test('normalizes too many parent accessors, late', (t) => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/../../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getProtocol(base)}//protocol-relative.com/main.js.map');
+            t.is(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
         });
 
         describe('with absolute path input', () => {
-          test('remains absolute path', () => {
+          test('remains absolute path', (t) => {
             const base = ${init};
             const input = '/assets/main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}/assets/main.js.map');
+            t.is(resolved, '${getOrigin(base)}/assets/main.js.map');
           });
 
-          test('trims to root', () => {
+          test('trims to root', (t) => {
             const base = ${init};
             const input = '/';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}/');
+            t.is(resolved, '${getOrigin(base)}/');
           });
 
-          test('normalizes input', () => {
+          test('normalizes input', (t) => {
             const base = ${init};
             const input = '/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}/foo/main.js.map');
+            t.is(resolved, '${getOrigin(base)}/foo/main.js.map');
           });
 
-          test('normalizes current directory', () => {
+          test('normalizes current directory', (t) => {
             const base = ${init};
             const input = '/./main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}/main.js.map');
+            t.is(resolved, '${getOrigin(base)}/main.js.map');
           });
 
-          test('normalizes too many parent accessors', () => {
+          test('normalizes too many parent accessors', (t) => {
             const base = ${init};
             const input = '/../../../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}/main.js.map');
+            t.is(resolved, '${getOrigin(base)}/main.js.map');
           });
 
-          test('normalizes too many parent accessors, late', () => {
+          test('normalizes too many parent accessors, late', (t) => {
             const base = ${init};
             const input = '/foo/../../../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}/main.js.map');
+            t.is(resolved, '${getOrigin(base)}/main.js.map');
           });
         });
 
         describe('with leading dot relative input', () => {
-          test('resolves relative to current directory', () => {
+          test('resolves relative to current directory', (t) => {
             const base = ${init};
             const input = './bar/main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}${getPath(base, './bar/main.js.map')}');
+            t.is(resolved, '${getOrigin(base)}${getPath(base, './bar/main.js.map')}');
           });
 
-          test('resolves relative to parent directory', () => {
+          test('resolves relative to parent directory', (t) => {
             const base = ${init};
             const input = '../bar/main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}${getPath(base, '../bar/main.js.map')}');
+            t.is(resolved, '${getOrigin(base)}${getPath(base, '../bar/main.js.map')}');
           });
 
-          test('resolves relative to parent multiple directory', () => {
+          test('resolves relative to parent multiple directory', (t) => {
             const base = ${init};
             const input = '../../../bar/main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}${getPath(base, '../../../bar/main.js.map')}');
+            t.is(resolved, '${getOrigin(base)}${getPath(base, '../../../bar/main.js.map')}');
           });
 
-          test('normalizes input', () => {
+          test('normalizes input', (t) => {
             const base = ${init};
             const input = './foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}${getPath(base, './foo/./bar/../main.js.map')}');
+            t.is(resolved, '${getOrigin(base)}${getPath(
+    base,
+    './foo/./bar/../main.js.map',
+  )}');
           });
         });
 
         describe('with relative input', () => {
-          test('resolves relative to current directory', () => {
+          test('resolves relative to current directory', (t) => {
             const base = ${init};
             const input = 'bar/main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}${getPath(base, 'bar/main.js.map')}');
+            t.is(resolved, '${getOrigin(base)}${getPath(base, 'bar/main.js.map')}');
           });
 
-          test('resolves relative to parent multiple directory, later', () => {
+          test('resolves relative to parent multiple directory, later', (t) => {
             const base = ${init};
             const input = 'foo/../../../bar/main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}${getPath(base, 'foo/../../../bar/main.js.map')}');
+            t.is(resolved, '${getOrigin(base)}${getPath(
+    base,
+    'foo/../../../bar/main.js.map',
+  )}');
           });
 
-          test('normalizes input', () => {
+          test('normalizes input', (t) => {
             const base = ${init};
             const input = 'foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            expect(resolved).toBe('${getOrigin(base)}${getPath(base, 'foo/./bar/../main.js.map')}');
+            t.is(resolved, '${getOrigin(base)}${getPath(base, 'foo/./bar/../main.js.map')}');
           });
         });
       });
