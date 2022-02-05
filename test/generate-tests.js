@@ -5,8 +5,8 @@ const prettier = require('prettier');
 const prettierConfig = require('../prettier.config.js');
 
 const buffer = [
-  `import resolve from '../src/resolve-uri';`,
-  `import { test, describe } from './setup';\n`,
+  `const resolve = require('../');\n`,
+  `const assert = require('assert');`
 ];
 function describe(name, fn) {
   buffer.push(`
@@ -82,203 +82,203 @@ function suite(base) {
   buffer.push(`
       describe(\`base = ${init}\`, () => {
         describe('with absolute input', () => {
-          test('returns input', (t) => {
+          it('returns input', () => {
             const base = ${init};
             const input = 'https://absolute.com/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, 'https://absolute.com/main.js.map');
+            assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
           });
 
-          test('normalizes input', (t) => {
+          it('normalizes input', () => {
             const base = ${init};
             const input = 'https://absolute.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, 'https://absolute.com/foo/main.js.map');
+            assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
           });
 
-          test('normalizes pathless input', (t) => {
+          it('normalizes pathless input', () => {
             const base = ${init};
             const input = 'https://absolute.com';
             const resolved = resolve(input, base);
-            t.is(resolved, 'https://absolute.com/');
+            assert.strictEqual(resolved, 'https://absolute.com/');
           });
 
-          test('normalizes current directory', (t) => {
+          it('normalizes current directory', () => {
             const base = ${init};
             const input = 'https://absolute.com/./main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, 'https://absolute.com/main.js.map');
+            assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
           });
 
-          test('normalizes too many parent accessors', (t) => {
+          it('normalizes too many parent accessors', () => {
             const base = ${init};
             const input = 'https://absolute.com/../../../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, 'https://absolute.com/main.js.map');
+            assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
           });
 
-          test('normalizes too many parent accessors, late', (t) => {
+          it('normalizes too many parent accessors, late', () => {
             const base = ${init};
             const input = 'https://absolute.com/foo/../../../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, 'https://absolute.com/main.js.map');
+            assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
           });
 
-          test('normalizes file protocol', (t) => {
+          it('normalizes file protocol', () => {
             const base = ${init};
             const input = 'file:///root/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, 'file:///root/main.js.map');
+            assert.strictEqual(resolved, 'file:///root/main.js.map');
           });
         });
 
         describe('with protocol relative input', () => {
-          test('resolves relative to the base protocol', (t) => {
+          it('resolves relative to the base protocol', () => {
             const base = ${init};
             const input = '//protocol-relative.com/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
           });
 
-          test('normalizes input', (t) => {
+          it('normalizes input', () => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/foo/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/foo/main.js.map');
           });
 
-          test('normalizes pathless input', (t) => {
+          it('normalizes pathless input', () => {
             const base = ${init};
             const input = '//protocol-relative.com';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/');
+            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/');
           });
 
-          test('normalizes current directory', (t) => {
+          it('normalizes current directory', () => {
             const base = ${init};
             const input = '//protocol-relative.com/./main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
           });
 
-          test('normalizes too many parent accessors', (t) => {
+          it('normalizes too many parent accessors', () => {
             const base = ${init};
             const input = '//protocol-relative.com/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
           });
 
-          test('normalizes too many parent accessors, late', (t) => {
+          it('normalizes too many parent accessors, late', () => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/../../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
           });
         });
 
         describe('with absolute path input', () => {
-          test('remains absolute path', (t) => {
+          it('remains absolute path', () => {
             const base = ${init};
             const input = '/assets/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}/assets/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}/assets/main.js.map');
           });
 
-          test('trims to root', (t) => {
+          it('trims to root', () => {
             const base = ${init};
             const input = '/';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}/');
+            assert.strictEqual(resolved, '${getOrigin(base)}/');
           });
 
-          test('normalizes input', (t) => {
+          it('normalizes input', () => {
             const base = ${init};
             const input = '/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}/foo/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}/foo/main.js.map');
           });
 
-          test('normalizes current directory', (t) => {
+          it('normalizes current directory', () => {
             const base = ${init};
             const input = '/./main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
           });
 
-          test('normalizes too many parent accessors', (t) => {
+          it('normalizes too many parent accessors', () => {
             const base = ${init};
             const input = '/../../../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
           });
 
-          test('normalizes too many parent accessors, late', (t) => {
+          it('normalizes too many parent accessors, late', () => {
             const base = ${init};
             const input = '/foo/../../../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
           });
         });
 
         describe('with leading dot relative input', () => {
-          test('resolves relative to current directory', (t) => {
+          it('resolves relative to current directory', () => {
             const base = ${init};
             const input = './bar/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(base, './bar/main.js.map')}');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, './bar/main.js.map')}');
           });
 
-          test('resolves relative to parent directory', (t) => {
+          it('resolves relative to parent directory', () => {
             const base = ${init};
             const input = '../bar/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(base, '../bar/main.js.map')}');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '../bar/main.js.map')}');
           });
 
-          test('resolves relative to parent multiple directory', (t) => {
+          it('resolves relative to parent multiple directory', () => {
             const base = ${init};
             const input = '../../../bar/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(base, '../../../bar/main.js.map')}');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '../../../bar/main.js.map')}');
           });
 
-          test('normalizes input', (t) => {
+          it('normalizes input', () => {
             const base = ${init};
             const input = './foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(base, './foo/./bar/../main.js.map')}');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, './foo/./bar/../main.js.map')}');
           });
         });
 
         describe('with relative input', () => {
-          test('resolves relative to current directory', (t) => {
+          it('resolves relative to current directory', () => {
             const base = ${init};
             const input = 'bar/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(base, 'bar/main.js.map')}');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'bar/main.js.map')}');
           });
 
-          test('resolves relative to parent multiple directory, later', (t) => {
+          it('resolves relative to parent multiple directory, later', () => {
             const base = ${init};
             const input = 'foo/../../../bar/main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(base, 'foo/../../../bar/main.js.map')}');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'foo/../../../bar/main.js.map')}');
           });
 
-          test('normalizes input', (t) => {
+          it('normalizes input', () => {
             const base = ${init};
             const input = 'foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            t.is(resolved, '${getOrigin(base)}${getPath(base, 'foo/./bar/../main.js.map')}');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'foo/./bar/../main.js.map')}');
           });
         });
 
         describe('empty input', () => {
-          test('normalizes base', (t) => {
+          it('normalizes base', () => {
             const base = ${init};
             const input = '';
             const resolved = resolve(input, base);
-            t.is(resolved, '${base ? normalizeBase(base || '.') : ''}');
+            assert.strictEqual(resolved, '${base ? normalizeBase(base || '.') : ''}');
           });
         });
       });
@@ -363,7 +363,7 @@ describe('resolve', () => {
 });
 
 writeFileSync(
-  `${__dirname}/resolve-uri.test.ts`,
+  `${__dirname}/resolve-uri.test.js`,
   prettier.format(buffer.join('\n'), {
     ...prettierConfig,
     parser: 'babel',

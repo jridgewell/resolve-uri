@@ -5,9 +5,18 @@ function configure(esm) {
     input: 'src/resolve-uri.ts',
     output: esm
       ? { format: 'es', dir: 'dist', entryFileNames: '[name].mjs', sourcemap: true }
-      : { format: 'umd', name: 'resolveURI', dir: 'dist', entryFileNames: '[name].umd.js', sourcemap: true },
+      : {
+          format: 'umd',
+          name: 'resolveURI',
+          dir: 'dist',
+          entryFileNames: '[name].umd.js',
+          sourcemap: true,
+        },
     plugins: [
-      typescript({ tsconfig: './tsconfig.build.json' }),
+      typescript({
+        tsconfig: './tsconfig.build.json',
+        tslib: './throw-when-needed',
+      }),
     ],
     watch: {
       include: 'src/**',
