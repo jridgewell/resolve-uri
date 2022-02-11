@@ -2,7 +2,7 @@
 const { writeFileSync } = require('fs');
 const { normalize } = require('path');
 const prettier = require('prettier');
-const prettierConfig = require('../prettier.config.js');
+const prettierConfig = require('./prettier.config.js');
 
 const buffer = [
   `const resolve = require('../');\n`,

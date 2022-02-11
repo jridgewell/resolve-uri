@@ -202,7 +202,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -422,7 +422,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -644,7 +644,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -654,7 +654,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -867,7 +867,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -877,7 +877,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -1090,7 +1090,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -1100,7 +1100,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -1313,7 +1313,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -1323,7 +1323,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -1536,7 +1536,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -1546,7 +1546,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -1759,7 +1759,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -1769,7 +1769,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -1982,7 +1982,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -1992,7 +1992,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -2205,7 +2205,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -2215,7 +2215,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -2428,7 +2428,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -2648,7 +2648,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -2658,7 +2658,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -2871,7 +2871,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -2881,7 +2881,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -3094,7 +3094,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -3104,7 +3104,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -3317,7 +3317,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -3327,7 +3327,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -3540,7 +3540,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -3760,7 +3760,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -3980,7 +3980,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -3990,7 +3990,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -4205,7 +4205,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -4425,7 +4425,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -4645,7 +4645,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -4865,7 +4865,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -4875,7 +4875,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -5088,7 +5088,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -5098,7 +5098,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -5311,7 +5311,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -5531,7 +5531,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -5751,7 +5751,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -5973,7 +5973,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -6193,7 +6193,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -6413,7 +6413,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/root/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/root/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -6633,7 +6633,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/root/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/root/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -6853,7 +6853,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/root/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/root/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -7073,7 +7073,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -7293,7 +7293,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -7513,7 +7513,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -7733,7 +7733,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -7955,7 +7955,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -8175,7 +8175,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -8395,7 +8395,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -8615,7 +8615,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -8835,7 +8835,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -9055,7 +9055,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            './dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            './dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -9275,7 +9275,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            './deep/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            './deep/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -9495,7 +9495,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            './deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            './deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -9715,7 +9715,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -9935,7 +9935,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -10155,7 +10155,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../deep/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../deep/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -10375,7 +10375,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -10385,7 +10385,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../deep/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../deep/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
       });
@@ -10598,7 +10598,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -10818,7 +10818,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -11038,7 +11038,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -11258,7 +11258,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -11478,7 +11478,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -11698,7 +11698,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -11918,7 +11918,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -12138,7 +12138,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -12358,7 +12358,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -12578,7 +12578,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -12798,7 +12798,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
@@ -13018,7 +13018,7 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(
             resolved,
-            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
           );
         });
 
