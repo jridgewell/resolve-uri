@@ -195,6 +195,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = undefined;
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = undefined;
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -397,6 +414,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -603,6 +637,26 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'https://foo.com/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'https://foo.com';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'https://foo.com';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
       });
 
       describe('empty input', () => {
@@ -805,6 +859,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'https://foo.com/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'https://foo.com/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'https://foo.com/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -1009,6 +1083,26 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'https://foo.com/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'https://foo.com/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'https://foo.com/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
       });
 
       describe('empty input', () => {
@@ -1211,6 +1305,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'https://foo.com/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'https://foo.com/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -1415,6 +1529,26 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'https://foo.com/dir/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
       });
 
       describe('empty input', () => {
@@ -1617,6 +1751,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'https://foo.com/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'https://foo.com/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'https://foo.com/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -1821,6 +1975,26 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'https://foo.com/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'https://foo.com/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'https://foo.com/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
       });
 
       describe('empty input', () => {
@@ -2023,6 +2197,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'https://foo.com/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'https://foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -2227,6 +2421,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:///foo';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:///foo';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -2429,6 +2640,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:///foo/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:///foo/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -2633,6 +2864,26 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:///foo/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:///foo/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
       });
 
       describe('empty input', () => {
@@ -2835,6 +3086,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:///foo/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -3039,6 +3310,26 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:///foo/dir/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
       });
 
       describe('empty input', () => {
@@ -3241,6 +3532,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:///foo/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:///foo/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -3445,6 +3753,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:///foo/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:///foo/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -3647,6 +3972,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:///foo/dir/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -3853,6 +4198,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '//foo.com/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '//foo.com';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '//foo.com';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '//foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -4055,6 +4417,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '//foo.com/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '//foo.com/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '//foo.com/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '//foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -4259,6 +4638,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '//foo.com/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '//foo.com/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '//foo.com/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '//foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -4461,6 +4857,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '//foo.com/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '//foo.com/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '//foo.com/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -4665,6 +5081,26 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '//foo.com/dir/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '//foo.com/dir/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
       });
 
       describe('empty input', () => {
@@ -4867,6 +5303,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '//foo.com/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '//foo.com/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '//foo.com/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '//foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -5071,6 +5524,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '//foo.com/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '//foo.com/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '//foo.com/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '//foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -5273,6 +5743,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '//foo.com/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '//foo.com/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '//foo.com/dir/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '//foo.com/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -5479,6 +5966,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -5681,6 +6185,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/root';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/root';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -5885,6 +6406,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/root/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/root/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/root/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/root/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/root/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -6087,6 +6625,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/root/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/root/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/root/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/root/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/root/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -6291,6 +6846,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/root/dir/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/root/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/root/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/root/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/root/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -6493,6 +7065,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -6697,6 +7286,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -6900,6 +7506,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/root/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/root/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -7102,6 +7725,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '/root/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '/root/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -7308,6 +7948,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -7510,6 +8167,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'dir/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -7714,6 +8388,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'dir/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'dir/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'dir/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'dir/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -7916,6 +8607,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'deep/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'deep/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'deep/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'deep/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -8120,6 +8828,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, './foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = './file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = './file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, './@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -8322,6 +9047,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, './dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = './dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            './dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = './dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, './dir/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -8526,6 +9268,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, './deep/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = './deep/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            './deep/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = './deep/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, './deep/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -8728,6 +9487,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, './deep/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = './deep/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            './deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = './deep/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, './deep/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -8932,6 +9708,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -9134,6 +9927,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../dir/@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -9338,6 +10148,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../deep/foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../deep/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../deep/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../deep/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../deep/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -9540,6 +10367,26 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../deep/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../deep/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../deep/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../deep/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../deep/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
         });
       });
 
@@ -9744,6 +10591,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -9946,6 +10810,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -10150,6 +11031,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'dir/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'dir/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -10352,6 +11250,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'deep/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'deep/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -10556,6 +11471,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = './..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = './..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -10758,6 +11690,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = './../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = './../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -10962,6 +11911,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, './foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = './deep/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = './deep/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, './@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -11164,6 +12130,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, './foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = './deep/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            './node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = './deep/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, './@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -11368,6 +12351,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../../foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../../@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -11570,6 +12570,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../../foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../../@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 
@@ -11774,6 +12791,23 @@ describe('resolve', () => {
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../foo/main.js.map');
         });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../deep/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../deep/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
       });
 
       describe('empty input', () => {
@@ -11976,6 +13010,23 @@ describe('resolve', () => {
           const input = 'foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, '../foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = '../deep/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            '../node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js',
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = '../deep/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, '../@babel/runtime/helpers/esm/arrayLikeToArray.js');
         });
       });
 

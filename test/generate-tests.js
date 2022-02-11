@@ -271,6 +271,20 @@ function suite(base) {
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'foo/./bar/../main.js.map')}');
           });
+
+          it('resolves node_module scope as path', () => {
+            const base = ${init};
+            const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js')}');
+          });
+
+          it('resolves package scope as path', () => {
+            const base = ${init};
+            const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '@babel/runtime/helpers/esm/arrayLikeToArray.js')}');
+          });
         });
 
         describe('empty input', () => {
