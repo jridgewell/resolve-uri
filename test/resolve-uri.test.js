@@ -48,11 +48,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = undefined;
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = undefined;
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = undefined;
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = undefined;
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = undefined;
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = undefined;
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = undefined;
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = undefined;
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = undefined;
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -268,11 +324,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -490,11 +602,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'https://foo.com';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'https://foo.com';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'https://foo.com';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'https://foo.com';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'https://foo.com';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'https://foo.com';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'https://foo.com';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'https://foo.com';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'https://foo.com';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -713,11 +881,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'https://foo.com/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'https://foo.com/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'https://foo.com/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'https://foo.com/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'https://foo.com/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'https://foo.com/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'https://foo.com/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'https://foo.com/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'https://foo.com/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -936,11 +1160,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'https://foo.com/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'https://foo.com/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'https://foo.com/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'https://foo.com/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'https://foo.com/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'https://foo.com/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'https://foo.com/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'https://foo.com/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'https://foo.com/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -1159,11 +1439,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'https://foo.com/dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'https://foo.com/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -1382,11 +1718,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'https://foo.com/dir/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'https://foo.com/dir/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -1605,11 +1997,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'https://foo.com/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'https://foo.com/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'https://foo.com/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'https://foo.com/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'https://foo.com/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'https://foo.com/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'https://foo.com/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'https://foo.com/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'https://foo.com/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -1828,11 +2276,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'https://foo.com/../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'https://foo.com/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'https://foo.com/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'https://foo.com/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'https://foo.com/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'https://foo.com/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'https://foo.com/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'https://foo.com/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'https://foo.com/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -2051,11 +2555,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'https://foo.com/dir/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'https://foo.com/dir/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -2274,11 +2834,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file:///foo';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:///foo';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:///foo';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:///foo';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:///foo';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:///foo';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:///foo';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:///foo';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:///foo';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -2287,42 +2903,42 @@ describe('resolve', () => {
           const base = 'file:///foo';
           const input = '//protocol-relative.com/main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes input', () => {
           const base = 'file:///foo';
           const input = '//protocol-relative.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
         });
 
         it('normalizes pathless input', () => {
           const base = 'file:///foo';
           const input = '//protocol-relative.com';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
         });
 
         it('normalizes current directory', () => {
           const base = 'file:///foo';
           const input = '//protocol-relative.com/./main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors', () => {
           const base = 'file:///foo';
           const input = '//protocol-relative.com/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors, late', () => {
           const base = 'file:///foo';
           const input = '//protocol-relative.com/foo/../../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
       });
 
@@ -2494,11 +3110,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file:///foo/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:///foo/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:///foo/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:///foo/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:///foo/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:///foo/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:///foo/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:///foo/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:///foo/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -2507,42 +3179,42 @@ describe('resolve', () => {
           const base = 'file:///foo/';
           const input = '//protocol-relative.com/main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes input', () => {
           const base = 'file:///foo/';
           const input = '//protocol-relative.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
         });
 
         it('normalizes pathless input', () => {
           const base = 'file:///foo/';
           const input = '//protocol-relative.com';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
         });
 
         it('normalizes current directory', () => {
           const base = 'file:///foo/';
           const input = '//protocol-relative.com/./main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors', () => {
           const base = 'file:///foo/';
           const input = '//protocol-relative.com/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors, late', () => {
           const base = 'file:///foo/';
           const input = '//protocol-relative.com/foo/../../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
       });
 
@@ -2717,11 +3389,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file:///foo/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:///foo/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:///foo/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:///foo/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:///foo/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:///foo/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:///foo/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:///foo/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:///foo/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -2730,42 +3458,42 @@ describe('resolve', () => {
           const base = 'file:///foo/file';
           const input = '//protocol-relative.com/main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes input', () => {
           const base = 'file:///foo/file';
           const input = '//protocol-relative.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
         });
 
         it('normalizes pathless input', () => {
           const base = 'file:///foo/file';
           const input = '//protocol-relative.com';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
         });
 
         it('normalizes current directory', () => {
           const base = 'file:///foo/file';
           const input = '//protocol-relative.com/./main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors', () => {
           const base = 'file:///foo/file';
           const input = '//protocol-relative.com/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors, late', () => {
           const base = 'file:///foo/file';
           const input = '//protocol-relative.com/foo/../../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
       });
 
@@ -2940,11 +3668,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file:///foo/dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:///foo/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -2953,42 +3737,42 @@ describe('resolve', () => {
           const base = 'file:///foo/dir/';
           const input = '//protocol-relative.com/main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes input', () => {
           const base = 'file:///foo/dir/';
           const input = '//protocol-relative.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
         });
 
         it('normalizes pathless input', () => {
           const base = 'file:///foo/dir/';
           const input = '//protocol-relative.com';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
         });
 
         it('normalizes current directory', () => {
           const base = 'file:///foo/dir/';
           const input = '//protocol-relative.com/./main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors', () => {
           const base = 'file:///foo/dir/';
           const input = '//protocol-relative.com/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors, late', () => {
           const base = 'file:///foo/dir/';
           const input = '//protocol-relative.com/foo/../../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
       });
 
@@ -3163,11 +3947,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file:///foo/dir/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:///foo/dir/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -3176,42 +4016,42 @@ describe('resolve', () => {
           const base = 'file:///foo/dir/file';
           const input = '//protocol-relative.com/main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes input', () => {
           const base = 'file:///foo/dir/file';
           const input = '//protocol-relative.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
         });
 
         it('normalizes pathless input', () => {
           const base = 'file:///foo/dir/file';
           const input = '//protocol-relative.com';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
         });
 
         it('normalizes current directory', () => {
           const base = 'file:///foo/dir/file';
           const input = '//protocol-relative.com/./main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors', () => {
           const base = 'file:///foo/dir/file';
           const input = '//protocol-relative.com/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors, late', () => {
           const base = 'file:///foo/dir/file';
           const input = '//protocol-relative.com/foo/../../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
       });
 
@@ -3386,11 +4226,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file:///foo/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:///foo/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:///foo/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:///foo/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:///foo/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:///foo/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:///foo/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:///foo/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:///foo/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -3399,42 +4295,42 @@ describe('resolve', () => {
           const base = 'file:///foo/..';
           const input = '//protocol-relative.com/main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes input', () => {
           const base = 'file:///foo/..';
           const input = '//protocol-relative.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
         });
 
         it('normalizes pathless input', () => {
           const base = 'file:///foo/..';
           const input = '//protocol-relative.com';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
         });
 
         it('normalizes current directory', () => {
           const base = 'file:///foo/..';
           const input = '//protocol-relative.com/./main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors', () => {
           const base = 'file:///foo/..';
           const input = '//protocol-relative.com/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors, late', () => {
           const base = 'file:///foo/..';
           const input = '//protocol-relative.com/foo/../../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
       });
 
@@ -3606,11 +4502,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file:///foo/../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:///foo/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:///foo/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:///foo/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:///foo/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:///foo/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:///foo/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:///foo/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:///foo/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -3619,42 +4571,42 @@ describe('resolve', () => {
           const base = 'file:///foo/../';
           const input = '//protocol-relative.com/main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes input', () => {
           const base = 'file:///foo/../';
           const input = '//protocol-relative.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
         });
 
         it('normalizes pathless input', () => {
           const base = 'file:///foo/../';
           const input = '//protocol-relative.com';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
         });
 
         it('normalizes current directory', () => {
           const base = 'file:///foo/../';
           const input = '//protocol-relative.com/./main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors', () => {
           const base = 'file:///foo/../';
           const input = '//protocol-relative.com/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors, late', () => {
           const base = 'file:///foo/../';
           const input = '//protocol-relative.com/foo/../../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
       });
 
@@ -3826,11 +4778,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file:///foo/dir/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:///foo/dir/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -3839,42 +4847,42 @@ describe('resolve', () => {
           const base = 'file:///foo/dir/..';
           const input = '//protocol-relative.com/main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes input', () => {
           const base = 'file:///foo/dir/..';
           const input = '//protocol-relative.com/foo/./bar/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
         });
 
         it('normalizes pathless input', () => {
           const base = 'file:///foo/dir/..';
           const input = '//protocol-relative.com';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
         });
 
         it('normalizes current directory', () => {
           const base = 'file:///foo/dir/..';
           const input = '//protocol-relative.com/./main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors', () => {
           const base = 'file:///foo/dir/..';
           const input = '//protocol-relative.com/../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
 
         it('normalizes too many parent accessors, late', () => {
           const base = 'file:///foo/dir/..';
           const input = '//protocol-relative.com/foo/../../main.js.map';
           const resolved = resolve(input, base);
-          assert.strictEqual(resolved, 'file:///main.js.map');
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
         });
       });
 
@@ -4004,6 +5012,6666 @@ describe('resolve', () => {
         });
       });
     });
+
+    describe(`base = "file://foo"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file://foo';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file://foo';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file://foo';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file://foo';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file://foo';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file://foo';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file://foo';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file://foo';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file://foo';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file://foo';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file://foo';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file://foo';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file://foo';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file://foo';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file://foo';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file://foo';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file://foo';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file://foo';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file://foo';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+      });
+    });
+
+    describe(`base = "file://foo/"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file://foo/';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file://foo/';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file://foo/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file://foo/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file://foo/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file://foo/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file://foo/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file://foo/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file://foo/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file://foo/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file://foo/';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file://foo/';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file://foo/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file://foo/';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file://foo/';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file://foo/';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file://foo/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file://foo/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file://foo/';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+      });
+    });
+
+    describe(`base = "file://foo/file"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file://foo/file';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/file';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/file';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/file';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/file';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file://foo/file';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file://foo/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file://foo/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file://foo/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file://foo/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file://foo/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file://foo/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file://foo/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file://foo/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file://foo/file';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/file';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/file';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/file';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/file';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file://foo/file';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file://foo/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/file';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/file';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/file';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/file';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/file';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file://foo/file';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file://foo/file';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/file';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/file';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file://foo/file';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/file';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file://foo/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file://foo/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file://foo/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/file');
+        });
+      });
+    });
+
+    describe(`base = "file://foo/dir/"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file://foo/dir/';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file://foo/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file://foo/dir/';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file://foo/dir/';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file://foo/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/dir/';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file://foo/dir/';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file://foo/dir/';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/dir/';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file://foo/dir/';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file://foo/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file://foo/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file://foo/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/');
+        });
+      });
+    });
+
+    describe(`base = "file://foo/dir/file"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file://foo/dir/file';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/file';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/dir/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/file';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/file';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/file';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file://foo/dir/file';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file://foo/dir/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/file';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/file';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/file';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/file';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/dir/file';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file://foo/dir/file';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file://foo/dir/file';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/file';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file://foo/dir/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file://foo/dir/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file://foo/dir/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/dir/file');
+        });
+      });
+    });
+
+    describe(`base = "file://foo/.."`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file://foo/..';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/..';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/..';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/..';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/..';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file://foo/..';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file://foo/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file://foo/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file://foo/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file://foo/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file://foo/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file://foo/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file://foo/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file://foo/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file://foo/..';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/..';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/..';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/..';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/..';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file://foo/..';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file://foo/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/..';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/..';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/..';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/..';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/..';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file://foo/..';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file://foo/..';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/..';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/..';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file://foo/..';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/..';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file://foo/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file://foo/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file://foo/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+      });
+    });
+
+    describe(`base = "file://foo/../"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file://foo/../';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/../';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/../';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/../';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/../';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file://foo/../';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file://foo/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file://foo/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file://foo/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file://foo/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file://foo/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file://foo/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file://foo/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file://foo/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file://foo/../';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/../';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/../';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/../';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/../';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file://foo/../';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file://foo/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/../';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/../';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/../';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/../';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/../';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file://foo/../';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file://foo/../';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/../';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/../';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file://foo/../';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/../';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file://foo/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file://foo/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file://foo/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+      });
+    });
+
+    describe(`base = "file://foo/dir/.."`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file://foo/dir/..';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/..';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file://foo/dir/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/..';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/..';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/..';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file://foo/dir/..';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file://foo/dir/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/..';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file://foo/dir/..';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file://foo/dir/..';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file://foo/dir/..';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/dir/..';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file://foo/dir/..';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file://foo/dir/..';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/..';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file://foo/dir/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file://foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file://foo/dir/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file://foo/dir/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://foo/');
+        });
+      });
+    });
+
+    describe(`base = "file:/foo"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:/foo';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:/foo';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:/foo';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:/foo';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:/foo';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:/foo';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:/foo';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:/foo';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:/foo';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:/foo';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:/foo';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:/foo';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:/foo';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:/foo';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:/foo';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:/foo';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:/foo';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:/foo';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:/foo';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo');
+        });
+      });
+    });
+
+    describe(`base = "file:/foo/"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:/foo/';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:/foo/';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:/foo/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:/foo/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:/foo/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:/foo/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:/foo/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:/foo/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:/foo/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:/foo/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:/foo/';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:/foo/';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:/foo/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:/foo/';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:/foo/';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:/foo/';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:/foo/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:/foo/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:/foo/';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/');
+        });
+      });
+    });
+
+    describe(`base = "file:/foo/file"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:/foo/file';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/file';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/file';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/file';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/file';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:/foo/file';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:/foo/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:/foo/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:/foo/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:/foo/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:/foo/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:/foo/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:/foo/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:/foo/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:/foo/file';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/file';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/file';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/file';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/file';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:/foo/file';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:/foo/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/file';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/file';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/file';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/file';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/file';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:/foo/file';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:/foo/file';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/file';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/file';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:/foo/file';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/file';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:/foo/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:/foo/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:/foo/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/file');
+        });
+      });
+    });
+
+    describe(`base = "file:/foo/dir/"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:/foo/dir/';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:/foo/dir/';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:/foo/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/dir/';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:/foo/dir/';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:/foo/dir/';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:/foo/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:/foo/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:/foo/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/');
+        });
+      });
+    });
+
+    describe(`base = "file:/foo/dir/file"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/dir/file';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/file';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:/foo/dir/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:/foo/dir/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/file');
+        });
+      });
+    });
+
+    describe(`base = "file:/foo/.."`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:/foo/..';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/..';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/..';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/..';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/..';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:/foo/..';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:/foo/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:/foo/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:/foo/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:/foo/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:/foo/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:/foo/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:/foo/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:/foo/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:/foo/..';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/..';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/..';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/..';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/..';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:/foo/..';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:/foo/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/..';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/..';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/..';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/..';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/..';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:/foo/..';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:/foo/..';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/..';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/..';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:/foo/..';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/..';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:/foo/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:/foo/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:/foo/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+      });
+    });
+
+    describe(`base = "file:/foo/../"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:/foo/../';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/../';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/../';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/../';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/../';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:/foo/../';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:/foo/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:/foo/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:/foo/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:/foo/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:/foo/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:/foo/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:/foo/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:/foo/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:/foo/../';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/../';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/../';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/../';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/../';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:/foo/../';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:/foo/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/../';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/../';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/../';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/../';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/../';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:/foo/../';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:/foo/../';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/../';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/../';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:/foo/../';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/../';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:/foo/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:/foo/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:/foo/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+      });
+    });
+
+    describe(`base = "file:/foo/dir/.."`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/dir/..';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/..';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:/foo/dir/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:/foo/dir/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/');
+        });
+      });
+    });
+
+    describe(`base = "file:foo"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:foo';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:foo';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:foo';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:foo';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:foo';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:foo';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:foo';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:foo';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:foo';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:foo';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:foo';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:foo';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:foo';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:foo';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:foo';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:foo';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:foo';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:foo';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:foo';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo');
+        });
+      });
+    });
+
+    describe(`base = "file:foo/"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:foo/';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:foo/';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:foo/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:foo/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:foo/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:foo/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:foo/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:foo/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:foo/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:foo/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:foo/';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:foo/';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:foo/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:foo/';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:foo/';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:foo/';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:foo/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:foo/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:foo/';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/');
+        });
+      });
+    });
+
+    describe(`base = "file:foo/file"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:foo/file';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/file';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/file';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/file';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/file';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:foo/file';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:foo/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:foo/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:foo/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:foo/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:foo/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:foo/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:foo/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:foo/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:foo/file';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/file';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/file';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/file';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/file';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:foo/file';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:foo/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/file';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/file';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/file';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/file';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/file';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:foo/file';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:foo/file';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/file';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/file';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:foo/file';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/file';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:foo/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:foo/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:foo/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/file');
+        });
+      });
+    });
+
+    describe(`base = "file:foo/dir/"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:foo/dir/';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/dir/';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:foo/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:foo/dir/';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/dir/';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:foo/dir/';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:foo/dir/';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/dir/';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:foo/dir/';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:foo/dir/';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/dir/';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:foo/dir/';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:foo/dir/';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:foo/dir/';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:foo/dir/';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/');
+        });
+      });
+    });
+
+    describe(`base = "file:foo/dir/file"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:foo/dir/file';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/file';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/dir/file';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/file';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/file';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/file';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:foo/dir/file';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:foo/dir/file';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/file';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/file';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/file';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/file';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/dir/file';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:foo/dir/file';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:foo/dir/file';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/file';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:foo/dir/file';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:foo/dir/file';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/dir/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:foo/dir/file';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/dir/file');
+        });
+      });
+    });
+
+    describe(`base = "file:foo/.."`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:foo/..';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/..';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/..';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/..';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/..';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:foo/..';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:foo/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:foo/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:foo/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:foo/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:foo/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:foo/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:foo/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:foo/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:foo/..';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/..';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/..';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/..';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/..';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:foo/..';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:foo/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/..';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/..';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/..';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/..';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/..';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:foo/..';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:foo/..';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/..';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/..';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:foo/..';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/..';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:foo/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:foo/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:foo/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+      });
+    });
+
+    describe(`base = "file:foo/../"`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:foo/../';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/../';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/../';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/../';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/../';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/../';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:foo/../';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:foo/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:foo/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:foo/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:foo/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:foo/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:foo/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:foo/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:foo/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:foo/../';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/../';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/../';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/../';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/../';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/../';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:foo/../';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:foo/../';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/../';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/../';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/../';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/../';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/../';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:foo/../';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:foo/../';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/../';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/../';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:foo/../';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/../';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:foo/../';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:foo/../';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///@babel/runtime/helpers/esm/arrayLikeToArray.js');
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:foo/../';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+      });
+    });
+
+    describe(`base = "file:foo/dir/.."`, () => {
+      describe('with absolute input', () => {
+        it('returns input', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'https://absolute.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'https://absolute.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'https://absolute.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'https://absolute.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'https://absolute.com/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'https://absolute.com/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
+        });
+
+        it('normalizes file protocol 1', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file:///root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+      });
+
+      describe('with protocol relative input', () => {
+        it('resolves relative to the base protocol', () => {
+          const base = 'file:foo/dir/..';
+          const input = '//protocol-relative.com/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/..';
+          const input = '//protocol-relative.com/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/foo/main.js.map');
+        });
+
+        it('normalizes pathless input', () => {
+          const base = 'file:foo/dir/..';
+          const input = '//protocol-relative.com';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/..';
+          const input = '//protocol-relative.com/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/..';
+          const input = '//protocol-relative.com/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/..';
+          const input = '//protocol-relative.com/foo/../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://protocol-relative.com/main.js.map');
+        });
+      });
+
+      describe('with absolute path input', () => {
+        it('remains absolute path', () => {
+          const base = 'file:foo/dir/..';
+          const input = '/assets/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///assets/main.js.map');
+        });
+
+        it('trims to root', () => {
+          const base = 'file:foo/dir/..';
+          const input = '/';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/..';
+          const input = '/foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/main.js.map');
+        });
+
+        it('normalizes current directory', () => {
+          const base = 'file:foo/dir/..';
+          const input = '/./main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors', () => {
+          const base = 'file:foo/dir/..';
+          const input = '/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+
+        it('normalizes too many parent accessors, late', () => {
+          const base = 'file:foo/dir/..';
+          const input = '/foo/../../../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///main.js.map');
+        });
+      });
+
+      describe('with leading dot relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/dir/..';
+          const input = './bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent directory', () => {
+          const base = 'file:foo/dir/..';
+          const input = '../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory', () => {
+          const base = 'file:foo/dir/..';
+          const input = '../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/..';
+          const input = './foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+      });
+
+      describe('with relative input', () => {
+        it('resolves relative to current directory', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/bar/main.js.map');
+        });
+
+        it('resolves relative to parent multiple directory, later', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'foo/../../../bar/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///bar/main.js.map');
+        });
+
+        it('normalizes input', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'foo/./bar/../main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/foo/main.js.map');
+        });
+
+        it('resolves node_module scope as path', () => {
+          const base = 'file:foo/dir/..';
+          const input = 'node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+
+        it('resolves package scope as path', () => {
+          const base = 'file:foo/dir/..';
+          const input = '@babel/runtime/helpers/esm/arrayLikeToArray.js';
+          const resolved = resolve(input, base);
+          assert.strictEqual(
+            resolved,
+            'file:///foo/@babel/runtime/helpers/esm/arrayLikeToArray.js'
+          );
+        });
+      });
+
+      describe('empty input', () => {
+        it('normalizes base', () => {
+          const base = 'file:foo/dir/..';
+          const input = '';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///foo/');
+        });
+      });
+    });
   });
 
   describe('with protocol relative base', () => {
@@ -4051,11 +11719,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '//foo.com';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '//foo.com';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '//foo.com';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '//foo.com';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '//foo.com';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '//foo.com';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '//foo.com';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '//foo.com';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '//foo.com';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -4271,11 +11995,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '//foo.com/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '//foo.com/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '//foo.com/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '//foo.com/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '//foo.com/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '//foo.com/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '//foo.com/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '//foo.com/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '//foo.com/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -4491,11 +12271,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '//foo.com/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '//foo.com/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '//foo.com/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '//foo.com/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '//foo.com/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '//foo.com/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '//foo.com/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '//foo.com/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '//foo.com/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -4711,11 +12547,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '//foo.com/dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '//foo.com/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '//foo.com/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '//foo.com/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '//foo.com/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '//foo.com/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '//foo.com/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '//foo.com/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '//foo.com/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -4934,11 +12826,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '//foo.com/dir/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '//foo.com/dir/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -5157,11 +13105,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '//foo.com/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '//foo.com/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '//foo.com/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '//foo.com/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '//foo.com/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '//foo.com/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '//foo.com/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '//foo.com/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '//foo.com/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -5377,11 +13381,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '//foo.com/../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '//foo.com/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '//foo.com/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '//foo.com/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '//foo.com/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '//foo.com/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '//foo.com/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '//foo.com/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '//foo.com/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -5597,11 +13657,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '//foo.com/dir/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '//foo.com/dir/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -5819,11 +13935,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -6039,11 +14211,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/root';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/root';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/root';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/root';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/root';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/root';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/root';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/root';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/root';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -6259,11 +14487,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/root/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/root/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/root/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/root/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/root/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/root/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/root/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/root/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/root/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -6479,11 +14763,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/root/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/root/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/root/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/root/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/root/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/root/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/root/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/root/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/root/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -6699,11 +15039,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/root/dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/root/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/root/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/root/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/root/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/root/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/root/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/root/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/root/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -6919,11 +15315,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -7139,11 +15591,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -7359,11 +15867,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/root/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/root/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/root/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/root/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/root/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/root/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/root/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/root/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/root/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -7579,11 +16143,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '/root/../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '/root/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '/root/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '/root/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '/root/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '/root/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '/root/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '/root/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '/root/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -7801,11 +16421,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -8021,11 +16697,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -8241,11 +16973,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'dir/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'dir/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'dir/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'dir/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'dir/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'dir/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'dir/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'dir/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'dir/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -8461,11 +17249,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'deep/dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'deep/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'deep/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'deep/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'deep/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'deep/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'deep/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'deep/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'deep/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -8681,11 +17525,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = './file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = './file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = './file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = './file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = './file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = './file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = './file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = './file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = './file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -8901,11 +17801,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = './dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = './dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = './dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = './dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = './dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = './dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = './dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = './dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = './dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -9121,11 +18077,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = './deep/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = './deep/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = './deep/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = './deep/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = './deep/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = './deep/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = './deep/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = './deep/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = './deep/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -9341,11 +18353,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = './deep/dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = './deep/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = './deep/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = './deep/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = './deep/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = './deep/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = './deep/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = './deep/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = './deep/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -9561,11 +18629,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -9781,11 +18905,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -10001,11 +19181,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../deep/file';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../deep/file';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../deep/file';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../deep/file';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../deep/file';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../deep/file';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../deep/file';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../deep/file';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../deep/file';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -10221,11 +19457,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../deep/dir/';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../deep/dir/';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../deep/dir/';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../deep/dir/';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../deep/dir/';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../deep/dir/';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../deep/dir/';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../deep/dir/';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../deep/dir/';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -10444,11 +19736,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -10664,11 +20012,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -10884,11 +20288,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'dir/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'dir/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'dir/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'dir/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'dir/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'dir/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'dir/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'dir/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'dir/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -11104,11 +20564,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = 'deep/../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = 'deep/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = 'deep/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = 'deep/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = 'deep/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = 'deep/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = 'deep/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = 'deep/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = 'deep/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -11324,11 +20840,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = './..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = './..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = './..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = './..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = './..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = './..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = './..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = './..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = './..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -11544,11 +21116,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = './../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = './../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = './../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = './../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = './../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = './../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = './../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = './../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = './../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -11764,11 +21392,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = './deep/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = './deep/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = './deep/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = './deep/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = './deep/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = './deep/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = './deep/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = './deep/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = './deep/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -11984,11 +21668,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = './deep/../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = './deep/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = './deep/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = './deep/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = './deep/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = './deep/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = './deep/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = './deep/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = './deep/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -12204,11 +21944,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -12424,11 +22220,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -12644,11 +22496,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../deep/..';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../deep/..';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../deep/..';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../deep/..';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../deep/..';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../deep/..';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../deep/..';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../deep/..';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../deep/..';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 
@@ -12864,11 +22772,67 @@ describe('resolve', () => {
           assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
         });
 
-        it('normalizes file protocol', () => {
+        it('normalizes file protocol 1', () => {
           const base = '../deep/../';
           const input = 'file:///root/main.js.map';
           const resolved = resolve(input, base);
           assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 2', () => {
+          const base = '../deep/../';
+          const input = 'file://root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/main.js.map');
+        });
+
+        it('normalizes file protocol 2.5', () => {
+          const base = '../deep/../';
+          const input = 'file://root';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file://root/');
+        });
+
+        it('normalizes file protocol 3', () => {
+          const base = '../deep/../';
+          const input = 'file:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes file protocol 4', () => {
+          const base = '../deep/../';
+          const input = 'file:root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///root/main.js.map');
+        });
+
+        it('normalizes windows file 1', () => {
+          const base = '../deep/../';
+          const input = 'file:///C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 2', () => {
+          const base = '../deep/../';
+          const input = 'file://C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 3', () => {
+          const base = '../deep/../';
+          const input = 'file:/C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+        });
+
+        it('normalizes windows file 4', () => {
+          const base = '../deep/../';
+          const input = 'file:C:/root/main.js.map';
+          const resolved = resolve(input, base);
+          assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
         });
       });
 

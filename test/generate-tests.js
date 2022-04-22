@@ -1,4 +1,6 @@
 /* eslint-env node */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const { writeFileSync } = require('fs');
 const { normalize } = require('path');
 const prettier = require('prettier');
@@ -22,8 +24,10 @@ function describe(name, fn) {
 function getOrigin(url) {
   let index = 0;
   if (!url) return '';
-  if (url.startsWith('file://')) {
-    index = 'file://'.length;
+  if (url.startsWith('file://') && !url.startsWith('file:///')) {
+    index = url.indexOf('/', 'file://'.length);
+  } else if (url.startsWith('file:')) {
+    return 'file://';
   } else if (url.startsWith('https://')) {
     index = url.indexOf('/', 'https://'.length);
   } else if (url.startsWith('//')) {
@@ -37,7 +41,7 @@ function getOrigin(url) {
 
 function getProtocol(url) {
   if (!url) return '';
-  if (url.startsWith('file://')) return 'file:';
+  if (url.startsWith('file:')) return 'file:';
   if (url.startsWith('https://')) return 'https:';
   return '';
 }
@@ -45,7 +49,14 @@ function getProtocol(url) {
 function getPath(base, input) {
   let b = base;
   const origin = getOrigin(b);
-  if (origin) b = b.slice(origin.length);
+  if (origin) {
+    if (b.startsWith(origin)) {
+      b = b.slice(origin.length);
+    } else {
+      // file:/foo or file:foo
+      b = b.replace(/file:\/*/, '');
+    }
+  }
   b = normalize(b || '');
   if (base?.endsWith('/..')) b += '/';
   b = b.replace(/(^|\/)((?!\/|(?<=(^|\/))\.\.(?=(\/|$))).)*$/, '$1');
@@ -61,7 +72,7 @@ function getPath(base, input) {
 }
 
 function normalizeBase(base) {
-  if (base.startsWith('file://')) return new URL(base).href;
+  if (base.startsWith('file:')) return new URL(base).href;
   if (base.startsWith('https://')) return new URL(base).href;
   if (base.startsWith('//')) {
     return new URL('https:' + base).href.slice('https:'.length);
@@ -73,7 +84,7 @@ function normalizeBase(base) {
 }
 
 function maybeDropHost(host, base) {
-  if (base?.startsWith('file://')) return '';
+  // if (base?.startsWith('file://')) return '';
   return host;
 }
 
@@ -124,11 +135,67 @@ function suite(base) {
             assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
           });
 
-          it('normalizes file protocol', () => {
+          it('normalizes file protocol 1', () => {
             const base = ${init};
             const input = 'file:///root/main.js.map';
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, 'file:///root/main.js.map');
+          });
+
+          it('normalizes file protocol 2', () => {
+            const base = ${init};
+            const input = 'file://root/main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file://root/main.js.map');
+          });
+
+          it('normalizes file protocol 2.5', () => {
+            const base = ${init};
+            const input = 'file://root';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file://root/');
+          });
+
+          it('normalizes file protocol 3', () => {
+            const base = ${init};
+            const input = 'file:/root/main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///root/main.js.map');
+          });
+
+          it('normalizes file protocol 4', () => {
+            const base = ${init};
+            const input = 'file:root/main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///root/main.js.map');
+          });
+
+          it('normalizes windows file 1', () => {
+            const base = ${init};
+            const input = 'file:///C:/root/main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+          });
+
+          it('normalizes windows file 2', () => {
+            const base = ${init};
+            const input = 'file://C:/root/main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+          });
+
+          it('normalizes windows file 3', () => {
+            const base = ${init};
+            const input = 'file:/C:/root/main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
+          });
+
+          it('normalizes windows file 4', () => {
+            const base = ${init};
+            const input = 'file:C:/root/main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
           });
         });
 
@@ -323,6 +390,33 @@ describe('resolve', () => {
     suite('file:///foo/..');
     suite('file:///foo/../');
     suite('file:///foo/dir/..');
+
+    suite('file://foo');
+    suite('file://foo/');
+    suite('file://foo/file');
+    suite('file://foo/dir/');
+    suite('file://foo/dir/file');
+    suite('file://foo/..');
+    suite('file://foo/../');
+    suite('file://foo/dir/..');
+
+    suite('file:/foo');
+    suite('file:/foo/');
+    suite('file:/foo/file');
+    suite('file:/foo/dir/');
+    suite('file:/foo/dir/file');
+    suite('file:/foo/..');
+    suite('file:/foo/../');
+    suite('file:/foo/dir/..');
+
+    suite('file:foo');
+    suite('file:foo/');
+    suite('file:foo/file');
+    suite('file:foo/dir/');
+    suite('file:foo/dir/file');
+    suite('file:foo/..');
+    suite('file:foo/../');
+    suite('file:foo/dir/..');
   });
 
   describe('with protocol relative base', () => {

@@ -11,6 +11,15 @@ const schemeRegex = /^[\w+.-]+:\/\//;
  */
 const urlRegex = /^([\w+.-]+:)\/\/([^@/#?]*@)?([^:/#?]*)(:\d+)?(\/[^#?]*)?/;
 
+/**
+ * File URLs are weird. They dont' need the regular `//` in the scheme, they may or may not start
+ * with a leading `/`, they can have a domain (but only if they don't start with a Windows drive).
+ *
+ * 1. Host, optional.
+ * 2. Path, which may inclue "/", guaranteed.
+ */
+const fileRegex = /^file:(?:\/\/((?![a-z]:)[^/]*)?)?(\/?.*)/i;
+
 type Url = {
   scheme: string;
   user: string;
@@ -32,14 +41,28 @@ function isAbsolutePath(input: string): boolean {
   return input.startsWith('/');
 }
 
+function isFileUrl(input: string): boolean {
+  return input.startsWith('file:');
+}
+
 function parseAbsoluteUrl(input: string): Url {
   const match = urlRegex.exec(input)!;
+  return makeUrl(match[1], match[2] || '', match[3], match[4] || '', match[5] || '/');
+}
+
+function parseFileUrl(input: string): Url {
+  const match = fileRegex.exec(input)!;
+  const path = match[2];
+  return makeUrl('file:', '', match[1] || '', '', isAbsolutePath(path) ? path : '/' + path);
+}
+
+function makeUrl(scheme: string, user: string, host: string, port: string, path: string): Url {
   return {
-    scheme: match[1],
-    user: match[2] || '',
-    host: match[3],
-    port: match[4] || '',
-    path: match[5] || '/',
+    scheme,
+    user,
+    host,
+    port,
+    path,
     relativePath: false,
   };
 }
@@ -50,20 +73,23 @@ function parseUrl(input: string): Url {
     url.scheme = '';
     return url;
   }
+
   if (isAbsolutePath(input)) {
     const url = parseAbsoluteUrl('http://foo.com' + input);
     url.scheme = '';
     url.host = '';
     return url;
   }
-  if (!isAbsoluteUrl(input)) {
-    const url = parseAbsoluteUrl('http://foo.com/' + input);
-    url.scheme = '';
-    url.host = '';
-    url.relativePath = true;
-    return url;
-  }
-  return parseAbsoluteUrl(input);
+
+  if (isFileUrl(input)) return parseFileUrl(input);
+
+  if (isAbsoluteUrl(input)) return parseAbsoluteUrl(input);
+
+  const url = parseAbsoluteUrl('http://foo.com/' + input);
+  url.scheme = '';
+  url.host = '';
+  url.relativePath = true;
+  return url;
 }
 
 function stripPathFilename(path: string): string {
@@ -173,7 +199,7 @@ export default function resolve(input: string, base: string | undefined): string
     const baseUrl = parseUrl(base);
     url.scheme = baseUrl.scheme;
     // If there's no host, then we were just a path.
-    if (!url.host || baseUrl.scheme === 'file:') {
+    if (!url.host) {
       // The host, user, and port are joined, you can't copy one without the others.
       url.user = baseUrl.user;
       url.host = baseUrl.host;
