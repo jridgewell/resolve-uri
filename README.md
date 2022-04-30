@@ -22,22 +22,22 @@ import resolve from '@jridgewell/resolve-uri';
 resolve('foo', 'https://example.com'); // => 'https://example.com/foo'
 ```
 
-| Input                 | Base                    | Resolution                      | Explanation                                                  |
-|-----------------------|-------------------------|---------------------------------|--------------------------------------------------------------|
-| `https://example.com` | _any_                   | `https://example.com/`          | Input is normalized only                                     |
-| `//example.com`       | `https://base.com/`     | `https://example.com/`          | Input inherits the base's protocol                           |
-| `//example.com`       | _rest_                  | `//example.com/`                | Input is normalized only                                     |
-| `/example`            | `https://base.com/`     | `https://base.com/example`      | Input inherits the base's origin                             |
-| `/example`            | `//base.com/`           | `//base.com/example`            | Input inherits the base's host and remains protocol relative |
-| `/example`            | _rest_                  | `/example`                      | Input is normalized only                                     |
-| `example`             | `https://base.com/dir/` | `https://base.com/dir/example`  | Input is joined with the base                                |
-| `example`             | `https://base.com/file` | `https://base.com/example`      | Input is joined with the base without its file               |
-| `example`             | `//base.com/dir/`       | `//base.com/dir/example`        | Input is joined with the base's last directory               |
-| `example`             | `//base.com/file`       | `//base.com/example`            | Input is joined with the base without its file               |
-| `example`             | `/base/dir/`            | `/base/dir/example`             | Input is joined with the base's last directory               |
-| `example`             | `/base/file`            | `/base/example`                 | Input is joined with the base without its file               |
-| `example`             | `base/dir/`             | `base/dir/example`              | Input is joined with the base's last directory               |
-| `example`             | `base/file`             | `base/example`                  | Input is joined with the base without its file               |
+| Input                 | Base                    | Resolution                      | Explanation                                                    |
+|-----------------------|-------------------------|---------------------------------|----------------------------------------------------------------|
+| `https://example.com` | _any_                   | `https://example.com/`          | Normalized only                                                |
+| `//example.com`       | `https://base.com/`     | `https://example.com/`          | Inherits the base's protocol                                   |
+| `//example.com`       | _rest_                  | `//example.com/`                | Normalized only                                                |
+| `/example`            | `https://base.com/`     | `https://base.com/example`      | Inherits base's origin                                         |
+| `/example`            | `//base.com/`           | `//base.com/example`            | Inherits base's host, remains protocol-relative                |
+| `/example`            | _rest_                  | `/example`                      | Normalized only                                                |
+| `example`             | `https://base.com/dir/` | `https://base.com/dir/example`  | Joined with base's last directory                              |
+| `example`             | `https://base.com/file` | `https://base.com/example`      | Joined with base without its file                              |
+| `example`             | `//base.com/dir/`       | `//base.com/dir/example`        | Joined with base's last directory                              |
+| `example`             | `//base.com/file`       | `//base.com/example`            | Joined with base without its file                              |
+| `example`             | `/base/dir/`            | `/base/dir/example`             | Joined with base's last directory                              |
+| `example`             | `/base/file`            | `/base/example`                 | Joined with base without its file                              |
+| `example`             | `base/dir/`             | `base/dir/example`              | Joined with base's last directory                              |
+| `example`             | `base/file`             | `base/example`                  | Joined with base without its file                              |
 
 ## Windows path support
 
@@ -45,24 +45,21 @@ A path is interpreted as "Windows" if it contains _any_ backslash `\` characters
 result is an absolute or protocol-relative URL, then the result is kept as a URL. Else, the result
 will be a Windows path.
 
-| Input                 | Base                    | Resolution                      | Explanation                                                  |
-|-----------------------|-------------------------|---------------------------------|--------------------------------------------------------------|
-| `https://example.com` | _any_                   | `https://example.com/`          | Input is normalized only                                     |
-| `//example.com`       | `https://base.com/`     | `https://example.com/`          | Input inherits the base's protocol                           |
-| `//example.com`       | _rest_                  | `//example.com/`                | Input is normalized only                                     |
-| `C:\example`          | `https://base.com/`     | `https://base.com/example`      | Input inherits the base's origin, removes Windows Drive      |
-| `C:\example`          | `//base.com/`           | `//base.com/example`            | Input inherits the base's host, removes Windows Drive        |
-| `C:\example`          | _rest_                  | `C:\example`                    | Input is normalized Windows Drive path                       |
-| `example\`            | `https://base.com/dir/` | `https://base.com/dir/example/` | Input is joined with the base                                |
-| `example\`            | `https://base.com/file` | `https://base.com/example/`     | Input is joined with the base without its file               |
-| `example\`            | `//base.com/dir/`       | `//base.com/dir/example/`       | Input is joined with the base's last directory               |
-| `example\`            | `//base.com/file`       | `//base.com/example/`           | Input is joined with the base without its file               |
-| `example`             | `C:\base\dir\`          | `C:\base\dir\example`           | Input is joined with the base's last directory               |
-| `example`             | `C:\base\file`          | `C:\base\example`               | Input is joined with the base without its file               |
-| `example\`            | `/base/dir/`            | `\base\dir\example\`            | Input is joined with the base's last directory               |
-| `example\`            | `/base/file`            | `\base\example\`                | Input is joined with the base without its file               |
-| `example`             | `base\dir\`             | `base\dir\example`              | Input is joined with the base's last directory               |
-| `example`             | `base\file`             | `base\example`                  | Input is joined with the base without its file               |
-| `example\`            | `base/dir/`             | `base\dir\example\`             | Input is joined with the base's last directory               |
-| `example\`            | `base/file`             | `base\example\`                 | Input is joined with the base without its file               |
+| Input                 | Base                    | Resolution                      | Explanation                                                    |
+|-----------------------|-------------------------|---------------------------------|----------------------------------------------------------------|
+| `C:\example`          | `https://base.com/`     | `https://base.com/example`      | Inherits base's origin, removes Drive                          |
+| `C:\example`          | `//base.com/`           | `//base.com/example`            | Inherits base's host, removes Drive, remains protocol-relative |
+| `C:\example`          | _rest_                  | `C:\example`                    | Normalized only, outputs Windows Drive path                    |
+| `example\`            | `https://base.com/dir/` | `https://base.com/dir/example/` | Joined with base's last directory, outputs URL                 |
+| `example\`            | `https://base.com/file` | `https://base.com/example/`     | Joined with base without its file, outputs URL                 |
+| `example\`            | `//base.com/dir/`       | `//base.com/dir/example/`       | Joined with base's last directory, outputs protocol-relative   |
+| `example\`            | `//base.com/file`       | `//base.com/example/`           | Joined with base without its file, outputs protocol-relative   |
+| `example`             | `C:\base\dir\`          | `C:\base\dir\example`           | Joined with base's last directory, outputs Windows Drive path  |
+| `example`             | `C:\base\file`          | `C:\base\example`               | Joined with base without its file, outputs Windows Drive path  |
+| `example\`            | `/base/dir/`            | `\base\dir\example`             | Joined with base's last directory, outputs Windows path        |
+| `example\`            | `/base/file`            | `\base\example\`                | Joined with base without its file, outputs Windows path        |
+| `example`             | `base\dir\`             | `base\dir\example`              | Joined with base's last directory, outputs Windows path        |
+| `example`             | `base\file`             | `base\example`                  | Joined with base without its file, outputs Windows path        |
+| `example\`            | `base/dir/`             | `base\dir\example\`             | Joined with base's last directory, outputs Windows path        |
+| `example\`            | `base/file`             | `base\example\`                 | Joined with base without its file, outputs Windows path        |
 
