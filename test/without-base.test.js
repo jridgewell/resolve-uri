@@ -1,5 +1,4 @@
 const resolve = require('../');
-
 const assert = require('assert');
 
 describe('without base', () => {

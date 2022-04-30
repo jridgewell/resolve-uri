@@ -1,4 +1,4 @@
-const { writeFileSync } = require('fs');
+const { readFileSync, writeFileSync } = require('fs');
 const { posix, win32 } = require('path');
 const prettier = require('prettier');
 const prettierConfig = require('./prettier.config.js');
@@ -490,7 +490,7 @@ function suite(base) {
 }
 
 function describe(name, fn) {
-  buffer = [`const resolve = require('../');\n`, `const assert = require('assert');\n`, `describe('${name}', () => {`];
+  buffer = [`const resolve = require('../');`, `const assert = require('assert');\n`, `describe('${name}', () => {`];
 
   fn();
 
@@ -660,4 +660,62 @@ describe('with relative Windows base', () => {
   suite('..\\..\\');
   suite('..\\deep\\..');
   suite('..\\deep\\..\\');
+});
+
+describe('readme', () => {
+  const readme = readFileSync(`${__dirname}/../README.md`, 'utf8');
+  const tables = extractTables(readme);
+
+  function extractTables(markdown) {
+    const regex = /(\|.*)\n\|\s*\---.*\n((\|.*\n)*)/g;
+    let tables = [];
+    let match;
+    while ((match = regex.exec(markdown))) {
+      const head = match[1].split('\n')[0];
+      const headers = head
+        .split('|')
+        .map((s) => s.trim())
+        .slice(1, -1);
+
+      const table = [];
+      tables.push(table);
+      const body = match[2].split('\n').slice(0, -1);
+      for (const row of body) {
+        const data = row
+          .split('|')
+          .map((s) => s.trim())
+          .slice(1, -1);
+
+        const obj = {};
+        data.forEach((d, i) => (obj[headers[i]] = d));
+        table.push(obj);
+      }
+    }
+    return tables;
+  }
+
+  function escape(str) {
+    return str.replace(/\\/g, '\\\\');
+  }
+
+  buffer.push(`const _any_ = 'https://foo/';`);
+  buffer.push(`const _rest_ = 'foo';`);
+
+  for (let i = 0; i < tables.length; i++) {
+    const table = tables[i];
+    buffer.push(`describe('table ${i}', () => {`);
+    for (let j = 0; j < table.length; j++) {
+      const row = table[j];
+      buffer.push(`
+        it('input = ${escape(row.Input)}, base = ${escape(row.Base)}', () => {
+          const input = ${escape(row.Input)};
+          const base = ${escape(row.Base)};
+          const expected = ${escape(row.Resolution)};
+
+          assert.strictEqual(resolve(input, base), expected);
+        });
+      `);
+    }
+    buffer.push('})');
+  }
 });
