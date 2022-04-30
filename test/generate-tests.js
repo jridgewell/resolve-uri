@@ -1,29 +1,15 @@
-/* eslint-env node */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 const { writeFileSync } = require('fs');
-const { normalize } = require('path');
+const { posix, win32 } = require('path');
 const prettier = require('prettier');
 const prettierConfig = require('./prettier.config.js');
+const resolve = require('@jridgewell/resolve-uri-latest');
 
-const buffer = [
-  `const resolve = require('../');\n`,
-  `const assert = require('assert');`
-];
-function describe(name, fn) {
-  buffer.push(`
-    describe('${name}', () => {`);
-
-  fn();
-
-  buffer.push(`
-    });
-  `);
-}
+let buffer;
 
 function getOrigin(url) {
   let index = 0;
   if (!url) return '';
+  if (url.startsWith('C:')) return '';
   if (url.startsWith('file://') && !url.startsWith('file:///')) {
     index = url.indexOf('/', 'file://'.length);
   } else if (url.startsWith('file:')) {
@@ -47,28 +33,58 @@ function getProtocol(url) {
 }
 
 function getPath(base, input) {
-  let b = base;
-  const origin = getOrigin(b);
+  const origin = getOrigin(input);
   if (origin) {
-    if (b.startsWith(origin)) {
-      b = b.slice(origin.length);
-    } else {
-      // file:/foo or file:foo
-      b = b.replace(/file:\/*/, '');
+    if (origin.startsWith('//')) return new URL('https:' + input).pathname;
+    return new URL(input).pathname;
+  }
+
+  if (!base) {
+    if (input.startsWith('C:')) {
+      return toWindows(resolve('file:///' + toPosix(input)).slice('file:///'.length));
     }
+    if (input.includes('\\')) {
+      return toWindows(resolve(toPosix(input)));
+    }
+    return resolve(input);
   }
-  b = normalize(b || '');
-  if (base?.endsWith('/..')) b += '/';
-  b = b.replace(/(^|\/)((?!\/|(?<=(^|\/))\.\.(?=(\/|$))).)*$/, '$1');
-  if (b && !b.endsWith('/')) b += '/';
-  let relative = normalize(b + input);
-  if (origin) {
-    relative = relative.replace(/^(\.{1,2}\/)+/, '/');
-    if (!relative.startsWith('/')) relative = '/' + relative;
-  } else if (!relative.startsWith('.') && (base || input).startsWith('.')) {
-    return './' + relative;
+
+  const bOrigin = getOrigin(base);
+  if (bOrigin) {
+    if (input.startsWith('C:')) {
+      if (bOrigin === 'file://') {
+        input = 'file:///' + input;
+      } else {
+        input = input.slice('C:'.length);
+      }
+    }
+    input = input.replace(/\\\\/g, '/');
+    if (bOrigin.startsWith('//')) return new URL(input, 'https:' + base).pathname;
+    return new URL(input, base).pathname;
   }
-  return relative;
+
+  if (input.startsWith('C:')) {
+    return toWindows(new URL('file:///' + toPosix(input)).href.slice('file:///'.length));
+  }
+
+  if (base.startsWith('C:')) {
+    return toWindows(new URL(toPosix(input), 'file:///' + toPosix(base)).href.slice('file:///'.length));
+  }
+
+  if (!base.includes('\\') && !input.includes('\\')) {
+    return resolve(input, base);
+  }
+  base = toPosix(base);
+  input = toPosix(input);
+  return toWindows(resolve(input, base));
+}
+
+function toPosix(input) {
+  return input.replace(/\\{1,2}/g, '/');
+}
+
+function toWindows(input) {
+  return input.replace(/\//g, '\\\\');
 }
 
 function normalizeBase(base) {
@@ -77,15 +93,11 @@ function normalizeBase(base) {
   if (base.startsWith('//')) {
     return new URL('https:' + base).href.slice('https:'.length);
   }
-  let b = normalize(base);
+  let b = base.includes('\\') ? win32.normalize(base).replace(/\\/g, '/') : posix.normalize(base);
   if (b === './') return '.';
   if (b.endsWith('../')) b = b.slice(0, -1);
-  return b.startsWith('.') || !base.startsWith('.') ? b : `./${b}`;
-}
-
-function maybeDropHost(host, base) {
-  // if (base?.startsWith('file://')) return '';
-  return host;
+  if (!b.startsWith('.') && base.startsWith('.')) b = './' + b;
+  return base.includes('\\') ? b.replace(/\//g, '\\\\') : b;
 }
 
 function suite(base) {
@@ -204,42 +216,42 @@ function suite(base) {
             const base = ${init};
             const input = '//protocol-relative.com/main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
           it('normalizes input', () => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/foo/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/foo/main.js.map');
           });
 
           it('normalizes pathless input', () => {
             const base = ${init};
             const input = '//protocol-relative.com';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/');
           });
 
           it('normalizes current directory', () => {
             const base = ${init};
             const input = '//protocol-relative.com/./main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
           it('normalizes too many parent accessors', () => {
             const base = ${init};
             const input = '//protocol-relative.com/../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
           it('normalizes too many parent accessors, late', () => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/../../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
         });
 
@@ -248,42 +260,86 @@ function suite(base) {
             const base = ${init};
             const input = '/assets/main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/assets/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/assets/main.js.map')}');
           });
 
           it('trims to root', () => {
             const base = ${init};
             const input = '/';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/')}');
           });
 
           it('normalizes input', () => {
             const base = ${init};
             const input = '/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/foo/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/foo/main.js.map')}');
           });
 
           it('normalizes current directory', () => {
             const base = ${init};
             const input = '/./main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/main.js.map')}');
           });
 
           it('normalizes too many parent accessors', () => {
             const base = ${init};
             const input = '/../../../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/main.js.map')}');
           });
 
           it('normalizes too many parent accessors, late', () => {
             const base = ${init};
             const input = '/foo/../../../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/main.js.map')}');
+          });
+        });
+
+        describe('with absolute Windows path input', () => {
+          it('remains absolute path', () => {
+            const base = ${init};
+            const input = 'C:\\\\assets\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'C:\\\\assets\\\\main.js.map')}');
+          });
+
+          it('trims to root', () => {
+            const base = ${init};
+            const input = 'C:\\\\';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'C:\\\\')}');
+          });
+
+          it('normalizes input', () => {
+            const base = ${init};
+            const input = 'C:\\\\foo\\\\.\\\\bar\\\\..\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'C:\\\\foo\\\\main.js.map')}');
+          });
+
+          it('normalizes current directory', () => {
+            const base = ${init};
+            const input = 'C:\\\\.\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'C:\\\\main.js.map')}');
+          });
+
+          it('normalizes too many parent accessors', () => {
+            const base = ${init};
+            const input = 'C:\\\\..\\\\..\\\\..\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'C:\\\\main.js.map')}');
+          });
+
+          it('normalizes too many parent accessors, late', () => {
+            const base = ${init};
+            const input = 'C:\\\\foo\\\\..\\\\..\\\\..\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'C:\\\\main.js.map')}');
           });
         });
 
@@ -314,6 +370,36 @@ function suite(base) {
             const input = './foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, './foo/./bar/../main.js.map')}');
+          });
+        });
+
+        describe('with leading dot relative Windows input', () => {
+          it('resolves relative to current directory', () => {
+            const base = ${init};
+            const input = '.\\\\bar\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '.\\\\bar\\\\main.js.map')}');
+          });
+
+          it('resolves relative to parent directory', () => {
+            const base = ${init};
+            const input = '..\\\\bar\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '..\\\\bar\\\\main.js.map')}');
+          });
+
+          it('resolves relative to parent multiple directory', () => {
+            const base = ${init};
+            const input = '..\\\\..\\\\..\\\\bar\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '..\\\\..\\\\..\\\\bar\\\\main.js.map')}');
+          });
+
+          it('normalizes input', () => {
+            const base = ${init};
+            const input = '.\\\\foo\\\\.\\\\bar\\\\..\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '.\\\\foo\\\\.\\\\bar\\\\..\\\\main.js.map')}');
           });
         });
 
@@ -354,126 +440,224 @@ function suite(base) {
           });
         });
 
+        describe('with relative Windows input', () => {
+          it('resolves relative to current directory', () => {
+            const base = ${init};
+            const input = 'bar\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'bar\\\\main.js.map')}');
+          });
+
+          it('resolves relative to parent multiple directory, later', () => {
+            const base = ${init};
+            const input = 'foo\\\\..\\\\..\\\\..\\\\bar\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'foo\\\\..\\\\..\\\\..\\\\bar\\\\main.js.map')}');
+          });
+
+          it('normalizes input', () => {
+            const base = ${init};
+            const input = 'foo\\\\.\\\\bar\\\\..\\\\main.js.map';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'foo\\\\.\\\\bar\\\\..\\\\main.js.map')}');
+          });
+
+          it('resolves node_module scope as path', () => {
+            const base = ${init};
+            const input = 'node_modules\\\\@babel\\\\runtime\\\\helpers\\\\esm\\\\arrayLikeToArray.js';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'node_modules\\\\@babel\\\\runtime\\\\helpers\\\\esm\\\\arrayLikeToArray.js')}');
+          });
+
+          it('resolves package scope as path', () => {
+            const base = ${init};
+            const input = '@babel\\\\runtime\\\\helpers\\\\esm\\\\arrayLikeToArray.js';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '@babel\\\\runtime\\\\helpers\\\\esm\\\\arrayLikeToArray.js')}');
+          });
+        });
+
         describe('empty input', () => {
           it('normalizes base', () => {
             const base = ${init};
             const input = '';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${base ? normalizeBase(base || '.') : ''}');
+            assert.strictEqual(resolved, '${base ? normalizeBase(base) : ''}');
           });
         });
       });
     `);
 }
 
-describe('resolve', () => {
-  describe('without base', () => {
-    suite(undefined);
-    suite('');
-  });
+function describe(name, fn) {
+  buffer = [`const resolve = require('../');\n`, `const assert = require('assert');\n`, `describe('${name}', () => {`];
 
-  describe('with absolute base', () => {
-    suite('https://foo.com');
-    suite('https://foo.com/');
-    suite('https://foo.com/file');
-    suite('https://foo.com/dir/');
-    suite('https://foo.com/dir/file');
-    suite('https://foo.com/..');
-    suite('https://foo.com/../');
-    suite('https://foo.com/dir/..');
+  fn();
 
-    suite('file:///foo');
-    suite('file:///foo/');
-    suite('file:///foo/file');
-    suite('file:///foo/dir/');
-    suite('file:///foo/dir/file');
-    suite('file:///foo/..');
-    suite('file:///foo/../');
-    suite('file:///foo/dir/..');
+  buffer.push(`});`);
 
-    suite('file://foo');
-    suite('file://foo/');
-    suite('file://foo/file');
-    suite('file://foo/dir/');
-    suite('file://foo/dir/file');
-    suite('file://foo/..');
-    suite('file://foo/../');
-    suite('file://foo/dir/..');
+  writeFileSync(
+    `${__dirname}/${name.replace(/ /g, '-')}.test.js`,
+    prettier.format(buffer.join('\n'), {
+      ...prettierConfig,
+      parser: 'babel',
+    })
+  );
+}
 
-    suite('file:/foo');
-    suite('file:/foo/');
-    suite('file:/foo/file');
-    suite('file:/foo/dir/');
-    suite('file:/foo/dir/file');
-    suite('file:/foo/..');
-    suite('file:/foo/../');
-    suite('file:/foo/dir/..');
-
-    suite('file:foo');
-    suite('file:foo/');
-    suite('file:foo/file');
-    suite('file:foo/dir/');
-    suite('file:foo/dir/file');
-    suite('file:foo/..');
-    suite('file:foo/../');
-    suite('file:foo/dir/..');
-  });
-
-  describe('with protocol relative base', () => {
-    suite('//foo.com');
-    suite('//foo.com/');
-    suite('//foo.com/file');
-    suite('//foo.com/dir/');
-    suite('//foo.com/dir/file');
-    suite('//foo.com/..');
-    suite('//foo.com/../');
-    suite('//foo.com/dir/..');
-  });
-
-  describe('with path absolute base', () => {
-    suite('/');
-    suite('/root');
-    suite('/root/');
-    suite('/root/file');
-    suite('/root/dir/');
-    suite('/..');
-    suite('/../');
-    suite('/root/..');
-    suite('/root/../');
-  });
-
-  describe('with relative base', () => {
-    suite('file');
-    suite('dir/');
-    suite('dir/file');
-    suite('deep/dir/');
-    suite('./file');
-    suite('./dir/');
-    suite('./deep/file');
-    suite('./deep/dir/');
-    suite('../file');
-    suite('../dir/');
-    suite('../deep/file');
-    suite('../deep/dir/');
-    suite('..');
-    suite('../');
-    suite('dir/..');
-    suite('deep/../');
-    suite('./..');
-    suite('./../');
-    suite('./deep/..');
-    suite('./deep/../');
-    suite('../..');
-    suite('../../');
-    suite('../deep/..');
-    suite('../deep/../');
-  });
+describe('without base', () => {
+  suite(undefined);
+  suite('');
 });
 
-writeFileSync(
-  `${__dirname}/resolve-uri.test.js`,
-  prettier.format(buffer.join('\n'), {
-    ...prettierConfig,
-    parser: 'babel',
-  }),
-);
+describe('with absolute base', () => {
+  suite('https://foo.com');
+  suite('https://foo.com/');
+  suite('https://foo.com/file');
+  suite('https://foo.com/dir/');
+  suite('https://foo.com/dir/file');
+  suite('https://foo.com/..');
+  suite('https://foo.com/../');
+  suite('https://foo.com/dir/..');
+
+  suite('https://g');
+  suite('https://g/');
+  suite('https://g/file');
+  suite('https://g/dir/');
+  suite('https://g/dir/file');
+  suite('https://g/..');
+  suite('https://g/../');
+  suite('https://g/dir/..');
+
+  suite('file:///foo');
+  suite('file:///foo/');
+  suite('file:///foo/file');
+  suite('file:///foo/dir/');
+  suite('file:///foo/dir/file');
+  suite('file:///foo/..');
+  suite('file:///foo/../');
+  suite('file:///foo/dir/..');
+
+  suite('file://foo');
+  suite('file://foo/');
+  suite('file://foo/file');
+  suite('file://foo/dir/');
+  suite('file://foo/dir/file');
+  suite('file://foo/..');
+  suite('file://foo/../');
+  suite('file://foo/dir/..');
+
+  suite('file:/foo');
+  suite('file:/foo/');
+  suite('file:/foo/file');
+  suite('file:/foo/dir/');
+  suite('file:/foo/dir/file');
+  suite('file:/foo/..');
+  suite('file:/foo/../');
+  suite('file:/foo/dir/..');
+
+  suite('file:foo');
+  suite('file:foo/');
+  suite('file:foo/file');
+  suite('file:foo/dir/');
+  suite('file:foo/dir/file');
+  suite('file:foo/..');
+  suite('file:foo/../');
+  suite('file:foo/dir/..');
+});
+
+describe('with protocol relative base', () => {
+  suite('//foo.com');
+  suite('//foo.com/');
+  suite('//foo.com/file');
+  suite('//foo.com/dir/');
+  suite('//foo.com/dir/file');
+  suite('//foo.com/..');
+  suite('//foo.com/../');
+  suite('//foo.com/dir/..');
+
+  suite('//g');
+  suite('//g/');
+  suite('//g/file');
+  suite('//g/dir/');
+  suite('//g/dir/file');
+  suite('//g/..');
+  suite('//g/../');
+  suite('//g/dir/..');
+});
+
+describe('with absolute path base', () => {
+  suite('/');
+  suite('/root');
+  suite('/root/');
+  suite('/root/file');
+  suite('/root/dir/');
+  suite('/..');
+  suite('/../');
+  suite('/root/..');
+  suite('/root/../');
+});
+
+describe('with absolute Windows path base', () => {
+  suite('C:\\');
+  suite('C:\\root');
+  suite('C:\\root\\');
+  suite('C:\\root\\file');
+  suite('C:\\root\\dir\\');
+  suite('C:\\..');
+  suite('C:\\..\\');
+  suite('C:\\root\\..');
+  suite('C:\\root\\..\\');
+});
+
+describe('with relative base', () => {
+  suite('file');
+  suite('dir/');
+  suite('dir/file');
+  suite('deep/dir/');
+  suite('./file');
+  suite('./dir/');
+  suite('./deep/file');
+  suite('./deep/dir/');
+  suite('../file');
+  suite('../dir/');
+  suite('../deep/file');
+  suite('../deep/dir/');
+  suite('..');
+  suite('../');
+  suite('dir/..');
+  suite('deep/../');
+  suite('./..');
+  suite('./../');
+  suite('./deep/..');
+  suite('./deep/../');
+  suite('../..');
+  suite('../../');
+  suite('../deep/..');
+  suite('../deep/../');
+});
+
+describe('with relative Windows base', () => {
+  suite('dir\\');
+  suite('dir\\file');
+  suite('deep\\dir\\');
+  suite('.\\file');
+  suite('.\\dir\\');
+  suite('.\\deep\\file');
+  suite('.\\deep\\dir\\');
+  suite('..\\file');
+  suite('..\\dir\\');
+  suite('..\\deep\\file');
+  suite('..\\deep\\dir\\');
+  suite('..\\');
+  suite('dir\\..');
+  suite('deep\\..\\');
+  suite('.\\..');
+  suite('.\\..\\');
+  suite('.\\deep\\..');
+  suite('.\\deep\\..\\');
+  suite('..\\..');
+  suite('..\\..\\');
+  suite('..\\deep\\..');
+  suite('..\\deep\\..\\');
+});

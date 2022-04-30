@@ -9,7 +9,7 @@ const schemeRegex = /^[\w+.-]+:\/\//;
  * 4. Port, including ":", optional.
  * 5. Path, including "/", optional.
  */
-const urlRegex = /^([\w+.-]+:)\/\/([^@/#?]*@)?([^:/#?]*)(:\d+)?(\/[^#?]*)?/;
+const urlRegex = /^([\w+.-]+:)\/\/([^@\/#?]*@)?([^:\/#?]*)(:\d+)?(\/[^#?]*)?/;
 
 /**
  * File URLs are weird. They dont' need the regular `//` in the scheme, they may or may not start
@@ -18,7 +18,20 @@ const urlRegex = /^([\w+.-]+:)\/\/([^@/#?]*@)?([^:/#?]*)(:\d+)?(\/[^#?]*)?/;
  * 1. Host, optional.
  * 2. Path, which may inclue "/", guaranteed.
  */
-const fileRegex = /^file:(?:\/\/((?![a-z]:)[^/]*)?)?(\/?.*)/i;
+const fileRegex = /^file:(?:\/\/((?![a-z]:)[^\/]*)?)?(\/?.*)/i;
+
+/**
+ * 1. Scheme, guaranteed.
+ * 2. Drive, guaranteed.
+ * 3. Path, including "/", guaranteed.
+ */
+const windowsRegex = /(WiNdOwSrEsOlVeDrIvEaZ:)\/\/([a-zA-Z]:)(\/.*)/;
+
+// Detects if a string is an absolute Windows drive path, eg 'C:\foo\bar'.
+const windowsDrivePathRegex = /^([a-z]:)\\/i;
+
+// Detects if we mangled a Windows drive path into a special resolver scheme for resolution.
+const windowsSchemePathRegex = /WiNdOwSrEsOlVeDrIvEaZ:\/\/([a-zA-Z]:)\//;
 
 type Url = {
   scheme: string;
@@ -27,6 +40,7 @@ type Url = {
   port: string;
   path: string;
   relativePath: boolean;
+  windows: boolean;
 };
 
 function isAbsoluteUrl(input: string): boolean {
@@ -45,6 +59,38 @@ function isFileUrl(input: string): boolean {
   return input.startsWith('file:');
 }
 
+function isWindowsPath(input: string): boolean {
+  return input.includes('\\');
+}
+
+function isWindowsResolverUrl(input: string): boolean {
+  return input.startsWith('WiNdOwSrEsOlVeDrIvEaZ://');
+}
+
+function windowsToUrl(input: string): string {
+  return input.replace(windowsDrivePathRegex, 'WiNdOwSrEsOlVeDrIvEaZ://$1/').replace(/\\/g, '/');
+}
+
+function toWindows(input: string): string {
+  if (isSchemeRelativeUrl(input)) {
+    // If we're a URL, we don't convert POSIX separators into Windows separators.
+    return input;
+  } else if (windowsSchemePathRegex.test(input)) {
+    // If we matched, then the host contains a Windows drive that we need to make into a absolute
+    // Windows path.
+    input = input.replace(windowsSchemePathRegex, '$1\\');
+  } else if (isAbsoluteUrl(input)) {
+    // If we kept the resolver scheme, then the base was protocol relative and input was an absolute
+    // Windows path. In this case, the Windows drive letter is considered a host, and we overwrite
+    // it with the host of the base. Meaning the windowsSchemePathRegex didn't match, because it
+    // expects a Windows drive in the host.
+    if (isWindowsResolverUrl(input)) input = input.slice('WiNdOwSrEsOlVeDrIvEaZ:'.length);
+    // If we're a URL, we don't convert POSIX separators into Windows separators.
+    return input;
+  }
+  return input.replace(/\//g, '\\');
+}
+
 function parseAbsoluteUrl(input: string): Url {
   const match = urlRegex.exec(input)!;
   return makeUrl(match[1], match[2] || '', match[3], match[4] || '', match[5] || '/');
@@ -56,6 +102,11 @@ function parseFileUrl(input: string): Url {
   return makeUrl('file:', '', match[1] || '', '', isAbsolutePath(path) ? path : '/' + path);
 }
 
+function parseWindowsUrl(input: string): Url {
+  const match = windowsRegex.exec(input)!;
+  return makeUrl(match[1], '', match[2], '', match[3]);
+}
+
 function makeUrl(scheme: string, user: string, host: string, port: string, path: string): Url {
   return {
     scheme,
@@ -64,6 +115,7 @@ function makeUrl(scheme: string, user: string, host: string, port: string, path:
     port,
     path,
     relativePath: false,
+    windows: false,
   };
 }
 
@@ -82,6 +134,11 @@ function parseUrl(input: string): Url {
   }
 
   if (isFileUrl(input)) return parseFileUrl(input);
+  if (isWindowsResolverUrl(input)) {
+    const url = parseWindowsUrl(input);
+    url.windows = true;
+    return url;
+  }
 
   if (isAbsoluteUrl(input)) return parseAbsoluteUrl(input);
 
@@ -186,20 +243,22 @@ function normalizePath(url: Url) {
   url.path = path;
 }
 
-/**
- * Attempts to resolve `input` URL/path relative to `base`.
- */
-export default function resolve(input: string, base: string | undefined): string {
+function resolveInternal(input: string, base: string): string {
   if (!input && !base) return '';
 
   const url = parseUrl(input);
 
   // If we have a base, and the input isn't already an absolute URL, then we need to merge.
-  if (base && !url.scheme) {
+  if (base && (!url.scheme || url.windows)) {
     const baseUrl = parseUrl(base);
-    url.scheme = baseUrl.scheme;
+    if (baseUrl.scheme) {
+      if (baseUrl.scheme === 'file:' && url.windows) {
+        url.host = '/' + url.host;
+      }
+      url.scheme = baseUrl.scheme;
+    }
     // If there's no host, then we were just a path.
-    if (!url.host) {
+    if (!url.host || (url.windows && baseUrl.host)) {
       // The host, user, and port are joined, you can't copy one without the others.
       url.user = baseUrl.user;
       url.host = baseUrl.host;
@@ -226,4 +285,16 @@ export default function resolve(input: string, base: string | undefined): string
   if (!url.scheme && !url.host) return url.path;
   // We're outputting either an absolute URL, or a protocol relative one.
   return `${url.scheme}//${url.user}${url.host}${url.port}${url.path}`;
+}
+
+/**
+ * Attempts to resolve `input` URL/path relative to `base`.
+ */
+export default function resolve(input: string, base: string | undefined): string {
+  const inputIsWindows = isWindowsPath(input);
+  const baseIsWindows = !inputIsWindows && !!base && isWindowsPath(base);
+  if (!inputIsWindows && !baseIsWindows) return resolveInternal(input, base || '');
+
+  const resolved = resolveInternal(windowsToUrl(input), windowsToUrl(base || ''));
+  return toWindows(resolved);
 }
