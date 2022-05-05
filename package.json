@@ -16,6 +16,7 @@
   "typings": "dist/types/resolve-uri.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/resolve-uri.d.ts",
       "browser": "./dist/resolve-uri.umd.js",
       "require": "./dist/resolve-uri.umd.js",
       "import": "./dist/resolve-uri.mjs"
