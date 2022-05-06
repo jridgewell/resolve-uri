@@ -45,11 +45,12 @@
     "test:lint:ts": "eslint '{src,test}/**/*.ts'",
     "test:only": "mocha",
     "test:coverage": "c8 mocha",
-    "test:watch": "mocha --watch",
+    "test:watch": "run-p 'build:rollup -- --watch' 'test:only -- --watch'",
     "prepublishOnly": "npm run preversion",
     "preversion": "run-s test build"
   },
   "devDependencies": {
+    "@jridgewell/resolve-uri-latest": "npm:@jridgewell/resolve-uri@*",
     "@rollup/plugin-typescript": "8.3.0",
     "@typescript-eslint/eslint-plugin": "5.10.0",
     "@typescript-eslint/parser": "5.10.0",

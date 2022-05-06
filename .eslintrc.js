@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -20,13 +22,19 @@ module.exports = {
     ],
     'no-constant-condition': 'off',
     'no-unused-labels': 'off',
+    'no-useless-escape': 'off',
   },
   overrides: [
     {
-      files: ['test/**/*.ts'],
+      files: ['test/**/*.js'],
+      env: {
+        node: true,
+        mocha: true,
+      },
       rules: {
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
       },
     },
   ],
