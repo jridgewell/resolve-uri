@@ -15,12 +15,15 @@
   "module": "dist/resolve-uri.mjs",
   "typings": "dist/types/resolve-uri.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/types/resolve-uri.d.ts",
-      "browser": "./dist/resolve-uri.umd.js",
-      "require": "./dist/resolve-uri.umd.js",
-      "import": "./dist/resolve-uri.mjs"
-    },
+    ".": [
+      {
+        "types": "./dist/types/resolve-uri.d.ts",
+        "browser": "./dist/resolve-uri.umd.js",
+        "require": "./dist/resolve-uri.umd.js",
+        "import": "./dist/resolve-uri.mjs"
+      },
+      "./dist/resolve-uri.umd.js"
+    ],
     "./package.json": "./package.json"
   },
   "files": [
