@@ -23,10 +23,15 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['test/**/*.ts'],
+      files: ['test/**/*.js'],
+      env: {
+        mocha: true,
+        node: true,
+      },
       rules: {
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
       },
     },
   ],

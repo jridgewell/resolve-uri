@@ -53,6 +53,7 @@
     "preversion": "run-s test build"
   },
   "devDependencies": {
+    "@jridgewell/resolve-uri-latest": "npm:@jridgewell/resolve-uri@*",
     "@rollup/plugin-typescript": "8.3.0",
     "@typescript-eslint/eslint-plugin": "5.10.0",
     "@typescript-eslint/parser": "5.10.0",

@@ -1,29 +1,16 @@
-/* eslint-env node */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
-const { writeFileSync } = require('fs');
-const { normalize } = require('path');
+const { readFileSync, mkdirSync, writeFileSync } = require('fs');
+const { posix, win32 } = require('path');
 const prettier = require('prettier');
 const prettierConfig = require('./prettier.config.js');
+const resolve = require('@jridgewell/resolve-uri-latest');
 
-const buffer = [
-  `const resolve = require('../');\n`,
-  `const assert = require('assert');`
-];
-function describe(name, fn) {
-  buffer.push(`
-    describe('${name}', () => {`);
-
-  fn();
-
-  buffer.push(`
-    });
-  `);
-}
+let buffer;
+let cwd = __dirname;
 
 function getOrigin(url) {
   let index = 0;
   if (!url) return '';
+  if (url.startsWith('C:')) return '';
   if (url.startsWith('file://') && !url.startsWith('file:///')) {
     index = url.indexOf('/', 'file://'.length);
   } else if (url.startsWith('file:')) {
@@ -47,28 +34,58 @@ function getProtocol(url) {
 }
 
 function getPath(base, input) {
-  let b = base;
-  const origin = getOrigin(b);
+  const origin = getOrigin(input);
   if (origin) {
-    if (b.startsWith(origin)) {
-      b = b.slice(origin.length);
-    } else {
-      // file:/foo or file:foo
-      b = b.replace(/file:\/*/, '');
+    if (origin.startsWith('//')) return new URL('https:' + input).pathname;
+    return new URL(input).pathname;
+  }
+
+  if (!base) {
+    if (input.startsWith('C:')) {
+      return toWindows(resolve('file:///' + toPosix(input)).slice('file:///'.length));
     }
+    if (input.includes('\\')) {
+      return toWindows(resolve(toPosix(input)));
+    }
+    return resolve(input);
   }
-  b = normalize(b || '');
-  if (base?.endsWith('/..')) b += '/';
-  b = b.replace(/(^|\/)((?!\/|(?<=(^|\/))\.\.(?=(\/|$))).)*$/, '$1');
-  if (b && !b.endsWith('/')) b += '/';
-  let relative = normalize(b + input);
-  if (origin) {
-    relative = relative.replace(/^(\.{1,2}\/)+/, '/');
-    if (!relative.startsWith('/')) relative = '/' + relative;
-  } else if (!relative.startsWith('.') && (base || input).startsWith('.')) {
-    return './' + relative;
+
+  const bOrigin = getOrigin(base);
+  if (bOrigin) {
+    if (input.startsWith('C:')) {
+      if (bOrigin === 'file://') {
+        input = 'file:///' + input;
+      } else {
+        input = input.slice('C:'.length);
+      }
+    }
+    input = input.replace(/\\\\/g, '/');
+    if (bOrigin.startsWith('//')) return new URL(input, 'https:' + base).pathname;
+    return new URL(input, base).pathname;
   }
-  return relative;
+
+  if (input.startsWith('C:')) {
+    return toWindows(new URL('file:///' + toPosix(input)).href.slice('file:///'.length));
+  }
+
+  if (base.startsWith('C:')) {
+    return toWindows(new URL(toPosix(input), 'file:///' + toPosix(base)).href.slice('file:///'.length));
+  }
+
+  if (!base.includes('\\') && !input.includes('\\')) {
+    return resolve(input, base);
+  }
+  base = toPosix(base);
+  input = toPosix(input);
+  return toWindows(resolve(input, base));
+}
+
+function toPosix(input) {
+  return input.replace(/\\{1,2}/g, '/');
+}
+
+function toWindows(input) {
+  return input.replace(/\//g, '\\\\');
 }
 
 function normalizeBase(base) {
@@ -77,15 +94,11 @@ function normalizeBase(base) {
   if (base.startsWith('//')) {
     return new URL('https:' + base).href.slice('https:'.length);
   }
-  let b = normalize(base);
+  let b = base.includes('\\') ? win32.normalize(base).replace(/\\/g, '/') : posix.normalize(base);
   if (b === './') return '.';
   if (b.endsWith('../')) b = b.slice(0, -1);
-  return b.startsWith('.') || !base.startsWith('.') ? b : `./${b}`;
-}
-
-function maybeDropHost(host, base) {
-  // if (base?.startsWith('file://')) return '';
-  return host;
+  if (!b.startsWith('.') && base.startsWith('.')) b = './' + b;
+  return base.includes('\\') ? b.replace(/\//g, '\\\\') : b;
 }
 
 function suite(base) {
@@ -169,34 +182,6 @@ function suite(base) {
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, 'file:///root/main.js.map');
           });
-
-          it('normalizes windows file 1', () => {
-            const base = ${init};
-            const input = 'file:///C:/root/main.js.map';
-            const resolved = resolve(input, base);
-            assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
-          });
-
-          it('normalizes windows file 2', () => {
-            const base = ${init};
-            const input = 'file://C:/root/main.js.map';
-            const resolved = resolve(input, base);
-            assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
-          });
-
-          it('normalizes windows file 3', () => {
-            const base = ${init};
-            const input = 'file:/C:/root/main.js.map';
-            const resolved = resolve(input, base);
-            assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
-          });
-
-          it('normalizes windows file 4', () => {
-            const base = ${init};
-            const input = 'file:C:/root/main.js.map';
-            const resolved = resolve(input, base);
-            assert.strictEqual(resolved, 'file:///C:/root/main.js.map');
-          });
         });
 
         describe('with protocol relative input', () => {
@@ -204,42 +189,42 @@ function suite(base) {
             const base = ${init};
             const input = '//protocol-relative.com/main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
           it('normalizes input', () => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/foo/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/foo/main.js.map');
           });
 
           it('normalizes pathless input', () => {
             const base = ${init};
             const input = '//protocol-relative.com';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/');
           });
 
           it('normalizes current directory', () => {
             const base = ${init};
             const input = '//protocol-relative.com/./main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
           it('normalizes too many parent accessors', () => {
             const base = ${init};
             const input = '//protocol-relative.com/../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
           it('normalizes too many parent accessors, late', () => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/../../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getProtocol(base)}//${maybeDropHost('protocol-relative.com', base)}/main.js.map');
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
         });
 
@@ -248,42 +233,42 @@ function suite(base) {
             const base = ${init};
             const input = '/assets/main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/assets/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/assets/main.js.map')}');
           });
 
           it('trims to root', () => {
             const base = ${init};
             const input = '/';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/')}');
           });
 
           it('normalizes input', () => {
             const base = ${init};
             const input = '/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/foo/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/foo/main.js.map')}');
           });
 
           it('normalizes current directory', () => {
             const base = ${init};
             const input = '/./main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/main.js.map')}');
           });
 
           it('normalizes too many parent accessors', () => {
             const base = ${init};
             const input = '/../../../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/main.js.map')}');
           });
 
           it('normalizes too many parent accessors, late', () => {
             const base = ${init};
             const input = '/foo/../../../main.js.map';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${getOrigin(base)}/main.js.map');
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/main.js.map')}');
           });
         });
 
@@ -359,14 +344,41 @@ function suite(base) {
             const base = ${init};
             const input = '';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${base ? normalizeBase(base || '.') : ''}');
+            assert.strictEqual(resolved, '${base ? normalizeBase(base) : ''}');
           });
         });
       });
     `);
 }
 
-describe('resolve', () => {
+function dir(name, fn) {
+  const old = cwd;
+  cwd += '/' + name.replace(/ /g, '-');
+  try {
+    mkdirSync(cwd);
+  } catch {}
+  fn();
+  cwd = old;
+}
+
+function describe(name, fn) {
+  const dir = posix.relative(cwd, `${__dirname}/..`);
+  buffer = [`const resolve = require('${dir}');`, `const assert = require('assert');\n`, `describe('${name}', () => {`];
+
+  fn();
+
+  buffer.push(`});`);
+
+  writeFileSync(
+    `${cwd}/${name.replace(/ /g, '-')}.test.js`,
+    prettier.format(buffer.join('\n'), {
+      ...prettierConfig,
+      parser: 'babel',
+    })
+  );
+}
+
+dir('resolve', () => {
   describe('without base', () => {
     suite(undefined);
     suite('');
@@ -381,6 +393,15 @@ describe('resolve', () => {
     suite('https://foo.com/..');
     suite('https://foo.com/../');
     suite('https://foo.com/dir/..');
+
+    suite('https://g');
+    suite('https://g/');
+    suite('https://g/file');
+    suite('https://g/dir/');
+    suite('https://g/dir/file');
+    suite('https://g/..');
+    suite('https://g/../');
+    suite('https://g/dir/..');
 
     suite('file:///foo');
     suite('file:///foo/');
@@ -428,9 +449,18 @@ describe('resolve', () => {
     suite('//foo.com/..');
     suite('//foo.com/../');
     suite('//foo.com/dir/..');
+
+    suite('//g');
+    suite('//g/');
+    suite('//g/file');
+    suite('//g/dir/');
+    suite('//g/dir/file');
+    suite('//g/..');
+    suite('//g/../');
+    suite('//g/dir/..');
   });
 
-  describe('with path absolute base', () => {
+  describe('with absolute path base', () => {
     suite('/');
     suite('/root');
     suite('/root/');
@@ -468,12 +498,62 @@ describe('resolve', () => {
     suite('../deep/..');
     suite('../deep/../');
   });
-});
 
-writeFileSync(
-  `${__dirname}/resolve-uri.test.js`,
-  prettier.format(buffer.join('\n'), {
-    ...prettierConfig,
-    parser: 'babel',
-  }),
-);
+  describe('readme', () => {
+    const readme = readFileSync(`${__dirname}/../README.md`, 'utf8');
+    const tables = extractTables(readme);
+
+    function extractTables(markdown) {
+      const regex = /(\|.*)\n\|\s*\---.*\n((\|.*\n)*)/g;
+      let tables = [];
+      let match;
+      while ((match = regex.exec(markdown))) {
+        const head = match[1].split('\n')[0];
+        const headers = head
+          .split('|')
+          .map((s) => s.trim())
+          .slice(1, -1);
+
+        const table = [];
+        tables.push(table);
+        const body = match[2].split('\n').slice(0, -1);
+        for (const row of body) {
+          const data = row
+            .split('|')
+            .map((s) => s.trim())
+            .slice(1, -1);
+
+          const obj = {};
+          data.forEach((d, i) => (obj[headers[i]] = d));
+          table.push(obj);
+        }
+      }
+      return tables;
+    }
+
+    function escape(str) {
+      return str.replace(/\\/g, '\\\\');
+    }
+
+    buffer.push(`const _any_ = 'https://foo/';`);
+    buffer.push(`const _rest_ = 'foo';`);
+
+    for (let i = 0; i < tables.length; i++) {
+      const table = tables[i];
+      buffer.push(`describe('table ${i}', () => {`);
+      for (let j = 0; j < table.length; j++) {
+        const row = table[j];
+        buffer.push(`
+          it('input = ${escape(row.Input)}, base = ${escape(row.Base)}', () => {
+            const input = ${escape(row.Input)};
+            const base = ${escape(row.Base)};
+            const expected = ${escape(row.Resolution)};
+
+            assert.strictEqual(resolve(input, base), expected);
+          });
+        `);
+      }
+      buffer.push('})');
+    }
+  });
+});
