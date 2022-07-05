@@ -2,7 +2,7 @@ const { readFileSync, mkdirSync, writeFileSync } = require('fs');
 const { posix, win32 } = require('path');
 const prettier = require('prettier');
 const prettierConfig = require('./prettier.config.js');
-const resolve = require('@jridgewell/resolve-uri-latest');
+const resolve = require('@jridgewell/resolve-uri');
 
 let buffer;
 let cwd = __dirname;
@@ -80,6 +80,18 @@ function getPath(base, input) {
   return toWindows(resolve(input, base));
 }
 
+function getQuery(input) {
+  if (input === undefined) return '';
+  const q = /\?[^#]*/.exec(input);
+  return q ? q[0] : '';
+}
+
+function getHash(input) {
+  if (input === undefined) return '';
+  const h = /#.*/.exec(input);
+  return h ? h[0] : '';
+}
+
 function toPosix(input) {
   return input.replace(/\\{1,2}/g, '/');
 }
@@ -88,17 +100,23 @@ function toWindows(input) {
   return input.replace(/\//g, '\\\\');
 }
 
-function normalizeBase(base) {
-  if (base.startsWith('file:')) return new URL(base).href;
-  if (base.startsWith('https://')) return new URL(base).href;
-  if (base.startsWith('//')) {
-    return new URL('https:' + base).href.slice('https:'.length);
+function normalizeBasePath(base, input) {
+  if (!base && !input) return '';
+  if (base === undefined) return '';
+  const strip = base.replace(/[?#].*/, '');
+
+  if (strip.startsWith('file:')) return new URL(strip).href;
+  if (strip.startsWith('https://')) return new URL(strip).href;
+  if (strip.startsWith('//')) return new URL('https:' + strip).href.slice('https:'.length);
+
+  let b = strip.includes('\\') ? win32.normalize(strip).replace(/\\/g, '/') : posix.normalize(strip);
+  if (b === './' || b === '.') {
+    if (/^[?#]/.test(input || base)) return '';
+    return '.';
   }
-  let b = base.includes('\\') ? win32.normalize(base).replace(/\\/g, '/') : posix.normalize(base);
-  if (b === './') return '.';
   if (b.endsWith('../')) b = b.slice(0, -1);
-  if (!b.startsWith('.') && base.startsWith('.')) b = './' + b;
-  return base.includes('\\') ? b.replace(/\//g, '\\\\') : b;
+  if (!b.startsWith('.') && strip.startsWith('.')) b = './' + b;
+  return strip.includes('\\') ? b.replace(/\//g, '\\\\') : b;
 }
 
 function suite(base) {
@@ -113,11 +131,25 @@ function suite(base) {
             assert.strictEqual(resolved, 'https://absolute.com/main.js.map');
           });
 
-          it('normalizes input', () => {
+          it('returns input with query', () => {
+            const base = ${init};
+            const input = 'https://absolute.com/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'https://absolute.com/main.js.map?input');
+          });
+
+          it('normalizes input path', () => {
             const base = ${init};
             const input = 'https://absolute.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map');
+          });
+
+          it('normalizes input path with query', () => {
+            const base = ${init};
+            const input = 'https://absolute.com/foo/./bar/../main.js.map?input!webpack://foo/./bar';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'https://absolute.com/foo/main.js.map?input!webpack://foo/./bar');
           });
 
           it('normalizes pathless input', () => {
@@ -125,6 +157,13 @@ function suite(base) {
             const input = 'https://absolute.com';
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, 'https://absolute.com/');
+          });
+
+          it('normalizes pathless input with query', () => {
+            const base = ${init};
+            const input = 'https://absolute.com?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'https://absolute.com/?input');
           });
 
           it('normalizes current directory', () => {
@@ -182,6 +221,41 @@ function suite(base) {
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, 'file:///root/main.js.map');
           });
+
+          it('normalizes file protocol 1 with query', () => {
+            const base = ${init};
+            const input = 'file:///root/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///root/main.js.map?input');
+          });
+
+          it('normalizes file protocol 2 with query', () => {
+            const base = ${init};
+            const input = 'file://root/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file://root/main.js.map?input');
+          });
+
+          it('normalizes file protocol 2.5 with query', () => {
+            const base = ${init};
+            const input = 'file://root?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file://root/?input');
+          });
+
+          it('normalizes file protocol 3 with query', () => {
+            const base = ${init};
+            const input = 'file:/root/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///root/main.js.map?input');
+          });
+
+          it('normalizes file protocol 4 with query', () => {
+            const base = ${init};
+            const input = 'file:root/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, 'file:///root/main.js.map?input');
+          });
         });
 
         describe('with protocol relative input', () => {
@@ -192,11 +266,25 @@ function suite(base) {
             assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map');
           });
 
-          it('normalizes input', () => {
+          it('resolves relative to the base protocol with query', () => {
+            const base = ${init};
+            const input = '//protocol-relative.com/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/main.js.map?input');
+          });
+
+          it('normalizes input path', () => {
             const base = ${init};
             const input = '//protocol-relative.com/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/foo/main.js.map');
+          });
+
+          it('normalizes input path with query', () => {
+            const base = ${init};
+            const input = '//protocol-relative.com/foo/./bar/../main.js.map?input!webpack://foo/./bar';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/foo/main.js.map?input!webpack://foo/./bar');
           });
 
           it('normalizes pathless input', () => {
@@ -204,6 +292,13 @@ function suite(base) {
             const input = '//protocol-relative.com';
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/');
+          });
+
+          it('normalizes pathless input with query', () => {
+            const base = ${init};
+            const input = '//protocol-relative.com?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getProtocol(base)}//protocol-relative.com/?input');
           });
 
           it('normalizes current directory', () => {
@@ -236,6 +331,13 @@ function suite(base) {
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/assets/main.js.map')}');
           });
 
+          it('remains absolute path with query', () => {
+            const base = ${init};
+            const input = '/assets/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/assets/main.js.map')}?input');
+          });
+
           it('trims to root', () => {
             const base = ${init};
             const input = '/';
@@ -243,7 +345,7 @@ function suite(base) {
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/')}');
           });
 
-          it('normalizes input', () => {
+          it('normalizes input path', () => {
             const base = ${init};
             const input = '/foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
@@ -264,6 +366,20 @@ function suite(base) {
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/main.js.map')}');
           });
 
+          it('normalizes too many parent accessors with query 1', () => {
+            const base = ${init};
+            const input = '/../../../?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/')}?input');
+          });
+
+          it('normalizes too many parent accessors with query 2', () => {
+            const base = ${init};
+            const input = '/../../..?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '/')}?input');
+          });
+
           it('normalizes too many parent accessors, late', () => {
             const base = ${init};
             const input = '/foo/../../../main.js.map';
@@ -280,11 +396,25 @@ function suite(base) {
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, './bar/main.js.map')}');
           });
 
+          it('resolves relative to current directory with query', () => {
+            const base = ${init};
+            const input = './bar/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, './bar/main.js.map')}?input');
+          });
+
           it('resolves relative to parent directory', () => {
             const base = ${init};
             const input = '../bar/main.js.map';
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '../bar/main.js.map')}');
+          });
+
+          it('resolves relative to parent directory with query', () => {
+            const base = ${init};
+            const input = '../bar/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '../bar/main.js.map')}?input');
           });
 
           it('resolves relative to parent multiple directory', () => {
@@ -294,7 +424,21 @@ function suite(base) {
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '../../../bar/main.js.map')}');
           });
 
-          it('normalizes input', () => {
+          it('resolves relative to parent multiple directory with query 1', () => {
+            const base = ${init};
+            const input = '../../../?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '../../../')}?input');
+          });
+
+          it('resolves relative to parent multiple directory with query 2', () => {
+            const base = ${init};
+            const input = '../../..?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, '../../..')}?input');
+          });
+
+          it('normalizes input path', () => {
             const base = ${init};
             const input = './foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
@@ -302,12 +446,19 @@ function suite(base) {
           });
         });
 
-        describe('with relative input', () => {
+        describe('with relative path input', () => {
           it('resolves relative to current directory', () => {
             const base = ${init};
             const input = 'bar/main.js.map';
             const resolved = resolve(input, base);
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'bar/main.js.map')}');
+          });
+
+          it('resolves relative to current directory with query', () => {
+            const base = ${init};
+            const input = 'bar/main.js.map?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'bar/main.js.map')}?input');
           });
 
           it('resolves relative to parent multiple directory, later', () => {
@@ -317,7 +468,7 @@ function suite(base) {
             assert.strictEqual(resolved, '${getOrigin(base)}${getPath(base, 'foo/../../../bar/main.js.map')}');
           });
 
-          it('normalizes input', () => {
+          it('normalizes input path', () => {
             const base = ${init};
             const input = 'foo/./bar/../main.js.map';
             const resolved = resolve(input, base);
@@ -339,12 +490,30 @@ function suite(base) {
           });
         });
 
+        describe('with query input', () => {
+          it('resolves relative to path', () => {
+            const base = ${init};
+            const input = '?input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${normalizeBasePath(base, '?input')}?input');
+          });
+        });
+
+        describe('with hash input', () => {
+          it('resolves relative to path', () => {
+            const base = ${init};
+            const input = '#input';
+            const resolved = resolve(input, base);
+            assert.strictEqual(resolved, '${normalizeBasePath(base, '#input')}${getQuery(base)}#input');
+          });
+        });
+
         describe('empty input', () => {
           it('normalizes base', () => {
             const base = ${init};
             const input = '';
             const resolved = resolve(input, base);
-            assert.strictEqual(resolved, '${base ? normalizeBase(base) : ''}');
+            assert.strictEqual(resolved, '${normalizeBasePath(base, '')}${getQuery(base)}${getHash(base)}');
           });
         });
       });
@@ -356,7 +525,9 @@ function dir(name, fn) {
   cwd += '/' + name.replace(/ /g, '-');
   try {
     mkdirSync(cwd);
-  } catch {}
+  } catch {
+    /**/
+  }
   fn();
   cwd = old;
 }
@@ -393,6 +564,9 @@ dir('resolve', () => {
     suite('https://foo.com/..');
     suite('https://foo.com/../');
     suite('https://foo.com/dir/..');
+    suite('https://foo.com/file?baseQuery');
+    suite('https://foo.com/file?baseQuery#baseHash');
+    suite('https://foo.com/file#baseHash');
 
     suite('https://g');
     suite('https://g/');
@@ -402,6 +576,9 @@ dir('resolve', () => {
     suite('https://g/..');
     suite('https://g/../');
     suite('https://g/dir/..');
+    suite('https://g/file?baseQuery');
+    suite('https://g/file?baseQuery#baseHash');
+    suite('https://g/file#baseHash');
 
     suite('file:///foo');
     suite('file:///foo/');
@@ -411,6 +588,9 @@ dir('resolve', () => {
     suite('file:///foo/..');
     suite('file:///foo/../');
     suite('file:///foo/dir/..');
+    suite('file:///foo/file?baseQuery');
+    suite('file:///foo/file?baseQuery#baseHash');
+    suite('file:///foo/file#baseHash');
 
     suite('file://foo');
     suite('file://foo/');
@@ -420,6 +600,9 @@ dir('resolve', () => {
     suite('file://foo/..');
     suite('file://foo/../');
     suite('file://foo/dir/..');
+    suite('file://foo/file?baseQuery');
+    suite('file://foo/file?baseQuery#baseHash');
+    suite('file://foo/file#baseHash');
 
     suite('file:/foo');
     suite('file:/foo/');
@@ -429,6 +612,9 @@ dir('resolve', () => {
     suite('file:/foo/..');
     suite('file:/foo/../');
     suite('file:/foo/dir/..');
+    suite('file:/foo/file?baseQuery');
+    suite('file:/foo/file?baseQuery#baseHash');
+    suite('file:/foo/file#baseHash');
 
     suite('file:foo');
     suite('file:foo/');
@@ -438,6 +624,18 @@ dir('resolve', () => {
     suite('file:foo/..');
     suite('file:foo/../');
     suite('file:foo/dir/..');
+    suite('file:foo/file?baseQuery');
+    suite('file:foo/file?baseQuery#baseHash');
+    suite('file:foo/file#baseHash');
+    suite('file:foo/file?baseQuery');
+    suite('file:foo/file?baseQuery#baseHash');
+    suite('file:foo/file#baseHash');
+    suite('file:file?baseQuery');
+    suite('file:file?baseQuery#baseHash');
+    suite('file:file#baseHash');
+    suite('file:?baseQuery');
+    suite('file:?baseQuery#baseHash');
+    suite('file:#baseHash');
   });
 
   describe('with protocol relative base', () => {
@@ -449,6 +647,9 @@ dir('resolve', () => {
     suite('//foo.com/..');
     suite('//foo.com/../');
     suite('//foo.com/dir/..');
+    suite('//foo.com/file?baseQuery');
+    suite('//foo.com/file?baseQuery#baseHash');
+    suite('//foo.com/file#baseHash');
 
     suite('//g');
     suite('//g/');
@@ -458,6 +659,9 @@ dir('resolve', () => {
     suite('//g/..');
     suite('//g/../');
     suite('//g/dir/..');
+    suite('//g/file?baseQuery');
+    suite('//g/file?baseQuery#baseHash');
+    suite('//g/file#baseHash');
   });
 
   describe('with absolute path base', () => {
@@ -470,9 +674,12 @@ dir('resolve', () => {
     suite('/../');
     suite('/root/..');
     suite('/root/../');
+    suite('/root?baseQuery');
+    suite('/root?baseQuery#baseHash');
+    suite('/root#baseHash');
   });
 
-  describe('with relative base', () => {
+  describe('with relative path base', () => {
     suite('file');
     suite('dir/');
     suite('dir/file');
@@ -497,6 +704,18 @@ dir('resolve', () => {
     suite('../../');
     suite('../deep/..');
     suite('../deep/../');
+    suite('file?baseQuery');
+    suite('file?baseQuery#baseHash');
+    suite('file#baseHash');
+  });
+
+  describe('with query base', () => {
+    suite('?baseQuery');
+    suite('?baseQuery#baseHash');
+  });
+
+  describe('with hash base', () => {
+    suite('#baseHash');
   });
 
   describe('readme', () => {
@@ -504,7 +723,7 @@ dir('resolve', () => {
     const tables = extractTables(readme);
 
     function extractTables(markdown) {
-      const regex = /(\|.*)\n\|\s*\---.*\n((\|.*\n)*)/g;
+      const regex = /(\|.*)\n\|\s*---.*\n((\|.*\n)*)/g;
       let tables = [];
       let match;
       while ((match = regex.exec(markdown))) {
