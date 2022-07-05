@@ -8,17 +8,21 @@ const schemeRegex = /^[\w+.-]+:\/\//;
  * 3. Host, guaranteed.
  * 4. Port, including ":", optional.
  * 5. Path, including "/", optional.
+ * 6. Query, including "?", optional.
+ * 7. Hash, including "#", optional.
  */
-const urlRegex = /^([\w+.-]+:)\/\/([^@/#?]*@)?([^:/#?]*)(:\d+)?(\/[^#?]*)?/;
+const urlRegex = /^([\w+.-]+:)\/\/([^@/#?]*@)?([^:/#?]*)(:\d+)?(\/[^#?]*)?(\?[^#]*)?(#.*)?/;
 
 /**
  * File URLs are weird. They dont' need the regular `//` in the scheme, they may or may not start
  * with a leading `/`, they can have a domain (but only if they don't start with a Windows drive).
  *
  * 1. Host, optional.
- * 2. Path, which may inclue "/", guaranteed.
+ * 2. Path, which may include "/", guaranteed.
+ * 3. Query, including "?", optional.
+ * 4. Hash, including "#", optional.
  */
-const fileRegex = /^file:(?:\/\/((?![a-z]:)[^/]*)?)?(\/?.*)/i;
+const fileRegex = /^file:(?:\/\/((?![a-z]:)[^/#?]*)?)?(\/?[^#?]*)(\?[^#]*)?(#.*)?/i;
 
 type Url = {
   scheme: string;
@@ -26,8 +30,20 @@ type Url = {
   host: string;
   port: string;
   path: string;
-  relativePath: boolean;
+  query: string;
+  hash: string;
+  type: UrlType;
 };
+
+enum UrlType {
+  Empty = 1,
+  Hash = 2,
+  Query = 3,
+  RelativePath = 4,
+  AbsolutePath = 5,
+  SchemeRelative = 6,
+  Absolute = 7,
+}
 
 function isAbsoluteUrl(input: string): boolean {
   return schemeRegex.test(input);
@@ -45,25 +61,55 @@ function isFileUrl(input: string): boolean {
   return input.startsWith('file:');
 }
 
+function isRelative(input: string): boolean {
+  return /^[.?#]/.test(input);
+}
+
 function parseAbsoluteUrl(input: string): Url {
   const match = urlRegex.exec(input)!;
-  return makeUrl(match[1], match[2] || '', match[3], match[4] || '', match[5] || '/');
+  return makeUrl(
+    match[1],
+    match[2] || '',
+    match[3],
+    match[4] || '',
+    match[5] || '/',
+    match[6] || '',
+    match[7] || '',
+  );
 }
 
 function parseFileUrl(input: string): Url {
   const match = fileRegex.exec(input)!;
   const path = match[2];
-  return makeUrl('file:', '', match[1] || '', '', isAbsolutePath(path) ? path : '/' + path);
+  return makeUrl(
+    'file:',
+    '',
+    match[1] || '',
+    '',
+    isAbsolutePath(path) ? path : '/' + path,
+    match[3] || '',
+    match[4] || '',
+  );
 }
 
-function makeUrl(scheme: string, user: string, host: string, port: string, path: string): Url {
+function makeUrl(
+  scheme: string,
+  user: string,
+  host: string,
+  port: string,
+  path: string,
+  query: string,
+  hash: string,
+): Url {
   return {
     scheme,
     user,
     host,
     port,
     path,
-    relativePath: false,
+    query,
+    hash,
+    type: UrlType.Absolute,
   };
 }
 
@@ -71,6 +117,7 @@ function parseUrl(input: string): Url {
   if (isSchemeRelativeUrl(input)) {
     const url = parseAbsoluteUrl('http:' + input);
     url.scheme = '';
+    url.type = UrlType.SchemeRelative;
     return url;
   }
 
@@ -78,6 +125,7 @@ function parseUrl(input: string): Url {
     const url = parseAbsoluteUrl('http://foo.com' + input);
     url.scheme = '';
     url.host = '';
+    url.type = UrlType.AbsolutePath;
     return url;
   }
 
@@ -88,7 +136,13 @@ function parseUrl(input: string): Url {
   const url = parseAbsoluteUrl('http://foo.com/' + input);
   url.scheme = '';
   url.host = '';
-  url.relativePath = true;
+  url.type = input
+    ? input.startsWith('?')
+      ? UrlType.Query
+      : input.startsWith('#')
+      ? UrlType.Hash
+      : UrlType.RelativePath
+    : UrlType.Empty;
   return url;
 }
 
@@ -101,10 +155,7 @@ function stripPathFilename(path: string): string {
 }
 
 function mergePaths(url: Url, base: Url) {
-  // If we're not a relative path, then we're an absolute path, and it doesn't matter what base is.
-  if (!url.relativePath) return;
-
-  normalizePath(base);
+  normalizePath(base, base.type);
 
   // If the path is just a "/", then it was an empty path to begin with (remember, we're a relative
   // path).
@@ -114,17 +165,14 @@ function mergePaths(url: Url, base: Url) {
     // Resolution happens relative to the base path's directory, not the file.
     url.path = stripPathFilename(base.path) + url.path;
   }
-
-  // If the base path is absolute, then our path is now absolute too.
-  url.relativePath = base.relativePath;
 }
 
 /**
  * The path can have empty directories "//", unneeded parents "foo/..", or current directory
  * "foo/.". We need to normalize to a standard representation.
  */
-function normalizePath(url: Url) {
-  const { relativePath } = url;
+function normalizePath(url: Url, type: UrlType) {
+  const rel = type <= UrlType.RelativePath;
   const pieces = url.path.split('/');
 
   // We need to preserve the first piece always, so that we output a leading slash. The item at
@@ -162,7 +210,7 @@ function normalizePath(url: Url) {
         addTrailingSlash = true;
         positive--;
         pointer--;
-      } else if (relativePath) {
+      } else if (rel) {
         // If we're in a relativePath, then we need to keep the excess parents. Else, in an absolute
         // URL, protocol relative URL, or an absolute path, we don't need to keep excess.
         pieces[pointer++] = piece;
@@ -193,37 +241,71 @@ export default function resolve(input: string, base: string | undefined): string
   if (!input && !base) return '';
 
   const url = parseUrl(input);
+  let inputType = url.type;
 
-  // If we have a base, and the input isn't already an absolute URL, then we need to merge.
-  if (base && !url.scheme) {
+  if (base && inputType !== UrlType.Absolute) {
     const baseUrl = parseUrl(base);
-    url.scheme = baseUrl.scheme;
-    // If there's no host, then we were just a path.
-    if (!url.host) {
-      // The host, user, and port are joined, you can't copy one without the others.
-      url.user = baseUrl.user;
-      url.host = baseUrl.host;
-      url.port = baseUrl.port;
+    const baseType = baseUrl.type;
+
+    switch (inputType) {
+      case UrlType.Empty:
+        url.hash = baseUrl.hash;
+      // fall through
+
+      case UrlType.Hash:
+        url.query = baseUrl.query;
+      // fall through
+
+      case UrlType.Query:
+      case UrlType.RelativePath:
+        mergePaths(url, baseUrl);
+      // fall through
+
+      case UrlType.AbsolutePath:
+        // The host, user, and port are joined, you can't copy one without the others.
+        url.user = baseUrl.user;
+        url.host = baseUrl.host;
+        url.port = baseUrl.port;
+      // fall through
+
+      case UrlType.SchemeRelative:
+        // The input doesn't have a schema at least, so we need to copy at least that over.
+        url.scheme = baseUrl.scheme;
     }
-    mergePaths(url, baseUrl);
+    if (baseType > inputType) inputType = baseType;
   }
 
-  normalizePath(url);
+  normalizePath(url, inputType);
 
-  // If the input (and base, if there was one) are both relative, then we need to output a relative.
-  if (url.relativePath) {
-    // The first char is always a "/".
-    const path = url.path.slice(1);
-    if (!path) return '.';
+  const queryHash = url.query + url.hash;
+  switch (inputType) {
+    // This is impossible, because of the empty checks at the start of the function.
+    // case UrlType.Empty:
 
-    // If base started with a leading ".", or there is no base and input started with a ".", then we
-    // need to ensure that the relative path starts with a ".". We don't know if relative starts
-    // with a "..", though, so check before prepending.
-    const keepRelative = (base || input).startsWith('.');
-    return !keepRelative || path.startsWith('.') ? path : './' + path;
+    case UrlType.Hash:
+    case UrlType.Query:
+      return queryHash;
+
+    case UrlType.RelativePath: {
+      // The first char is always a "/", and we need it to be relative.
+      const path = url.path.slice(1);
+
+      if (!path) return queryHash || '.';
+
+      if (isRelative(base || input) && !isRelative(path)) {
+        // If base started with a leading ".", or there is no base and input started with a ".",
+        // then we need to ensure that the relative path starts with a ".". We don't know if
+        // relative starts with a "..", though, so check before prepending.
+        return './' + path + queryHash;
+      }
+
+      return path + queryHash;
+    }
+
+    case UrlType.AbsolutePath:
+      return url.path + queryHash;
+
+    default:
+      return url.scheme + '//' + url.user + url.host + url.port + url.path + queryHash;
   }
-  // If there's no host (and no scheme/user/port), then we need to output an absolute path.
-  if (!url.scheme && !url.host) return url.path;
-  // We're outputting either an absolute URL, or a protocol relative one.
-  return `${url.scheme}//${url.user}${url.host}${url.port}${url.path}`;
 }
