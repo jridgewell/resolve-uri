@@ -11,7 +11,8 @@
     "allowSyntheticDefaultImports": true,
     "declarationDir": "dist/types",
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "checkJs": true
   },
   "exclude": ["dist"],
   "include": ["src", "test"]
