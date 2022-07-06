@@ -19,10 +19,19 @@
       {
         "types": "./dist/types/resolve-uri.d.ts",
         "browser": "./dist/resolve-uri.umd.js",
-        "require": "./dist/resolve-uri.umd.js",
+        "require": "./dist/resolve-uri.cjs.js",
         "import": "./dist/resolve-uri.mjs"
       },
-      "./dist/resolve-uri.umd.js"
+      "./dist/resolve-uri.cjs.js"
+    ],
+    "./relative": [
+      {
+        "types": "./dist/types/relative.d.ts",
+        "browser": "./dist/relative.umd.js",
+        "require": "./dist/relative.cjs.js",
+        "import": "./dist/relative.mjs"
+      },
+      "./dist/relative.cjs.js"
     ],
     "./package.json": "./package.json"
   },
