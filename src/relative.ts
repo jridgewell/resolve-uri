@@ -29,7 +29,8 @@ export default function relative(from: string, to: string): string {
   }
 
   const rel = url.type <= UrlType.RelativePath;
-  if (rel !== fromUrl.type <= UrlType.RelativePath) {
+  const fromRel = fromUrl.type <= UrlType.RelativePath;
+  if (rel !== fromRel) {
     if (rel) return printRelativePath(url, to, from);
     return url.path;
   }
@@ -55,8 +56,10 @@ export default function relative(from: string, to: string): string {
     }
   }
 
-  const remaining = fromPieces.length - fIndex;
-  const parent = '/..'.repeat(remaining);
+  // The file of the from's path doesn't matter, resolution is relative to the directory, so we need
+  // to decrement by 1.
+  const remaining = fromPieces.length - fIndex - 1;
+  const parent = '/..'.repeat(Math.max(0, remaining));
   url.path = parent + reconstructPath(pathPieces, pIndex, pathPieces.length);
   return printRelativePath(url, to, from);
 }
