@@ -3,6 +3,7 @@ import {
   normalizePath,
   printSchemefulUrl,
   printRelativePath,
+  printQueryHash,
   reconstructPath,
   UrlType,
 } from './helpers';
@@ -38,16 +39,23 @@ export default function relative(from: string, to: string): string {
   const pathPieces = url.path.split('/');
   const fromPieces = fromUrl.path.split('/');
   let pIndex = 0;
-  let bIndex = 0;
-  for (; pIndex < pathPieces.length && bIndex < fromPieces.length; pIndex++, bIndex++) {
-    if (pathPieces[pIndex] !== fromPieces[bIndex]) break;
+  let fIndex = 0;
+  for (; pIndex < pathPieces.length && fIndex < fromPieces.length; pIndex++, fIndex++) {
+    if (pathPieces[pIndex] !== fromPieces[fIndex]) break;
   }
 
-  const remaining = fromPieces.length - bIndex;
-  if (bIndex < fromPieces.length && fromPieces[bIndex] === '..') {
+  if (fIndex < fromPieces.length && fromPieces[fIndex] === '..') {
     throw new Error('cannot make relative path with remaining `..` parent directory');
   }
 
+  if (pIndex === pathPieces.length && fIndex === fromPieces.length) {
+    if (url.query || url.hash) {
+      if (url.query !== fromUrl.query) return printQueryHash(url);
+      return url.hash || url.query;
+    }
+  }
+
+  const remaining = fromPieces.length - fIndex;
   const parent = '/..'.repeat(remaining);
   url.path = parent + reconstructPath(pathPieces, pIndex, pathPieces.length);
   return printRelativePath(url, to, from);
