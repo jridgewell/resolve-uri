@@ -24,6 +24,15 @@
       },
       "./dist/resolve-uri.cjs.js"
     ],
+    "./resolve": [
+      {
+        "types": "./dist/types/resolve-uri.d.ts",
+        "browser": "./dist/resolve-uri.umd.js",
+        "require": "./dist/resolve-uri.cjs.js",
+        "import": "./dist/resolve-uri.mjs"
+      },
+      "./dist/resolve-uri.cjs.js"
+    ],
     "./relative": [
       {
         "types": "./dist/types/relative.d.ts",
@@ -36,7 +45,8 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "relative.js"
   ],
   "engines": {
     "node": ">=6.0.0"

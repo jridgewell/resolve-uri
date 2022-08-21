@@ -1,4 +1,4 @@
-const resolve = require('@jridgewell/resolve-uri');
+const resolve = require('../..');
 const assert = require('assert');
 
 describe(`resolve`, () => {

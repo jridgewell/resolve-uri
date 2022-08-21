@@ -1,4 +1,4 @@
-const relative = require('@jridgewell/resolve-uri/relative');
+const relative = require('../../relative');
 const assert = require('assert');
 
 describe(`relative`, () => {

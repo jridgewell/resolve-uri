@@ -37,7 +37,6 @@ function configure(format, input) {
           dir: 'dist',
           entryFileNames: '[name].umd.js',
           sourcemap: true,
-          exports: 'named',
         }
       : () => {
           throw new Error(`unknown format "${format}"`);

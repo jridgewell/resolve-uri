@@ -424,7 +424,7 @@ function testCases(importStatement, suite) {
 }
 
 dir('resolve', () => {
-  const importStatement = `const resolve = require('@jridgewell/resolve-uri');`;
+  const importStatement = `const resolve = require('../..');`;
 
   /**
    * @param {string | undefined} base
@@ -896,7 +896,7 @@ dir('resolve', () => {
 });
 
 dir('relative', () => {
-  const importStatement = `const relative = require('@jridgewell/resolve-uri/relative');`;
+  const importStatement = `const relative = require('../../relative');`;
 
   /**
    * @param {string | undefined} base
