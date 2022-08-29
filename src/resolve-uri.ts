@@ -7,6 +7,7 @@ import {
   printRelativePath,
   printAbsolutePath,
   printQueryHash,
+  isRelative,
 } from './helpers';
 
 /**
@@ -61,7 +62,7 @@ export default function resolve(input: string, base: string | undefined): string
       return printQueryHash(url);
 
     case UrlType.RelativePath:
-      return printRelativePath(url, input, base);
+      return printRelativePath(url, isRelative(base || input));
 
     case UrlType.AbsolutePath:
       return printAbsolutePath(url);

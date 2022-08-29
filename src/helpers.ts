@@ -61,7 +61,7 @@ function isFileUrl(input: string): boolean {
   return input.startsWith('file:');
 }
 
-function isRelative(input: string): boolean {
+export function isRelative(input: string): boolean {
   return /^[.?#]/.test(input);
 }
 
@@ -244,14 +244,14 @@ export function printSchemefulUrl(url: Url): string {
   return `${url.scheme}//${url.user}${url.host}${url.port}${printAbsolutePath(url)}`;
 }
 
-export function printRelativePath(url: Url, input: string, base: string | undefined): string {
+export function printRelativePath(url: Url, keepRelative: boolean): string {
   // The first char is always a "/", and we need it to be relative.
   const path = url.path.slice(1);
   const queryHash = printQueryHash(url);
 
   if (!path) return queryHash || '.';
 
-  if (isRelative(base || input) && !isRelative(path)) {
+  if (keepRelative && !isRelative(path)) {
     // If base started with a leading ".", or there is no base and input started with a ".",
     // then we need to ensure that the relative path starts with a ".". We don't know if
     // relative starts with a "..", though, so check before prepending.

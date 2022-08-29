@@ -34,7 +34,7 @@ export default function relative(from: string, to: string): string {
   const rel = url.type <= UrlType.RelativePath;
   const fromRel = fromUrl.type <= UrlType.RelativePath;
   if (rel !== fromRel) {
-    if (rel) return printRelativePath(url, to, from);
+    if (rel) return printRelativePath(url, false);
     return url.path;
   }
 
@@ -64,5 +64,5 @@ export default function relative(from: string, to: string): string {
   const remaining = fromPieces.length - fIndex - 1;
   const parent = '/..'.repeat(Math.max(0, remaining));
   url.path = parent + reconstructPath(pathPieces, pIndex, pathPieces.length);
-  return printRelativePath(url, to, from);
+  return printRelativePath(url, false);
 }
