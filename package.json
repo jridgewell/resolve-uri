@@ -14,6 +14,11 @@
   "main": "dist/resolve-uri.umd.js",
   "module": "dist/resolve-uri.mjs",
   "typings": "dist/types/resolve-uri.d.ts",
+  "typesVersions": {
+    "*": {
+      "relative": ["dist/types/relative.d.ts"]
+    }
+  },
   "exports": {
     ".": [
       {
