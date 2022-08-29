@@ -1,12 +1,20 @@
 const { readFileSync, mkdirSync, writeFileSync } = require('fs');
 const { posix, win32 } = require('path');
+const { cwd, chdir } = require('process');
 const prettier = require('prettier');
 const prettierConfig = require('./prettier.config.js');
-const resolve = require('@jridgewell/resolve-uri');
 
-let buffer;
-let cwd = __dirname;
+/** @type {function(string, string=): string} */
+const resolve = /** @type {any} */ (require('@jridgewell/resolve-uri-latest'));
 
+/** @type {function(string, string): string} */
+const relative = /** @type {any} */ (require('@jridgewell/resolve-uri-latest/relative'));
+
+let buffer = [];
+
+/**
+ * @param {string | undefined} url
+ */
 function getOrigin(url) {
   let index = 0;
   if (!url) return '';
@@ -26,6 +34,9 @@ function getOrigin(url) {
   return url.slice(0, index);
 }
 
+/**
+ * @param {string | undefined} url
+ */
 function getProtocol(url) {
   if (!url) return '';
   if (url.startsWith('file:')) return 'file:';
@@ -33,6 +44,10 @@ function getProtocol(url) {
   return '';
 }
 
+/**
+ * @param {string | undefined} base
+ * @param {string} input
+ */
 function getPath(base, input) {
   const origin = getOrigin(input);
   if (origin) {
@@ -80,26 +95,42 @@ function getPath(base, input) {
   return toWindows(resolve(input, base));
 }
 
+/**
+ * @param {string | undefined} input
+ */
 function getQuery(input) {
   if (input === undefined) return '';
   const q = /\?[^#]*/.exec(input);
   return q ? q[0] : '';
 }
 
+/**
+ * @param {string | undefined} input
+ */
 function getHash(input) {
   if (input === undefined) return '';
   const h = /#.*/.exec(input);
   return h ? h[0] : '';
 }
 
+/**
+ * @param {string} input
+ */
 function toPosix(input) {
   return input.replace(/\\{1,2}/g, '/');
 }
 
+/**
+ * @param {string} input
+ */
 function toWindows(input) {
   return input.replace(/\//g, '\\\\');
 }
 
+/**
+ * @param {string | undefined} base
+ * @param {string} input
+ */
 function normalizeBasePath(base, input) {
   if (!base && !input) return '';
   if (base === undefined) return '';
@@ -119,9 +150,288 @@ function normalizeBasePath(base, input) {
   return strip.includes('\\') ? b.replace(/\//g, '\\\\') : b;
 }
 
-function suite(base) {
-  const init = JSON.stringify(base);
-  buffer.push(`
+/**
+ * @param {string | undefined} base
+ * @param {'scheme' | 'host' | 'path' | 'query' | 'hash'} level
+ * @return {string}
+ */
+function extractLeft(base, level) {
+  if (base === undefined) return '';
+  switch (level) {
+    case 'scheme':
+      return getProtocol(base);
+    case 'host':
+      return getOrigin(base);
+    case 'path':
+      return extractLeft(base, 'host') + getPath(base, base);
+    case 'query':
+      return extractLeft(base, 'path') + getQuery(base);
+    case 'hash':
+      return extractLeft(base, 'query') + getHash(base);
+  }
+  throw new Error('unimplemented ' + level);
+}
+
+/**
+ * @param {string | undefined} base
+ * @param {'scheme' | 'host' | 'path' | 'query' | 'hash'} level
+ * @return {string}
+ */
+function extractRight(base, level) {
+  if (base === undefined) return '';
+  if (base.startsWith('file:')) base = base.replace(/file:\/{0,3}/, 'file:///');
+  const right = base.slice(extractLeft(base, level).length);
+  if (right.startsWith('///')) return right.slice(1);
+  return right;
+}
+
+/**
+ * @param {string} name
+ * @param {() => void} fn
+ */
+function dir(name, fn) {
+  const old = cwd();
+  const dir = name.replace(/ /g, '-');
+  try {
+    mkdirSync(dir);
+  } catch {
+    /**/
+  }
+  chdir(dir);
+  fn();
+  chdir(old);
+}
+
+/**
+ * @param {string} name
+ * @param {string} importStatement
+ * @param {() => void} fn
+ */
+function file(name, importStatement, fn) {
+  buffer = [importStatement, `const assert = require('assert');\n`];
+
+  const outer = posix.relative(__dirname, cwd());
+  describe(outer, () => {
+    describe(name, fn);
+  });
+
+  writeFileSync(
+    `${name.replace(/ /g, '-')}.test.js`,
+    prettier.format(
+      buffer.join('\n'),
+      /** @type {any} */ ({
+        ...prettierConfig,
+        parser: 'babel',
+      })
+    )
+  );
+}
+
+/**
+ * @param {string} name
+ * @param {() => void} fn
+ */
+function describe(name, fn) {
+  buffer.push(`describe(\`${name.replace(/`/g, '\\`')}\`, () => {`);
+  fn();
+  buffer.push(`});\n`);
+}
+
+/**
+ * @param {string} name
+ * @param {string} fnBody
+ */
+function it(name, fnBody) {
+  buffer.push(`it(\`${name.replace(/`/g, '\\`')}\`, () => {
+    ${fnBody}
+  });\n`);
+}
+
+chdir(__dirname);
+
+/**
+ * @param {string} importStatement
+ * @param {(base: string|undefined) => void} suite
+ */
+function testCases(importStatement, suite) {
+  file('without base', importStatement, () => {
+    suite(undefined);
+    suite('');
+  });
+
+  file('with absolute base', importStatement, () => {
+    suite('https://foo.com');
+    suite('https://foo.com/');
+    suite('https://foo.com/file');
+    suite('https://foo.com/dir/');
+    suite('https://foo.com/dir/file');
+    suite('https://foo.com/..');
+    suite('https://foo.com/../');
+    suite('https://foo.com/dir/..');
+    suite('https://foo.com/file?baseQuery');
+    suite('https://foo.com/file?baseQuery#baseHash');
+    suite('https://foo.com/file#baseHash');
+
+    suite('https://g');
+    suite('https://g/');
+    suite('https://g/file');
+    suite('https://g/dir/');
+    suite('https://g/dir/file');
+    suite('https://g/..');
+    suite('https://g/../');
+    suite('https://g/dir/..');
+    suite('https://g/file?baseQuery');
+    suite('https://g/file?baseQuery#baseHash');
+    suite('https://g/file#baseHash');
+
+    suite('file:///foo');
+    suite('file:///foo/');
+    suite('file:///foo/file');
+    suite('file:///foo/dir/');
+    suite('file:///foo/dir/file');
+    suite('file:///foo/..');
+    suite('file:///foo/../');
+    suite('file:///foo/dir/..');
+    suite('file:///foo/file?baseQuery');
+    suite('file:///foo/file?baseQuery#baseHash');
+    suite('file:///foo/file#baseHash');
+
+    suite('file://foo');
+    suite('file://foo/');
+    suite('file://foo/file');
+    suite('file://foo/dir/');
+    suite('file://foo/dir/file');
+    suite('file://foo/..');
+    suite('file://foo/../');
+    suite('file://foo/dir/..');
+    suite('file://foo/file?baseQuery');
+    suite('file://foo/file?baseQuery#baseHash');
+    suite('file://foo/file#baseHash');
+
+    suite('file:/foo');
+    suite('file:/foo/');
+    suite('file:/foo/file');
+    suite('file:/foo/dir/');
+    suite('file:/foo/dir/file');
+    suite('file:/foo/..');
+    suite('file:/foo/../');
+    suite('file:/foo/dir/..');
+    suite('file:/foo/file?baseQuery');
+    suite('file:/foo/file?baseQuery#baseHash');
+    suite('file:/foo/file#baseHash');
+
+    suite('file:foo');
+    suite('file:foo/');
+    suite('file:foo/file');
+    suite('file:foo/dir/');
+    suite('file:foo/dir/file');
+    suite('file:foo/..');
+    suite('file:foo/../');
+    suite('file:foo/dir/..');
+    suite('file:foo/file?baseQuery');
+    suite('file:foo/file?baseQuery#baseHash');
+    suite('file:foo/file#baseHash');
+    suite('file:foo/file?baseQuery');
+    suite('file:foo/file?baseQuery#baseHash');
+    suite('file:foo/file#baseHash');
+    suite('file:file?baseQuery');
+    suite('file:file?baseQuery#baseHash');
+    suite('file:file#baseHash');
+    suite('file:?baseQuery');
+    suite('file:?baseQuery#baseHash');
+    suite('file:#baseHash');
+  });
+
+  file('with protocol relative base', importStatement, () => {
+    suite('//foo.com');
+    suite('//foo.com/');
+    suite('//foo.com/file');
+    suite('//foo.com/dir/');
+    suite('//foo.com/dir/file');
+    suite('//foo.com/..');
+    suite('//foo.com/../');
+    suite('//foo.com/dir/..');
+    suite('//foo.com/file?baseQuery');
+    suite('//foo.com/file?baseQuery#baseHash');
+    suite('//foo.com/file#baseHash');
+
+    suite('//g');
+    suite('//g/');
+    suite('//g/file');
+    suite('//g/dir/');
+    suite('//g/dir/file');
+    suite('//g/..');
+    suite('//g/../');
+    suite('//g/dir/..');
+    suite('//g/file?baseQuery');
+    suite('//g/file?baseQuery#baseHash');
+    suite('//g/file#baseHash');
+  });
+
+  file('with absolute path base', importStatement, () => {
+    suite('/');
+    suite('/root');
+    suite('/root/');
+    suite('/root/file');
+    suite('/root/dir/');
+    suite('/..');
+    suite('/../');
+    suite('/root/..');
+    suite('/root/../');
+    suite('/root?baseQuery');
+    suite('/root?baseQuery#baseHash');
+    suite('/root#baseHash');
+  });
+
+  file('with relative path base', importStatement, () => {
+    suite('file');
+    suite('dir/');
+    suite('dir/file');
+    suite('deep/dir/');
+    suite('./file');
+    suite('./dir/');
+    suite('./deep/file');
+    suite('./deep/dir/');
+    suite('../file');
+    suite('../dir/');
+    suite('../deep/file');
+    suite('../deep/dir/');
+    suite('..');
+    suite('../');
+    suite('dir/..');
+    suite('deep/../');
+    suite('./..');
+    suite('./../');
+    suite('./deep/..');
+    suite('./deep/../');
+    suite('../..');
+    suite('../../');
+    suite('../deep/..');
+    suite('../deep/../');
+    suite('file?baseQuery');
+    suite('file?baseQuery#baseHash');
+    suite('file#baseHash');
+  });
+
+  file('with query base', importStatement, () => {
+    suite('?baseQuery');
+    suite('?baseQuery#baseHash');
+  });
+
+  file('with hash base', importStatement, () => {
+    suite('#baseHash');
+  });
+}
+
+dir('resolve', () => {
+  const importStatement = `const resolve = require('../..');`;
+
+  /**
+   * @param {string | undefined} base
+   */
+  function resolveSuite(base) {
+    const init = JSON.stringify(base);
+    buffer.push(`
       describe(\`base = ${init}\`, () => {
         describe('with absolute input', () => {
           it('returns input', () => {
@@ -518,210 +828,15 @@ function suite(base) {
         });
       });
     `);
-}
-
-function dir(name, fn) {
-  const old = cwd;
-  cwd += '/' + name.replace(/ /g, '-');
-  try {
-    mkdirSync(cwd);
-  } catch {
-    /**/
   }
-  fn();
-  cwd = old;
-}
 
-function describe(name, fn) {
-  const dir = posix.relative(cwd, `${__dirname}/..`);
-  buffer = [`const resolve = require('${dir}');`, `const assert = require('assert');\n`, `describe('${name}', () => {`];
+  testCases(importStatement, resolveSuite);
 
-  fn();
-
-  buffer.push(`});`);
-
-  writeFileSync(
-    `${cwd}/${name.replace(/ /g, '-')}.test.js`,
-    prettier.format(buffer.join('\n'), {
-      ...prettierConfig,
-      parser: 'babel',
-    })
-  );
-}
-
-dir('resolve', () => {
-  describe('without base', () => {
-    suite(undefined);
-    suite('');
-  });
-
-  describe('with absolute base', () => {
-    suite('https://foo.com');
-    suite('https://foo.com/');
-    suite('https://foo.com/file');
-    suite('https://foo.com/dir/');
-    suite('https://foo.com/dir/file');
-    suite('https://foo.com/..');
-    suite('https://foo.com/../');
-    suite('https://foo.com/dir/..');
-    suite('https://foo.com/file?baseQuery');
-    suite('https://foo.com/file?baseQuery#baseHash');
-    suite('https://foo.com/file#baseHash');
-
-    suite('https://g');
-    suite('https://g/');
-    suite('https://g/file');
-    suite('https://g/dir/');
-    suite('https://g/dir/file');
-    suite('https://g/..');
-    suite('https://g/../');
-    suite('https://g/dir/..');
-    suite('https://g/file?baseQuery');
-    suite('https://g/file?baseQuery#baseHash');
-    suite('https://g/file#baseHash');
-
-    suite('file:///foo');
-    suite('file:///foo/');
-    suite('file:///foo/file');
-    suite('file:///foo/dir/');
-    suite('file:///foo/dir/file');
-    suite('file:///foo/..');
-    suite('file:///foo/../');
-    suite('file:///foo/dir/..');
-    suite('file:///foo/file?baseQuery');
-    suite('file:///foo/file?baseQuery#baseHash');
-    suite('file:///foo/file#baseHash');
-
-    suite('file://foo');
-    suite('file://foo/');
-    suite('file://foo/file');
-    suite('file://foo/dir/');
-    suite('file://foo/dir/file');
-    suite('file://foo/..');
-    suite('file://foo/../');
-    suite('file://foo/dir/..');
-    suite('file://foo/file?baseQuery');
-    suite('file://foo/file?baseQuery#baseHash');
-    suite('file://foo/file#baseHash');
-
-    suite('file:/foo');
-    suite('file:/foo/');
-    suite('file:/foo/file');
-    suite('file:/foo/dir/');
-    suite('file:/foo/dir/file');
-    suite('file:/foo/..');
-    suite('file:/foo/../');
-    suite('file:/foo/dir/..');
-    suite('file:/foo/file?baseQuery');
-    suite('file:/foo/file?baseQuery#baseHash');
-    suite('file:/foo/file#baseHash');
-
-    suite('file:foo');
-    suite('file:foo/');
-    suite('file:foo/file');
-    suite('file:foo/dir/');
-    suite('file:foo/dir/file');
-    suite('file:foo/..');
-    suite('file:foo/../');
-    suite('file:foo/dir/..');
-    suite('file:foo/file?baseQuery');
-    suite('file:foo/file?baseQuery#baseHash');
-    suite('file:foo/file#baseHash');
-    suite('file:foo/file?baseQuery');
-    suite('file:foo/file?baseQuery#baseHash');
-    suite('file:foo/file#baseHash');
-    suite('file:file?baseQuery');
-    suite('file:file?baseQuery#baseHash');
-    suite('file:file#baseHash');
-    suite('file:?baseQuery');
-    suite('file:?baseQuery#baseHash');
-    suite('file:#baseHash');
-  });
-
-  describe('with protocol relative base', () => {
-    suite('//foo.com');
-    suite('//foo.com/');
-    suite('//foo.com/file');
-    suite('//foo.com/dir/');
-    suite('//foo.com/dir/file');
-    suite('//foo.com/..');
-    suite('//foo.com/../');
-    suite('//foo.com/dir/..');
-    suite('//foo.com/file?baseQuery');
-    suite('//foo.com/file?baseQuery#baseHash');
-    suite('//foo.com/file#baseHash');
-
-    suite('//g');
-    suite('//g/');
-    suite('//g/file');
-    suite('//g/dir/');
-    suite('//g/dir/file');
-    suite('//g/..');
-    suite('//g/../');
-    suite('//g/dir/..');
-    suite('//g/file?baseQuery');
-    suite('//g/file?baseQuery#baseHash');
-    suite('//g/file#baseHash');
-  });
-
-  describe('with absolute path base', () => {
-    suite('/');
-    suite('/root');
-    suite('/root/');
-    suite('/root/file');
-    suite('/root/dir/');
-    suite('/..');
-    suite('/../');
-    suite('/root/..');
-    suite('/root/../');
-    suite('/root?baseQuery');
-    suite('/root?baseQuery#baseHash');
-    suite('/root#baseHash');
-  });
-
-  describe('with relative path base', () => {
-    suite('file');
-    suite('dir/');
-    suite('dir/file');
-    suite('deep/dir/');
-    suite('./file');
-    suite('./dir/');
-    suite('./deep/file');
-    suite('./deep/dir/');
-    suite('../file');
-    suite('../dir/');
-    suite('../deep/file');
-    suite('../deep/dir/');
-    suite('..');
-    suite('../');
-    suite('dir/..');
-    suite('deep/../');
-    suite('./..');
-    suite('./../');
-    suite('./deep/..');
-    suite('./deep/../');
-    suite('../..');
-    suite('../../');
-    suite('../deep/..');
-    suite('../deep/../');
-    suite('file?baseQuery');
-    suite('file?baseQuery#baseHash');
-    suite('file#baseHash');
-  });
-
-  describe('with query base', () => {
-    suite('?baseQuery');
-    suite('?baseQuery#baseHash');
-  });
-
-  describe('with hash base', () => {
-    suite('#baseHash');
-  });
-
-  describe('readme', () => {
+  file('readme', importStatement, () => {
     const readme = readFileSync(`${__dirname}/../README.md`, 'utf8');
     const tables = extractTables(readme);
 
+    /** @param {string} markdown */
     function extractTables(markdown) {
       const regex = /(\|.*)\n\|\s*---.*\n((\|.*\n)*)/g;
       let tables = [];
@@ -733,6 +848,7 @@ dir('resolve', () => {
           .map((s) => s.trim())
           .slice(1, -1);
 
+        /** @type {Record<string, string>[]} */
         const table = [];
         tables.push(table);
         const body = match[2].split('\n').slice(0, -1);
@@ -742,6 +858,7 @@ dir('resolve', () => {
             .map((s) => s.trim())
             .slice(1, -1);
 
+          /** @type {Record<string, string>} */
           const obj = {};
           data.forEach((d, i) => (obj[headers[i]] = d));
           table.push(obj);
@@ -750,6 +867,7 @@ dir('resolve', () => {
       return tables;
     }
 
+    /** @param {string} str */
     function escape(str) {
       return str.replace(/\\/g, '\\\\');
     }
@@ -759,20 +877,233 @@ dir('resolve', () => {
 
     for (let i = 0; i < tables.length; i++) {
       const table = tables[i];
-      buffer.push(`describe('table ${i}', () => {`);
-      for (let j = 0; j < table.length; j++) {
-        const row = table[j];
-        buffer.push(`
-          it('input = ${escape(row.Input)}, base = ${escape(row.Base)}', () => {
-            const input = ${escape(row.Input)};
-            const base = ${escape(row.Base)};
-            const expected = ${escape(row.Resolution)};
-
-            assert.strictEqual(resolve(input, base), expected);
-          });
-        `);
-      }
-      buffer.push('})');
+      describe(`table ${i}`, () => {
+        for (let j = 0; j < table.length; j++) {
+          const row = table[j];
+          it(
+            `input = ${escape(row.Input)}, base = ${escape(row.Base)}`,
+            `
+              const input = ${escape(row.Input)};
+              const base = ${escape(row.Base)};
+              const expected = ${escape(row.Resolution)};
+              assert.strictEqual(resolve(input, base), expected);
+            `
+          );
+        }
+      });
     }
   });
+});
+
+dir('relative', () => {
+  const importStatement = `const relative = require('../../relative');`;
+
+  /**
+   * @param {string | undefined} base
+   */
+  function relativeSuite(base) {
+    if (base === undefined) return;
+
+    const baseInit = JSON.stringify(base);
+    describe(`base = ${baseInit}`, () => {
+      if (base) {
+        describe('with absolute input', () => {
+          if (getProtocol(base)) {
+            const input = `${extractLeft(base, 'host')}/nested/file.js`;
+
+            it(
+              'returns relative path to same-host input',
+              `
+                const base = ${baseInit};
+                const input = ${JSON.stringify(input)};
+                const rel = relative(base, input);
+                assert.strictEqual(rel, ${JSON.stringify(relative(getPath(base, base), getPath(base, input)))});
+              `
+            );
+
+            it(
+              'returns relative path to same-host input with query',
+              `
+                const base = ${baseInit};
+                const input = ${JSON.stringify(input + '?input')};
+                const rel = relative(base, input);
+                assert.strictEqual(rel, ${JSON.stringify(relative(getPath(base, base), getPath(base, input)) + '?input')});
+              `
+            );
+
+            if (getQuery(base)) {
+              it(
+                'returns query when same-host and same-path',
+                `
+                  const base = ${baseInit};
+                  const input = ${JSON.stringify(extractLeft(base, 'path') + '?input')};
+                  const rel = relative(base, input);
+                  assert.strictEqual(rel, ${JSON.stringify('?input')});
+                `
+              );
+
+              it(
+                'returns query and hash when same-host and same-path',
+                `
+                  const base = ${baseInit};
+                  const input = ${JSON.stringify(extractLeft(base, 'path') + '?input#hash')};
+                  const rel = relative(base, input);
+                  assert.strictEqual(rel, ${JSON.stringify('?input#hash')});
+                `
+              );
+
+              it(
+                'returns query when same-host, same-path, and same-query',
+                `
+                  const base = ${baseInit};
+                  const input = ${JSON.stringify(extractLeft(base, 'query'))};
+                  const rel = relative(base, input);
+                  assert.strictEqual(rel, ${JSON.stringify(getQuery(base))});
+                `
+              );
+            }
+
+            if (getHash(base)) {
+              it(
+                'returns hash when same-host, same-path, and same-query',
+                `
+                  const base = ${baseInit};
+                  const input = ${JSON.stringify(extractLeft(base, 'query') + '#hash')};
+                  const rel = relative(base, input);
+                  assert.strictEqual(rel, ${JSON.stringify('#hash')});
+                `
+              );
+
+              it(
+                'returns hash when same-host, same-path, same-query, and same hash',
+                `
+                  const base = ${baseInit};
+                  const input = ${JSON.stringify(extractLeft(base, 'hash'))};
+                  const rel = relative(base, input);
+                  assert.strictEqual(rel, ${JSON.stringify(getHash(base))});
+                `
+              );
+            }
+          }
+
+          if (getProtocol(base) === 'https:') {
+            const input = `https://input.com/nested/file.js`;
+            it(
+              'returns scheme-relative to input',
+              `
+                const base = ${baseInit};
+                const input = ${JSON.stringify(input)};
+                const rel = relative(base, input);
+                assert.strictEqual(rel, ${JSON.stringify(extractRight(input, 'scheme'))});
+              `
+            );
+          } else {
+            const input = `https://input.com/nested/file.js`;
+            it(
+              'normalizes absolute input',
+              `
+                const base = ${baseInit};
+                const input = ${JSON.stringify(input)};
+                const rel = relative(base, input);
+                assert.strictEqual(rel, ${JSON.stringify(input)});
+              `
+            );
+          }
+        });
+      } else {
+        {
+          const input = `https://input.com/nested/file.js`;
+          it(
+          'normalizes absolute input',
+          `
+            const base = ${baseInit};
+            const input = ${JSON.stringify(input)};
+            const rel = relative(base, input);
+            assert.strictEqual(rel, ${JSON.stringify(input)});
+          `
+          );
+        }
+
+        {
+          const input = `//input.com/nested/file.js`;
+          it(
+          'normalizes scheme-relative input',
+          `
+            const base = ${baseInit};
+            const input = ${JSON.stringify(input)};
+            const rel = relative(base, input);
+            assert.strictEqual(rel, ${JSON.stringify(input)});
+          `
+          );
+        }
+
+        {
+          const input = `/nested/file.js`;
+          it(
+          'normalizes absolute path input',
+          `
+            const base = ${baseInit};
+            const input = ${JSON.stringify(input)};
+            const rel = relative(base, input);
+            assert.strictEqual(rel, ${JSON.stringify(input)});
+          `
+          );
+        }
+
+        {
+          const input = `nested/file.js`;
+          it(
+          'normalizes relative path input',
+          `
+            const base = ${baseInit};
+            const input = ${JSON.stringify(input)};
+            const rel = relative(base, input);
+            assert.strictEqual(rel, ${JSON.stringify(input)});
+          `
+          );
+        }
+
+        {
+          const input = `?query`;
+          it(
+          'normalizes query path input',
+          `
+            const base = ${baseInit};
+            const input = ${JSON.stringify(input)};
+            const rel = relative(base, input);
+            assert.strictEqual(rel, ${JSON.stringify(input)});
+          `
+          );
+        }
+
+        {
+          const input = `?query#hash`;
+          it(
+          'normalizes query hash path input',
+          `
+            const base = ${baseInit};
+            const input = ${JSON.stringify(input)};
+            const rel = relative(base, input);
+            assert.strictEqual(rel, ${JSON.stringify(input)});
+          `
+          );
+        }
+
+        {
+          const input = `#hash`;
+          it(
+          'normalizes hash path input',
+          `
+            const base = ${baseInit};
+            const input = ${JSON.stringify(input)};
+            const rel = relative(base, input);
+            assert.strictEqual(rel, ${JSON.stringify(input)});
+          `
+          );
+        }
+      }
+    });
+  }
+
+  testCases(importStatement, relativeSuite);
 });
