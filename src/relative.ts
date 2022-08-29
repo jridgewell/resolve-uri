@@ -8,6 +8,9 @@ import {
   UrlType,
 } from './helpers';
 
+/**
+ * Makes a relative URI from `from` to `to`.
+ */
 export default function relative(from: string, to: string): string {
   const fromUrl = parseUrl(from);
   const url = parseUrl(to);
