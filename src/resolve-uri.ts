@@ -35,7 +35,7 @@ type Url = {
   type: UrlType;
 };
 
-enum UrlType {
+const enum UrlType {
   Empty = 1,
   Hash = 2,
   Query = 3,
